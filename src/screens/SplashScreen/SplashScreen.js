@@ -49,27 +49,26 @@ const SplashScreen = ({navigation}) => {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: theme.colors.blueBG,
+        // backgroundColor: theme.colors.blueBG,
       }}>
       <View
         style={{
           flex: 0.95,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: theme.colors.blueBG,
+          // backgroundColor: theme.colors.blueBG,
         }}>
         <StatusBar
-          barStyle="light-content"
-          backgroundColor={theme.colors.blueBG}
+          // barStyle="light-content"
+          // backgroundColor={theme.colors.blueBG}
         />
-        <Text>hello</Text>
-        {/* <Image
+        <Image
           style={{
-            width: 100,
-            height: 100,
+            width: 150,
+            height: 150,
           }}
-          source={require('../../assets/logo/logo.png')}
-        /> */}
+          source={require('../../assets/splash-screen/carib-coin-logo.png')}
+        />
       </View>
       <Text style={{fontWeight: 'bold', color: theme.colors.onPrimary}}>
         V {version}
