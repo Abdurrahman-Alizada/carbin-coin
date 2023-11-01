@@ -5,6 +5,7 @@ import {
   StatusBar,
   StyleSheet,
   TouchableOpacity,
+  Image,
   View,
 } from 'react-native';
 import {Formik} from 'formik';
@@ -87,50 +88,6 @@ const LoginScreen = ({navigation, route}) => {
         backgroundColor={theme.colors.background}
       />
 
-      <Appbar.Header
-        style={{backgroundColor: theme.colors.background}}
-        // elevated={true}
-      >
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Content
-          title="Login"
-          titleStyle={{
-            color: theme.colors.onBackground,
-          }}
-        />
-
-        <Menu
-          visible={showMenu}
-          onDismiss={closeMenu}
-          contentStyle={{backgroundColor: theme.colors.background}}
-          anchor={
-            <Appbar.Action
-              icon={'dots-vertical'}
-              color={theme.colors.onBackground}
-              onPress={() => openMenu()}
-            />
-          }>
-          <Menu.Item
-            leadingIcon="help-circle-outline"
-            title="Help"
-            titleStyle={{color: theme.colors.onBackground}}
-            onPress={async () => {
-              closeMenu();
-              navigation.navigate('AppSettingsMain');
-            }}
-          />
-
-          <Menu.Item
-            leadingIcon="message-outline"
-            title="Contact us"
-            titleStyle={{color: theme.colors.onBackground}}
-            onPress={async () => {
-              closeMenu();
-              navigation.navigate('AppSettingsMain');
-            }}
-          />
-        </Menu>
-      </Appbar.Header>
 
       <Portal>
         <Dialog visible={visible} onDismiss={() => setVisible(true)}>
@@ -161,16 +118,26 @@ const LoginScreen = ({navigation, route}) => {
         updated password.
       </Banner>
 
+      <View style={{alignItems: 'center'}}>
+        <Image
+          style={{
+            width: 100,
+            height: 100,
+          }}
+          source={require('../../../assets/splash-screen/carib-coin-logo.png')}
+          // source={require('../../../assets')}
+        />
       <Text
         style={{
-          fontSize: 20,
-          marginTop: '3%',
-          fontWeight: '700',
+          fontSize: 22,
+          marginTop: '5%',
+          // fontWeight: '700',
+          textAlign:"center",
           paddingHorizontal: '5%',
         }}>
-        Login your account.
+        Log in
       </Text>
-
+      </View>
       <Formik
         initialValues={{
           email: '',
@@ -262,6 +229,7 @@ const LoginScreen = ({navigation, route}) => {
           </View>
         )}
       </Formik>
+
     </ScrollView>
   );
 };

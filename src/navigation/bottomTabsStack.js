@@ -2,7 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
-import Tabs from '../screens/home/Home';
+import Tabs from '../screens/bottomTabs/Index';
 const AppStack = () => {
   return (
     <Stack.Navigator initialRouteName="Main">
