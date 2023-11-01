@@ -60,7 +60,7 @@ const SplashScreen = ({navigation}) => {
         }}>
         <StatusBar
           // barStyle="light-content"
-          // backgroundColor={theme.colors.blueBG}
+          backgroundColor={theme.colors.background}
         />
         <Image
           style={{
