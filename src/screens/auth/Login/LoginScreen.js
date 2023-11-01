@@ -18,11 +18,9 @@ import {
   Avatar,
   Paragraph,
   Banner,
+  Checkbox,
   Portal,
   useTheme,
-  Appbar,
-  Menu,
-  Divider,
 } from 'react-native-paper';
 import {useLoginUserMutation} from '../../../redux/reducers/user/userThunk';
 import {
@@ -51,6 +49,7 @@ const LoginScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
 
+
   const passwordResetSuccessflly = useSelector(
     state => state?.user?.passwordResetSuccessflly,
   );
@@ -70,7 +69,7 @@ const LoginScreen = ({navigation, route}) => {
     navigation.navigate('Main');
   };
 
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
   const openMenu = () => setShowMenu(true);
@@ -87,7 +86,6 @@ const LoginScreen = ({navigation, route}) => {
         barStyle="dark-content"
         backgroundColor={theme.colors.background}
       />
-
 
       <Portal>
         <Dialog visible={visible} onDismiss={() => setVisible(true)}>
@@ -127,16 +125,16 @@ const LoginScreen = ({navigation, route}) => {
           source={require('../../../assets/splash-screen/carib-coin-logo.png')}
           // source={require('../../../assets')}
         />
-      <Text
-        style={{
-          fontSize: 22,
-          marginTop: '5%',
-          // fontWeight: '700',
-          textAlign:"center",
-          paddingHorizontal: '5%',
-        }}>
-        Log in
-      </Text>
+        <Text
+          style={{
+            fontSize: 22,
+            marginTop: '5%',
+            // fontWeight: '700',
+            textAlign: 'center',
+            paddingHorizontal: '5%',
+          }}>
+          Log in
+        </Text>
       </View>
       <Formik
         initialValues={{
@@ -161,7 +159,7 @@ const LoginScreen = ({navigation, route}) => {
             style={{
               flex: 1,
               justifyContent: 'space-between',
-              marginVertical: '2%',
+              marginTop: '10%',
               paddingHorizontal: '5%',
             }}>
             <View>
@@ -207,7 +205,7 @@ const LoginScreen = ({navigation, route}) => {
                 // disabled={!(dirty && isValid) || isLoading}
                 disabled={isLoading}
                 style={{
-                  marginVertical: '3%',
+                  marginVertical: '5%',
                 }}
                 contentStyle={{padding: '3%'}}
                 buttonStyle={{padding: '1%'}}
@@ -218,8 +216,16 @@ const LoginScreen = ({navigation, route}) => {
                 Login
               </Button>
 
+              <View style={{flexDirection: 'row', alignItems: 'center', alignSelf:"center"}}>
+                <Text style={{fontWeight: 'bold'}}>New to caribbean-coin</Text>
+                <TouchableOpacity
+                  style={{marginVertical: '5%',marginHorizontal:"3%", alignSelf: 'center'}}
+                  onPress={() => navigation.navigate('SignUpwithEmail')}>
+                  <Text style={{fontWeight: 'bold', color:theme.colors.textRed}}>Sing up</Text>
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
-                style={{marginVertical: '3%', alignSelf: 'center'}}
+                style={{marginVertical: '5%', alignSelf: 'center'}}
                 onPress={() => navigation.navigate('ForgotPassword')}>
                 <Text style={{fontWeight: 'bold', color: theme.colors.textRed}}>
                   Forgot password?
@@ -229,7 +235,6 @@ const LoginScreen = ({navigation, route}) => {
           </View>
         )}
       </Formik>
-
     </ScrollView>
   );
 };
