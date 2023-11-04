@@ -1,7 +1,8 @@
+import 'react-native-gesture-handler';
 import React, {useCallback, useMemo, useLayoutEffect, useState} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import SplashScreen from './src/screens/SplashScreen/SplashScreen';
 import Onboarding from './src/screens/Onboarding/OnboardingScreen';
 
@@ -70,37 +71,39 @@ export const App = () => {
   );
 
   return (
-    <Provider store={store}>
-      <PaperProvider theme={theme}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="SplashScreen">
-            {/* SplashScreen which will come once for 5 Seconds */}
-            <Stack.Screen
-              name="SplashScreen"
-              component={SplashScreen}
-              options={{headerShown: false}}
-            />
-            {/* Auth Navigator which includes Login Signup, will come once */}
-            <Stack.Screen
-              name="Auth"
-              component={Auth}
-              options={{headerShown: false}}
-            />
-            {/* onboarding screen for first time open */}
-            <Stack.Screen
-              name="Onboarding"
-              component={Onboarding}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Main"
-              component={Main}
-              options={{headerShown: false}}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
-    </Provider>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <Provider store={store}>
+        <PaperProvider theme={theme}>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="SplashScreen">
+              {/* SplashScreen which will come once for 5 Seconds */}
+              <Stack.Screen
+                name="SplashScreen"
+                component={SplashScreen}
+                options={{headerShown: false}}
+              />
+              {/* Auth Navigator which includes Login Signup, will come once */}
+              <Stack.Screen
+                name="Auth"
+                component={Auth}
+                options={{headerShown: false}}
+              />
+              {/* onboarding screen for first time open */}
+              <Stack.Screen
+                name="Onboarding"
+                component={Onboarding}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Main"
+                component={Main}
+                options={{headerShown: false}}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PaperProvider>
+      </Provider>
+    </GestureHandlerRootView>
   );
 };
 
