@@ -2,13 +2,19 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
-import Screen1 from '../screens/drawer/Screen1';
+import Myprofile from '../screens/drawer/myProfile/Index'
+import NeedHelp from '../screens/drawer/needHelp/Index'
 const AppStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Main">
+    <Stack.Navigator initialRouteName="MyProfile">
       <Stack.Screen
-        name="Screen1"
-        component={Screen1}
+        name="MyProfile"
+        component={Myprofile}
+        options={{headerShown: false}}
+      />
+        <Stack.Screen
+        name="NeedHelp"
+        component={NeedHelp}
         // options={{headerShown: false}}
       />
 

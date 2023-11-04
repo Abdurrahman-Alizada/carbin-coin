@@ -10,14 +10,8 @@ import {
   Divider,
 } from 'react-native-paper';
 import {useNavigation, DrawerActions} from '@react-navigation/native';
-// import {useGetCurrentLoginUserQuery} from '../redux/reducers/user/userThunk';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
-// import {handleCurrentLoaginUser} from '../redux/reducers/user/user';
-// import {userApi} from '../redux/reducers/user/userThunk';
-// import {groupApi} from '../redux/reducers/groups/groupThunk';
-// import {friendshipApi} from '../redux/reducers/Friendship/friendshipThunk';
-
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 import {version} from '../../package.json';
 
 export default function DrawerContent(props) {
@@ -37,14 +31,14 @@ export default function DrawerContent(props) {
   const handlePrivacyPolicyPress = async () => {
     // Checking if the link is supported for links with custom URL scheme.
     const supported = await Linking.canOpenURL(
-      'https://eventplannerapp.netlify.app/privacy-policy',
+      'https://google.com',
     );
 
     if (supported) {
       // Opening the link with some app, if the URL scheme is "http" the web link should be opened
       // by some browser in the mobile
       await Linking.openURL(
-        'https://eventplannerapp.netlify.app/privacy-policy',
+        'https://google.com',
       );
     } else {
       Alert.alert(`Something went wrong`);
@@ -57,22 +51,57 @@ export default function DrawerContent(props) {
       style={{backgroundColor: theme.colors.background}}
       contentContainerStyle={{flex: 1, justifyContent: 'space-between'}}>
       <View style={{marginVertical: '5%'}}>
+        
+        <List.Item
+            title={props => (
+              <SkeletonPlaceholder borderRadius={4} {...props}>
+                <SkeletonPlaceholder.Item width="60%" height={15} />
+                <SkeletonPlaceholder.Item
+                  marginTop={7}
+                  width="30%"
+                  height={12}
+                />
+              </SkeletonPlaceholder>
+            )}
+            left={props => (
+              <SkeletonPlaceholder borderRadius={4} {...props}>
+                <SkeletonPlaceholder.Item
+                  flexDirection="column"
+                  alignItems="flex-start">
+                  <SkeletonPlaceholder.Item
+                    width={50}
+                    marginLeft={20}
+                    height={50}
+                    borderRadius={50}
+                  />
+                </SkeletonPlaceholder.Item>
+              </SkeletonPlaceholder>
+            )}
+          />
         <Drawer.Item
-          label="Screen 1"
+          label="My profile"
           onPress={() => {
             navigation.navigate('Drawer', {
-              sreen: 'Screen1',
-              refreshTimeStamp: new Date().toISOString(),
+              sreen: 'MyProfile',
             });
           }}
-          icon="account-multiple"
+          icon="account"
         />
         <Drawer.Item
-          label="Screen 2"
+          label="Need help"
+          onPress={() => {
+            navigation.navigate('Drawer', {
+              screen: 'NeedHelp',
+            })
+           }}
+          icon="chat-alert-outline"
+        />
+           <Drawer.Item
+          label="Log out"
           // onPress={() => {
           //   navigation.navigate('MakeFriends', {screen: 'MakeFriendsMain'});
           // }}
-          icon="account-multiple"
+          icon="logout"
         />
       </View>
       <View style={{marginVertical: '5%'}}>

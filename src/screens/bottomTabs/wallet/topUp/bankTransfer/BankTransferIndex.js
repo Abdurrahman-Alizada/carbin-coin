@@ -1,14 +1,14 @@
 import { StyleSheet, View } from 'react-native'
 import React from 'react'
 import { Text } from 'react-native-paper'
-const Screen1 = () => {
+const BankTransferIndex = () => {
   return (
-    <View>
-      <Text>Screen1</Text>
+    <View style={{flex:1, alignItems:"center",justifyContent:"center"}}>
+      <Text>BankTransferIndex</Text>
     </View>
   )
 }
 
-export default Screen1
+export default BankTransferIndex
 
 const styles = StyleSheet.create({})
