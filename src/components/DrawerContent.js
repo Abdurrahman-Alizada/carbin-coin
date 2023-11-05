@@ -82,9 +82,9 @@ export default function DrawerContent(props) {
           label="My profile"
           onPress={() => {
             navigation.navigate('Drawer', {
-              sreen: 'MyProfile',
-            });
-          }}
+              screen: 'Profile',
+            })
+           }}
           icon="account"
         />
         <Drawer.Item
