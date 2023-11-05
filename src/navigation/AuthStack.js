@@ -7,6 +7,8 @@ import {
   // OTPScreen,
   // ResetPasswordScreen,
   SignupWithEmail,
+  OTPScreen,
+  ResetPasswordScreen,
   // CheckEmail,
 } from '../screens/auth/Index';
 const Stack = createStackNavigator();
@@ -45,20 +47,20 @@ const AuthStack = () => {
         component={ForgotPasswordScreen}
       />
       {/* <Stack.Screen name="CheckEmail" component={CheckEmail} /> */}
-      {/* <Stack.Screen
-        name="OTPScreen"
+      <Stack.Screen
+        name="OTPScreen1"
         component={OTPScreen}
         options={{
-          title: 'Verify email',
+          title: 'OTP',
         }}
-      /> */}
-      {/* <Stack.Screen
+      />
+      <Stack.Screen
         name="ResetPasswordScreen"
         component={ResetPasswordScreen}
         options={{
           title: 'Reset password',
         }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };

@@ -29,6 +29,7 @@ export const lightPalette = {
   blueBG: '#265AE8',
   textGray: '#3E3F41',
   cardBG: '#fff',
+  greyLight: '#888C94',
   textRed : "#DD105E",
   yellow :"#FFAF4F",
   lightYellow:"#F5E493",

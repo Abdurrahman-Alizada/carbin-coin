@@ -60,7 +60,8 @@ const SignupWithEmail = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
-  const [showMenu, setShowMenu] = useState(false);
+  
+    const [showMenu, setShowMenu] = useState(false);
   const openMenu = () => setShowMenu(true);
   const closeMenu = () => setShowMenu(false);
 

@@ -5,7 +5,7 @@ import {Text, Button, Avatar, useTheme} from 'react-native-paper';
 const SendIndex = ({navigation}) => {
   const theme = useTheme();
   return (
-    <View style={{padding: '5%', flex:1}}>
+    <View style={{padding: '5%', flex: 1}}>
       <Text
         style={{
           marginTop: '4%',
@@ -26,7 +26,7 @@ const SendIndex = ({navigation}) => {
         mode="contained-tonal"
         theme={{roundness: 5}}
         labelStyle={{fontSize: 18}}
-        onPress={() => navigation.navigate('BankTransferTopUp')}>
+        onPress={() => navigation.navigate('SendMoneyToCaribbeanUser')}>
         To a Caribbean-coin user
       </Button>
       <Button
@@ -54,7 +54,7 @@ const SendIndex = ({navigation}) => {
         icon="link"
         mode="contained-tonal"
         theme={{roundness: 5}}
-        onPress={() => console.log('Pressed')}>
+        onPress={() => navigation.navigate('SendUsingLinkInstruction')}>
         Using a link
       </Button>
 
@@ -69,10 +69,9 @@ const SendIndex = ({navigation}) => {
         icon="link"
         mode="contained-tonal"
         theme={{roundness: 5}}
-        onPress={() => navigation.navigate("QRScan")}>
+        onPress={() => navigation.navigate('QRScan')}>
         Scan QR code
       </Button>
-
     </View>
   );
 };

@@ -13,6 +13,9 @@ import SendIndex from '../screens/bottomTabs/wallet/send/SendIndex';
 import ConvertIndex from '../screens/bottomTabs/wallet/convert/ConvertIndex';
 import ContantsIndex from '../screens/bottomTabs/wallet/send/ToContact/ContantsIndex';
 import QRIndex from '../screens/bottomTabs/wallet/send/scanQR/QRIndex';
+import CaribbeanUserIndex from '../screens/bottomTabs/wallet/send/caribbeanUser/CaribbeanUserIndex';
+import UsingLinkInstruction from '../screens/bottomTabs/wallet/send/usingLink/UsingLinkInstruction';
+import SendUsingLink from '../screens/bottomTabs/wallet/send/usingLink/SendUsingLink';
 const AppStack = () => {
   return (
     <Stack.Navigator initialRouteName="Main">
@@ -72,6 +75,30 @@ const AppStack = () => {
         }}
       />
 
+      <Stack.Screen
+        name="SendMoneyToCaribbeanUser"
+        component={CaribbeanUserIndex}
+        options={{
+          header: props => <GeneralAppbar title="Send" {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="SendUsingLinkInstruction"
+        component={UsingLinkInstruction}
+        options={{
+          headerShown:false
+        }}
+      />
+
+      <Stack.Screen
+        name="SendUsingLink"
+        component={SendUsingLink}
+        options={{
+          header: props => (
+            <GeneralAppbar title="Send using a link" {...props} />
+          ),
+        }}
+      />
       {/* send money end*/}
 
       <Stack.Screen
