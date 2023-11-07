@@ -3,9 +3,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import GeneralAppbar from '../components/Appbars/GeneralAppbar';
 
 const Stack = createStackNavigator();
+import {useTranslation} from 'react-i18next';
 
 import Tabs from '../screens/bottomTabs/Index';
-
 import AddNewCurrency from '../screens/bottomTabs/wallet/addNewCurrency/AddNewCurrencyIndex';
 import TopUpIndex from '../screens/bottomTabs/wallet/topUp/TopUpIndex';
 import BankTransferIndex from '../screens/bottomTabs/wallet/topUp/bankTransfer/BankTransferIndex';
@@ -16,7 +16,10 @@ import QRIndex from '../screens/bottomTabs/wallet/send/scanQR/QRIndex';
 import CaribbeanUserIndex from '../screens/bottomTabs/wallet/send/caribbeanUser/CaribbeanUserIndex';
 import UsingLinkInstruction from '../screens/bottomTabs/wallet/send/usingLink/UsingLinkInstruction';
 import SendUsingLink from '../screens/bottomTabs/wallet/send/usingLink/SendUsingLink';
+import LanguageIndex from '../screens/bottomTabs/Settings/preferences/language/LanguageIndex';
 const AppStack = () => {
+  const {t} = useTranslation();
+
   return (
     <Stack.Navigator initialRouteName="Main">
       <Stack.Screen
@@ -86,7 +89,7 @@ const AppStack = () => {
         name="SendUsingLinkInstruction"
         component={UsingLinkInstruction}
         options={{
-          headerShown:false
+          headerShown: false,
         }}
       />
 
@@ -108,6 +111,18 @@ const AppStack = () => {
           header: props => <GeneralAppbar title="Convert" {...props} />,
         }}
       />
+
+      {/* Settings */}
+      <Stack.Screen
+        name="ChooseLanguage"
+        component={LanguageIndex}
+        options={{
+          header: props => <GeneralAppbar title={t("Choose language")} {...props} />,
+        }}
+      />
+      {/* Settings end */}
+
+
     </Stack.Navigator>
   );
 };

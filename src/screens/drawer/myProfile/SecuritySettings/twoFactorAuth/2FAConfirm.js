@@ -42,10 +42,11 @@ const TwoFAConfirm = ({navigation, route}) => {
 
   const verify = () => {
     setDisibility(true);
+    navigation.navigate("Profile")
   };
 
   useEffect(() => {
-    if (value.length === 5) {
+    if (value.length === 6) {
       setDisibility(false);
     } else {
       setDisibility(true);
@@ -96,6 +97,7 @@ const TwoFAConfirm = ({navigation, route}) => {
         justifyContent: 'space-between',
         paddingVertical: '5%',
         paddingHorizontal: '2%',
+        backgroundColor:theme.colors.background
       }}>
       <Portal>
         <Dialog visible={visible} onDismiss={() => setVisible(false)}>
@@ -135,7 +137,10 @@ const TwoFAConfirm = ({navigation, route}) => {
         <Text style={{fontSize: 20, textAlign: 'center', marginTop: '5%'}}>
           2FA
         </Text>
-        <Text style={styles.subTitle}>
+        <Text style={{
+              paddingTop: 30,
+              textAlign: 'center',
+        }}>
           To confirm the operation enter the 6-digit code from
           Authenticatoriljgs;
         </Text>
@@ -169,7 +174,7 @@ const TwoFAConfirm = ({navigation, route}) => {
         theme={{roundness: 10}}
         mode="contained"
         onPress={verify}>
-        Next
+        Confirm
       </Button>
     </SafeAreaView>
   );
@@ -221,11 +226,6 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
 
-  subTitle: {
-    paddingTop: 30,
-    color: '#000',
-    textAlign: 'center',
-  },
 });
 
 export default TwoFAConfirm;

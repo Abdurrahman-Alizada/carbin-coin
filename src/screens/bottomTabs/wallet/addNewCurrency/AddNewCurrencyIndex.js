@@ -26,7 +26,7 @@ const Index = ({navigation}) => {
   ]);
   const [selectedCurrency, setSelectedCurrency] = useState(-1);
   return (
-    <View style={{paddingHorizontal: '5%', marginVertical: 20}}>
+    <View style={{padding: '5%', flex:1, backgroundColor:theme.colors.background,}}>
       <Text style={{textAlign: 'center', fontSize: 16, lineHeight: 25}}>
         You can add these currencies to your account and hold digital cash in
         it.

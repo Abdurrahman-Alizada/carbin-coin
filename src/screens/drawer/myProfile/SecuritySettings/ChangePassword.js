@@ -68,7 +68,7 @@ const SignupWithEmail = () => {
   const formikRef = useRef();
 
   return (
-    <View>
+    <View style={{flex:1, backgroundColor: theme.colors.background}}>
       <View
         style={{
           flexDirection: 'row',

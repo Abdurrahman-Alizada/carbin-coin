@@ -46,7 +46,7 @@ const Instruction = ({navigation}) => {
   }, []);
 
   return (
-    <View style={{flex: 1, justifyContent: 'space-between'}}>
+    <View style={{flex: 1, justifyContent: 'space-between', backgroundColor:theme.colors.background}}>
       <View style={{}}>
         <View
           style={{

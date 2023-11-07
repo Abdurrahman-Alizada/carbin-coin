@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useContext} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,9 +8,12 @@ import {
 } from 'react-native';
 import {useTheme, Text, Button} from 'react-native-paper';
 import PhoneInput from 'react-native-phone-number-input';
+import {ThemeContext} from '../../../../../themeContext';
 
 const AddPhoneNumberIndex = ({navigation}) => {
   const theme = useTheme();
+  const {toggleTheme, isThemeDark} = useContext(ThemeContext);
+
   const [value, setValue] = useState('');
   const [formattedValue, setFormattedValue] = useState('');
   const [valid, setValid] = useState(false);
@@ -19,7 +22,12 @@ const AddPhoneNumberIndex = ({navigation}) => {
 
   const [isAddClicked, setIsAddClicked] = useState(false);
   return (
-    <SafeAreaView style={{padding: '3%'}}>
+    <SafeAreaView
+      style={{
+        padding: '3%',
+        flex: 1,
+        backgroundColor: theme.colors.background,
+      }}>
       <Text style={{textAlign: 'center', fontSize: 17, marginVertical: '3%'}}>
         Add your phone number so other member can easily send ou mone with
         Caribbean-coin
@@ -27,6 +35,7 @@ const AddPhoneNumberIndex = ({navigation}) => {
       <PhoneInput
         ref={phoneInput}
         defaultValue={value}
+        withDarkTheme={isThemeDark}
         defaultCode="TW"
         onChangeText={text => {
           setValue(text);
@@ -36,7 +45,6 @@ const AddPhoneNumberIndex = ({navigation}) => {
           setFormattedValue(text);
         }}
         containerStyle={{
-          backgroundColor: theme.colors.background,
           marginVertical: '4%',
           borderWidth: 1,
           width: '100%',
@@ -45,7 +53,7 @@ const AddPhoneNumberIndex = ({navigation}) => {
           marginBottom: 20,
           paddingHorizontal: 10,
         }}
-        textContainerStyle={{backgroundColor: theme.colors.background}}
+        layout="second"
       />
       <Button
         disabled={isAddClicked}
@@ -59,8 +67,9 @@ const AddPhoneNumberIndex = ({navigation}) => {
           setValid(checkValid ? checkValid : false);
           setTimeout(() => {
             setIsAddClicked(false);
-            checkValid && navigation.navigate('OTPScreen', {phoneNumber: formattedValue});
-          }, 3000)
+            checkValid &&
+              navigation.navigate('OTPScreen', {phoneNumber: formattedValue});
+          }, 3000);
         }}
         theme={{roundness: 5}}>
         Add

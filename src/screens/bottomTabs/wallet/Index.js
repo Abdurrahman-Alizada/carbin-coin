@@ -18,10 +18,14 @@ import {
   Portal,
   IconButton,
 } from 'react-native-paper';
-import HomeScreenAppbar from '../../../components/Appbars/HomeScreenAppbar';
 import {Modalize} from 'react-native-modalize';
+import {useTranslation} from 'react-i18next';
+
+import HomeScreenAppbar from '../../../components/Appbars/HomeScreenAppbar';
 
 const Index = ({navigation}) => {
+  const {t} = useTranslation();
+
   const theme = useTheme();
   const [showAllcoins, setShowAllCoins] = useState(true);
 
@@ -62,7 +66,7 @@ const Index = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{marginBottom: 70}}>
+    <SafeAreaView style={{paddingBottom:70, backgroundColor:theme.colors.background}}>
       <HomeScreenAppbar title={'Wallet'} />
 
       <ScrollView contentContainerStyle={{marginBottom: 0}}>
@@ -171,7 +175,7 @@ const Index = ({navigation}) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-            disabled
+              disabled
               onPress={() => console.log('hello')}
               style={{
                 flexDirection: 'row',

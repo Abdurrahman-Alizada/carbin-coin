@@ -38,7 +38,7 @@ export const lightPalette = {
 };
 
 export const darkPalette = {
-  background: '#212121',
+  // background: '#212121',
   blueBG: '#265AE8',
   textGray: '#3E3F41',
   cardBG: '#3E3F41',
