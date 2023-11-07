@@ -3,9 +3,20 @@
     "hello":"Hello",
     "Preferences" : "Preferences",
     "Dark theme":"Dark theme",
-    "Card settings":"Card settings",
-    "Your card number":"Your card number",
     "Show":"Show",
-    "Choose language": "Choose language"
+    "Choose language": "Choose language",
+    
+    "Settings":"Settings",
+    "Show card number": "Show card number",
+    "Card settings":"Card settings",
+    "Set limit":"Set limit",
+    "Set a limit for spending":"Set a limit for spending",
+    "Online payment" :"Online payment",
+    "Enable online transaction":"Enable online transaction",
+    "Freeze card":"Freeze card",
+    "Temporarily disable card usage":"Temporary disable card usage",
+    "International payment":"International payment",
+    "We'll access your location to prevent fraud operations":"We'll access your location to prevent fraud operations"
+
   }
 }

@@ -70,7 +70,7 @@ export default function CreditCard({
       </View>
 
       <List.Item
-        title={'Show card number'}
+        title={ t('Show card number')}
         onPress={() => {
           setShowCardNumber(!showCardNumber);
         }}

@@ -11,7 +11,7 @@ const Index = ({navigation}) => {
         backgroundColor: theme.colors.background,
       }}>
         <Appbar.Header style={{backgroundColor:theme.colors.background}}>
-        <Appbar.BackAction onPress={navigation.goBack()} /> 
+        <Appbar.BackAction onPress={()=>navigation.goBack()} /> 
         <Appbar.Content title={"Need help"} />
         </Appbar.Header>
       <ChatIndex />

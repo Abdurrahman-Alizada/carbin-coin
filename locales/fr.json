@@ -1,11 +1,23 @@
 {
   "translation": {
     "hello" :"Bonjour",
+    
     "Preferences" : "Préférences",
     "Dark theme":"Thème sombre",
     "Card settings":"Paramètres de la carte",
-    "Your card number":"Votre numéro de carte",
     "Show":"Montrer",
-    "Choose language": "Choisissez la langue"
+    "Choose language": "Choisissez la langue",
+
+    "Settings":"Paramètres",
+    "Show card number": "Afficher le numéro de la carte",
+    "Set limit":"Définir une limite",
+    "Set a limit for spending":"Fixer une limite de dépenses",
+    "Online payment" :"Paiement en ligne",
+    "Enable online transaction":"Activer la transaction en ligne",
+    "Freeze card":"Geler la carte",
+    "Temporarily disable card usage":"Désactiver temporairement l'utilisation de la carte",
+    "International payment":"Paiement international",
+    "We'll access your location to prevent fraud operations":"Nous accéderons à votre emplacement pour empêcher les opérations frauduleuses"
+
   }
 }

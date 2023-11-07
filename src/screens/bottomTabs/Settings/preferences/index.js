@@ -13,7 +13,7 @@ const Index = () => {
   const {toggleTheme, isThemeDark} = useContext(ThemeContext);
 
   return (
-    <View style={{padding: '2%'}}>
+    <View style={{paddingHorizontal: '2%'}}>
       <List.Section>
         <List.Subheader style={{}}>{t('Preferences')}</List.Subheader>
 

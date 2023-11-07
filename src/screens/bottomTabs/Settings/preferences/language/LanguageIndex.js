@@ -13,23 +13,33 @@ import {useSelector, useDispatch} from 'react-redux';
 import languagesList from '../../../../../../locales/languagesList.json';
 import {handleCurrentLanguage} from '../../../../../redux/reducers/settings/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
+import RNRestart from 'react-native-restart'; // Import package from node modules
 
 const Index = () => {
   const dispatch = useDispatch();
   const {t, i18n} = useTranslation();
-  
+
   const currentLanguage = useSelector(state => state.settings.currentLanguage);
 
   const changeLng = async lng => {
+    const isNewLanguageRTL = i18next.dir(lng) === 'rtl';
+    const isCurrentLayoutRTL = I18nManager.isRTL;
+    const isLayoutChangeNeeded = isCurrentLayoutRTL !== isNewLanguageRTL;
+    
     setValue(lng);
     await AsyncStorage.setItem('currentLanguage', lng);
     dispatch(handleCurrentLanguage(lng));
-    i18next.changeLanguage(lng).then(()=>{
-      const l = i18n.language
-      let isLangRTL = (l == "ar" || l == "ur")
-      I18nManager.forceRTL(isLangRTL)
-    })
+    i18next.changeLanguage(lng).then(async () => {
+      const l = i18n.language;
+      let isLangRTL = l == 'ar' || l == 'ur';
+      I18nManager.forceRTL(isLangRTL);
+
+      if (isLayoutChangeNeeded) {
+        await AsyncStorage.setItem('isRTL', lng);
+        RNRestart.restart();
+      }
+    });
   };
   const [value, setValue] = useState(currentLanguage);
   const theme = useTheme();

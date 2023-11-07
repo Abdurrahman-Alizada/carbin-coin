@@ -87,6 +87,15 @@ export default function DrawerContent(props) {
            }}
           icon="account"
         />
+          <Drawer.Item
+          label="Cards"
+          onPress={() => {
+            navigation.navigate('Drawer', {
+              screen: 'Cards',
+            })
+           }}
+          icon="credit-card"
+        />
         <Drawer.Item
           label="Need help"
           onPress={() => {

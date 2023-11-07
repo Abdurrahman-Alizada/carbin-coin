@@ -5,12 +5,14 @@ import PreferencesIndex from './preferences/index';
 import HomeScreenAppbar from '../../../components/Appbars/HomeScreenAppbar';
 import TopCard from './TopCard';
 import CardSettingIndex from './CardSettings/CardSettingIndex';
+import { useTranslation } from 'react-i18next';
 
 const SettingsIndex = () => {
   const theme = useTheme();
+  const {t} = useTranslation()
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background, paddingBottom:"5%"}}>
-      <HomeScreenAppbar />
+      <HomeScreenAppbar title={t("Settings")} />
       <ScrollView>
       <TopCard name="Abdur Rahman" date="11/22" suffix="3904" />
 
