@@ -1,9 +1,10 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import {Card, Chip, Text, Button, List} from 'react-native-paper';
+import {Card, Chip, Text, Button, List, useTheme} from 'react-native-paper';
 const VerificationIndex = () => {
+  const theme = useTheme()
   return (
-    <View style={{padding: '3%'}}>
+    <View style={{padding: '3%', backgroundColor:theme.colors.background, flex:1}}>
       <View
         style={{
           marginHorizontal: '3%',

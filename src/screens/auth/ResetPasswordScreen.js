@@ -43,28 +43,7 @@ const ResetPasswordScreen = ({navigation, route}) => {
     useResetPasswordMutation();
 
     const submitHandler = async values => {
-    resetPassword({
-      id: route?.params?.user?._id,
-      newPassword: values.password,
-    })
-      .then(res => {
-        if (res?.error?.data?.message) {
-          setMessage(res?.error?.data?.message);
-          setVisible(true);
-        } else if (res?.error?.error) {
-          setMessage(res?.error?.error);
-          setVisible(true);
-        } else if (res?.data?.message == `Password has been updated`) {
-          dispatch(handlePasswordResetSuccessfully(true));
-          navigation.navigate('Login');
-        } else {
-          setMessage('Unknown error');
-          setVisible(true);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+       navigation.navigate("Main")
   };
 
   const [showPassword, setShowPassword] = useState(false);
@@ -73,7 +52,6 @@ const ResetPasswordScreen = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
       <Portal>
         <Dialog visible={visible} onDismiss={() => setVisible(true)}>

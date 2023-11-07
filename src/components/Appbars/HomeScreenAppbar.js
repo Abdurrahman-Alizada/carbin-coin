@@ -4,7 +4,6 @@ import {Text, Appbar, useTheme} from 'react-native-paper';
 import {useNavigation, DrawerActions} from '@react-navigation/native';
 
 const HomeScreenAppbar = ({title}) => {
-  console.log(title)
     const theme = useTheme();
     const navigation = useNavigation();
   

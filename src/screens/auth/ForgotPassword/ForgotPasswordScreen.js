@@ -30,27 +30,7 @@ const ForgotPassword = ({navigation}) => {
     useForgotPasswordMutation();
   const sendEmail = () => {
     setDisibility(true);
-    forgotPassword(email)
-      .then(res => {
-        if (res?.error?.data?.message) {
-          setMessage(res?.error?.data?.message);
-          setVisible(true);
-        } else if (res?.error?.error) {
-          setMessage(res?.error?.error);
-          setVisible(true);
-        } else if(res?.data?.message == `OTP has been sent to ${email}`) {
-          navigation.navigate("OTPScreen", {email:email});
-          setEmail('')
-        }else{
-          setMessage("Unknown error");
-          setVisible(true);
-        }
-        setDisibility(false);
-      })
-      .catch(e => {
-        setDisibility(false);
-        console.log(e);
-      });
+    navigation.navigate("OTPScreen1")
   };
 
   return (
@@ -104,7 +84,8 @@ const ForgotPassword = ({navigation}) => {
           buttonStyle={{padding: '1%'}}
           theme={{roundness: 1}}
           buttonColor={theme.colors.secondary}
-          onPress={sendEmail}>
+          onPress={sendEmail}
+          >
           Continue
         </Button>
       </View>

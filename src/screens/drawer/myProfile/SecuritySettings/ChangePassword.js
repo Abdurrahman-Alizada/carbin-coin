@@ -60,14 +60,15 @@ const SignupWithEmail = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
-  const [showMenu, setShowMenu] = useState(false);
+  
+    const [showMenu, setShowMenu] = useState(false);
   const openMenu = () => setShowMenu(true);
   const closeMenu = () => setShowMenu(false);
 
   const formikRef = useRef();
 
   return (
-    <View>
+    <View style={{flex:1, backgroundColor: theme.colors.background}}>
       <View
         style={{
           flexDirection: 'row',

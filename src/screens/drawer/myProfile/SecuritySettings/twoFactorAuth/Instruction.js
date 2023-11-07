@@ -6,13 +6,18 @@ import {
   Card,
   List,
   Menu,
+  Snackbar,
   Switch,
   Text,
   useTheme,
 } from 'react-native-paper';
 const Instruction = ({navigation}) => {
-  const [isSwitchOn, setIsSwitchOn] = useState(false);
+
   const theme = useTheme();
+
+  const [visible, setVisible] = useState(false);
+  const onToggleSnackBar = () => setVisible(!visible);
+  const onDismissSnackBar = () => setVisible(false);
 
   const [showMenu, setShowMenu] = useState(false);
   const openMenu = () => setShowMenu(true);
@@ -41,7 +46,7 @@ const Instruction = ({navigation}) => {
   }, []);
 
   return (
-    <View style={{flex: 1, justifyContent: 'space-between'}}>
+    <View style={{flex: 1, justifyContent: 'space-between', backgroundColor:theme.colors.background}}>
       <View style={{}}>
         <View
           style={{
@@ -132,7 +137,7 @@ const Instruction = ({navigation}) => {
             icon="content-copy"
             mode="text"
             style={{width: '70%', alignSelf: 'center'}}
-            onPress={() => console.log('Pressed')}>
+            onPress={onToggleSnackBar}>
             Click here to copy
           </Button>
           <List.Item
@@ -152,6 +157,14 @@ const Instruction = ({navigation}) => {
         onPress={() => navigation.navigate("TwoFactorAuthConfirm")}>
         Next
       </Button>
+
+      <Snackbar
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        duration={1000}
+        >
+        Key copied successfully!
+      </Snackbar>
     </View>
   );
 };

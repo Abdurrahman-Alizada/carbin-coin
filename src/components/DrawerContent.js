@@ -90,9 +90,7 @@ export default function DrawerContent(props) {
         <Drawer.Item
           label="Need help"
           onPress={() => {
-            navigation.navigate('Drawer', {
-              screen: 'NeedHelp',
-            })
+            navigation.navigate('NeedHelp')
            }}
           icon="chat-alert-outline"
         />

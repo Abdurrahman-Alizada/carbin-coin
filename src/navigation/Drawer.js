@@ -26,9 +26,10 @@ const AppStack = () => {
       <Stack.Screen
         name="NeedHelp"
         component={NeedHelp}
-        options={{
-          header: props => <GeneralAppbar title="Need Help" {...props} />,
-        }}
+        options={{headerShown: false}}
+        // options={{
+        //   header: props => <GeneralAppbar title="Need Help" {...props} />,
+        // }}
       />
 
       <Stack.Screen
