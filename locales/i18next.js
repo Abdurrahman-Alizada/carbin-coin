@@ -4,11 +4,15 @@ import {I18nManager} from 'react-native';
 import en from './en.json';
 import fr from './fr.json';
 import ar from './ar.json';
+import tl from './tl.json';
+import es from './es.json';
 
 export const languageResources = {
   en: en,
   fr: fr,
-  ar:ar
+  // ar: ar,
+  tl: tl,
+  es: es,
 };
 
 i18next.use(initReactI18next).init({

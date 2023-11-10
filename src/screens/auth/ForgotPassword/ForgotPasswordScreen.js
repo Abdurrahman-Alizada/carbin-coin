@@ -10,16 +10,17 @@ import {
   Paragraph,
 } from 'react-native-paper';
 import {useForgotPasswordMutation} from '../../../redux/reducers/user/userThunk';
+import AuthAppbar from '../../../components/Appbars/AuthAbbar';
+import ButtonLinearGradient from '../../../components/ButtonLinearGradient';
+import {useTranslation} from 'react-i18next';
 
 const ForgotPassword = ({navigation}) => {
   const regex =
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
   const theme = useTheme();
-
-  const [visible, setVisible] = useState(false);
+  const {t} = useTranslation();
   const [email, setEmail] = useState('');
   const [isDisabled, setDisibility] = useState(true);
-  const [message, setMessage] = useState('Something went wrong');
 
   const checkEmail = e => {
     setDisibility(!regex.test(e));
@@ -30,7 +31,7 @@ const ForgotPassword = ({navigation}) => {
     useForgotPasswordMutation();
   const sendEmail = () => {
     setDisibility(true);
-    navigation.navigate("OTPScreen1")
+    navigation.navigate('OTPScreen1');
   };
 
   return (
@@ -38,32 +39,10 @@ const ForgotPassword = ({navigation}) => {
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
-        padding: '2%',
       }}>
-      <Portal>
-        <Dialog visible={visible} onDismiss={() => setVisible(false)}>
-          <Dialog.Title>Password recovery error</Dialog.Title>
-          <Dialog.Content>
-            <Paragraph> {message} </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              textColor={theme.colors.tertiary}
-              onPress={() => setVisible(false)}>
-              close
-            </Button>
-            <Button onPress={() => {
-              setVisible(false)
-              sendEmail()
-              }}>Try again</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <AuthAppbar title={'Forgot password'} />
 
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-
-      <View style={{paddingVertical: '5%', paddingHorizontal: '2%'}}>
-        
+      <View style={{paddingVertical: '5%', paddingHorizontal: '4%'}}>
         <TextInput
           label="Enter your Email"
           mode="outlined"
@@ -72,22 +51,22 @@ const ForgotPassword = ({navigation}) => {
           onChangeText={e => checkEmail(e)}
         />
 
-        <Button
-          icon="email-send"
-          mode="contained"
-          disabled={isDisabled}
+        <ButtonLinearGradient
           style={{
-            marginVertical: '2%',
-          }}
-          loading={isLoading}
-          contentStyle={{padding: '3%'}}
-          buttonStyle={{padding: '1%'}}
-          theme={{roundness: 1}}
-          buttonColor={theme.colors.secondary}
-          onPress={sendEmail}
-          >
-          Continue
-        </Button>
+            marginVertical: '4%',
+          }}>
+          <Button
+            icon="email-send"
+            mode="contained"
+            disabled={isDisabled}
+            loading={isLoading}
+            contentStyle={{padding: '3%'}}
+            style={{backgroundColor: 'transparent'}}
+            theme={{roundness: 1}}
+            onPress={sendEmail}>
+            {t('Continue')}
+          </Button>
+        </ButtonLinearGradient>
       </View>
     </View>
   );

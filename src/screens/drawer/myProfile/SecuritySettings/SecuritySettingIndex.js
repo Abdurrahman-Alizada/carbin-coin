@@ -10,34 +10,39 @@ import {
   Avatar,
 } from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import IonicIcon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const SecuritySettingIndex = () => {
   const theme = useTheme();
+  const {t} = useTranslation();
   const navigation = useNavigation();
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
   return (
-    <View style={{marginTop: '3%', paddingHorizontal: '0%'}}>
-      <Text style={{textAlign: 'center', fontSize: 20}}>Security Settings</Text>
+    <View style={{marginTop: '10%', paddingHorizontal: '0%'}}>
+      <Text style={{textAlign: 'center', fontSize: 20}}>
+        {t('Security settings')}
+      </Text>
 
       <View style={{marginTop: '5%'}}>
         <Drawer.Item
-          label="Verification level"
+          label={t('Verification level')}
           onPress={() => navigation.navigate('Verification')}
           icon={() => (
             <View
               style={{
                 padding: 4,
-                backgroundColor: theme.colors.errorContainer,
-                borderRadius: 15,
+                backgroundColor: theme.colors.secondaryContainer,
+                borderRadius: 25,
               }}>
-              <Image
-                style={{
-                  width: 25,
-                  height: 25,
-                }}
-                source={require('../../../../assets/splash-screen/carib-coin-logo.png')}
+              <Icon
+                name="verified-user"
+                size={25}
+                color={theme.colors.onBackground}
               />
             </View>
           )}
@@ -47,7 +52,7 @@ const SecuritySettingIndex = () => {
                 icon="information-outline"
                 mode="outlined"
                 onPress={() => console.log('Pressed')}>
-                Not verified
+                {t('Not verified')}
               </Chip>
               <List.Icon icon={'chevron-right'} style={{}} />
             </View>
@@ -60,25 +65,30 @@ const SecuritySettingIndex = () => {
             <View
               style={{
                 padding: 4,
-                backgroundColor: theme.colors.errorContainer,
-                borderRadius: 15,
+                backgroundColor: theme.colors.secondaryContainer,
+                borderRadius: 25,
               }}>
-              <Image
+              <IonicIcon
+                name="thumbs-up"
+                size={25}
+                color={theme.colors.onBackground}
+              />
+              {/* <Image
                 style={{
                   width: 25,
                   height: 25,
                 }}
                 source={require('../../../../assets/splash-screen/carib-coin-logo.png')}
-              />
+              /> */}
             </View>
           )}
-          label="Biometric"
+          label={t('Biometric')}
           right={() => (
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
           )}
         />
 
-        <Drawer.Item
+        {/* <Drawer.Item
           style={{marginTop: '2%'}}
           icon={() => (
             <View
@@ -98,7 +108,7 @@ const SecuritySettingIndex = () => {
           )}
           label="Change pin code"
           right={() => <List.Icon icon={'chevron-right'} style={{}} />}
-        />
+        /> */}
 
         <Drawer.Item
           onPress={() => navigation.navigate('ChangePassword')}
@@ -107,19 +117,17 @@ const SecuritySettingIndex = () => {
             <View
               style={{
                 padding: 4,
-                backgroundColor: theme.colors.errorContainer,
-                borderRadius: 15,
+                backgroundColor: theme.colors.primaryContainer,
+                borderRadius: 25,
               }}>
-              <Image
-                style={{
-                  width: 25,
-                  height: 25,
-                }}
-                source={require('../../../../assets/splash-screen/carib-coin-logo.png')}
+              <Icon
+                name="password"
+                size={25}
+                color={theme.colors.onBackground}
               />
             </View>
           )}
-          label="Change password"
+          label={t('Change password')}
           right={() => <List.Icon icon={'chevron-right'} style={{}} />}
         />
 
@@ -130,19 +138,18 @@ const SecuritySettingIndex = () => {
             <View
               style={{
                 padding: 4,
-                backgroundColor: theme.colors.errorContainer,
-                borderRadius: 15,
+                backgroundColor: theme.colors.secondaryContainer,
+                borderRadius: 25,
               }}>
-              <Image
-                style={{
-                  width: 25,
-                  height: 25,
-                }}
-                source={require('../../../../assets/splash-screen/carib-coin-logo.png')}
+                 <MaterialCommunityIcon
+                name="two-factor-authentication"
+                size={25}
+                color={theme.colors.onBackground}
               />
+              
             </View>
           )}
-          label="Two factor authentication"
+          label={t('Two factor authentication')}
           right={() => <List.Icon icon={'chevron-right'} style={{}} />}
         />
       </View>
@@ -151,5 +158,3 @@ const SecuritySettingIndex = () => {
 };
 
 export default SecuritySettingIndex;
-
-const styles = StyleSheet.create({});

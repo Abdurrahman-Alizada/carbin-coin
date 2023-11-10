@@ -64,13 +64,13 @@ export default function CreditCard({
           <Text style={[s.text, {color: textColor}]}>{cardNumber[3]}</Text>
         </View>
         <View style={s.footerContainer}>
-          <Text style={[s.text, {color: textColor}]}>{name}</Text>
+          {/* <Text style={[s.text, {color: textColor}]}>{name}</Text> */}
           <Text style={[s.text, {color: textColor}]}>{date}</Text>
         </View>
       </View>
 
       <List.Item
-        title={'Show card number'}
+        title={ t('Show card number')}
         onPress={() => {
           setShowCardNumber(!showCardNumber);
         }}

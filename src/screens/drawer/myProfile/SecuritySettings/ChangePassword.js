@@ -24,6 +24,8 @@ import {
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
+import ButtonLinearGradient from '../../../../components/ButtonLinearGradient';
 
 const validationSchema = Yup.object().shape({
   oldPassword: Yup.string()
@@ -43,6 +45,7 @@ const validationSchema = Yup.object().shape({
 const SignupWithEmail = () => {
   const navigation = useNavigation();
   const theme = useTheme();
+  const {t} = useTranslation();
 
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState('');
@@ -60,15 +63,15 @@ const SignupWithEmail = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
-  
-    const [showMenu, setShowMenu] = useState(false);
+
+  const [showMenu, setShowMenu] = useState(false);
   const openMenu = () => setShowMenu(true);
   const closeMenu = () => setShowMenu(false);
 
   const formikRef = useRef();
 
   return (
-    <View style={{flex:1, backgroundColor: theme.colors.background}}>
+    <View style={{flex: 1, backgroundColor: theme.colors.background}}>
       <View
         style={{
           flexDirection: 'row',
@@ -87,16 +90,6 @@ const SignupWithEmail = () => {
             }}
             source={require('../../../../assets/splash-screen/carib-coin-logo.png')}
           />
-          <Text
-            style={{
-              fontSize: 22,
-              marginTop: '5%',
-              // fontWeight: '700',
-              textAlign: 'center',
-              paddingHorizontal: '5%',
-            }}>
-            Set the new password
-          </Text>
         </View>
 
         <Menu
@@ -132,6 +125,16 @@ const SignupWithEmail = () => {
         </Menu>
       </View>
 
+      <Text
+        style={{
+          fontSize: 22,
+          marginBottom: '5%',
+          // fontWeight: '700',
+          textAlign: 'center',
+          paddingHorizontal: '5%',
+        }}>
+        {t('Set the new password')}
+      </Text>
       <ScrollView
         contentContainerStyle={{
           justifyContent: 'space-between',
@@ -201,7 +204,7 @@ const SignupWithEmail = () => {
 
               <TextInput
                 error={errors.oldPassword && touched.oldPassword ? true : false}
-                label="Existing password"
+                label={t('Existing password')}
                 mode="outlined"
                 right={
                   <TextInput.Icon
@@ -222,16 +225,14 @@ const SignupWithEmail = () => {
                 </Text>
               ) : null}
 
-<TextInput
+              <TextInput
                 error={errors.newPassword && touched.newPassword ? true : false}
-                label="New password"
+                label={t('New password')}
                 mode="outlined"
                 right={
                   <TextInput.Icon
                     icon={showNewPassword ? 'eye' : 'eye-off'}
-                    onPress={() =>
-                      setShowNewPassword(!showNewPassword)
-                    }
+                    onPress={() => setShowNewPassword(!showNewPassword)}
                   />
                 }
                 secureTextEntry={!showNewPassword}
@@ -247,10 +248,13 @@ const SignupWithEmail = () => {
                 </Text>
               ) : null}
 
-
               <TextInput
-                error={errors.passwordConfirmation && touched.passwordConfirmation ? true : false}
-                label="Confirm password"
+                error={
+                  errors.passwordConfirmation && touched.passwordConfirmation
+                    ? true
+                    : false
+                }
+                label={t('Confirm password')}
                 mode="outlined"
                 right={
                   <TextInput.Icon
@@ -273,21 +277,23 @@ const SignupWithEmail = () => {
                 </Text>
               ) : null}
 
-              <Button
-                // loading={isLoading || resendLoading}
-                // disabled={isLoading || resendLoading}
-                style={{
-                  marginTop: '4%',
-                }}
-                contentStyle={{
-                  padding: '3%',
-                }}
-                theme={{roundness: 1}}
-                mode="contained"
-                onPress={handleSubmit}
-                buttonColor={theme.colors.blueBG}>
-                Update
-              </Button>
+              <ButtonLinearGradient style={{marginTop:"4%"}}>
+                <Button
+                  // loading={isLoading || resendLoading}
+                  // disabled={isLoading || resendLoading}
+                  style={{
+                    backgroundColor:"transparent"
+                  }}
+                  contentStyle={{
+                    padding: '3%',
+                  }}
+                  theme={{roundness: 1}}
+                  mode="contained"
+                  onPress={handleSubmit}
+                  buttonColor={theme.colors.blueBG}>
+                  {t('Update')}
+                </Button>
+              </ButtonLinearGradient>
             </View>
           )}
         </Formik>

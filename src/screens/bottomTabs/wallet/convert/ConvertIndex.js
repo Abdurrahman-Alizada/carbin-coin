@@ -1,6 +1,6 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useState, useRef} from 'react';
-import {Modalize} from 'react-native-modalize'
+import {Modalize} from 'react-native-modalize';
 import {
   Card,
   Text,
@@ -12,38 +12,22 @@ import {
   IconButton,
   Portal,
 } from 'react-native-paper';
-// import Icon from 'react-native-vector-icons/Entypo'
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import CountryFlag from 'react-native-country-flag';
+import ButtonLinearGradient from '../../../../components/ButtonLinearGradient';
+
 const ConvertIndex = () => {
   const theme = useTheme();
-  const [sendAmount, setSendAmount] = useState(10);
-
-  const [curr, setCurr] = useState([
-    {
-      id: 0,
-      name: 'Digital candian dollar',
-      nickName: 'DCNH',
-      image: '',
-      balance: 98.01,
-      sign: '$',
-    },
-    {
-      id: 1,
-      name: 'Digital candian dollar',
-      nickName: 'DCNH',
-      image: '',
-      balance: 80.01,
-      sign: '$',
-    },
-    {
-      id: 2,
-      name: 'Digital candian dollar',
-      nickName: 'DCNH',
-      image: '',
-      balance: 0,
-      sign: '$',
-    },
-  ]);
+  const {t} = useTranslation();
+  const curr = useSelector(state => state.user.curr);
   const [selectedCurrency, setSelectedCurrency] = useState(-1);
+  const [selectedConvertFromCurrency, setSelectedConvertFromCurrency] =
+    useState({});
+  const [selectedConvertToCurrency, setSelectedConvertToCurrency] = useState(
+    {},
+  );
+  const [number, setNumber] = useState(2);
 
   const modalizeRef = useRef(null);
   const onOpen = () => {
@@ -53,12 +37,17 @@ const ConvertIndex = () => {
     modalizeRef.current?.close();
   };
 
-
   return (
-    <View style={{padding: '4%'}}>
+    <ScrollView
+      contentContainerStyle={{
+        padding: '4%',
+        flex: 1,
+        backgroundColor: theme.colors.background,
+      }}>
       <Text style={{textAlign: 'center', fontSize: 16}}>
-        Convert your traditional and crypto currencies with ease. Just choose an
-        exchanging pair.
+        {t(
+          'Convert your traditional and crypto currencies with ease. Just choose an exchanging pair.',
+        )}
       </Text>
 
       <View style={{marginTop: '4%'}}>
@@ -70,31 +59,45 @@ const ConvertIndex = () => {
               justifyContent: 'space-between',
             }}>
             <TouchableOpacity
-                onPress={()=>onOpen()}
-              // key={index}
+              onPress={() => {
+                setNumber(1);
+                onOpen();
+              }} // key={index}
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: '2%',
+                paddingVertical: '1%',
                 backgroundColor: theme.colors.secondaryContainer,
                 borderRadius: 40,
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Avatar.Image
-                  size={30}
-                  source={require('../../../../assets/splash-screen/carib-coin-logo.png')}
+              <View
+                style={{
+                  marginLeft: '10%',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <CountryFlag
+                  isoCode={
+                    selectedConvertFromCurrency?.countryCode
+                      ? selectedConvertFromCurrency?.countryCode
+                      : "ca"
+                  }
+                  size={22}
                 />
+
                 <Text
                   style={{
                     fontSize: 16,
                     marginHorizontal: '5%',
                     fontWeight: 'bold',
                   }}>
-                  DFRT
+                  {selectedConvertFromCurrency?.nickName
+                    ? selectedConvertFromCurrency?.nickName
+                    : curr[0].nickName}
                 </Text>
-                <Avatar.Icon
-                  size={45}
+                <IconButton
+                  size={25}
                   icon="chevron-down"
                   style={{backgroundColor: theme.colors.primaryContainer}}
                 />
@@ -103,7 +106,9 @@ const ConvertIndex = () => {
 
             <View style={{alignItems: 'flex-end'}}>
               <Text variant="bodyMedium">Balance:</Text>
-              <Text variant="bodyMedium">D$ 0.0</Text>
+              <Text variant="bodyMedium">
+                D$ {selectedConvertFromCurrency?.balance ? selectedConvertFromCurrency?.balance : curr[0].balance}
+              </Text>
             </View>
           </Card.Content>
           <Card.Content style={{marginTop: '4%'}}>
@@ -123,7 +128,12 @@ const ConvertIndex = () => {
           </Card.Content>
         </Card>
 
-        <View style={{flexDirection: 'row', justifyContent:"center", alignItems:"center"}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <Text>1.0</Text>
           <IconButton
             icon="arrow-down"
@@ -139,7 +149,6 @@ const ConvertIndex = () => {
           />
 
           <Text>0.88</Text>
-
         </View>
 
         <Card style={{}}>
@@ -150,31 +159,46 @@ const ConvertIndex = () => {
               justifyContent: 'space-between',
             }}>
             <TouchableOpacity
-                onPress={()=>onOpen()}
-              // key={index}
+              onPress={() => {
+                setNumber(2);
+                onOpen();
+              }} // key={index}
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: '2%',
+                paddingVertical: '1%',
                 backgroundColor: theme.colors.secondaryContainer,
                 borderRadius: 40,
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Avatar.Image
-                  size={30}
-                  source={require('../../../../assets/splash-screen/carib-coin-logo.png')}
+              <View
+                style={{
+                  marginLeft: '10%',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <CountryFlag
+                  isoCode={
+                    selectedConvertToCurrency?.countryCode
+                      ? selectedConvertToCurrency?.countryCode
+                      : "ca"
+                  }
+                  size={22}
                 />
+
+
                 <Text
                   style={{
                     fontSize: 16,
                     marginHorizontal: '5%',
                     fontWeight: 'bold',
                   }}>
-                  DFRT
+                  {selectedConvertToCurrency?.nickName
+                    ? selectedConvertToCurrency?.nickName
+                    : curr[0].nickName}
                 </Text>
-                <Avatar.Icon
-                  size={45}
+                <IconButton
+                  size={25}
                   icon="chevron-down"
                   style={{backgroundColor: theme.colors.primaryContainer}}
                 />
@@ -183,7 +207,9 @@ const ConvertIndex = () => {
 
             <View style={{alignItems: 'flex-end'}}>
               <Text variant="bodyMedium">Balance:</Text>
-              <Text variant="bodyMedium">D$ 0.0</Text>
+              <Text variant="bodyMedium">
+                D$ {selectedConvertToCurrency?.balance}
+              </Text>
             </View>
           </Card.Content>
           <Card.Content style={{marginTop: '4%'}}>
@@ -202,11 +228,34 @@ const ConvertIndex = () => {
             />
           </Card.Content>
         </Card>
+
+        <ButtonLinearGradient
+          style={{marginVertical: '10%', width: '100%', alignSelf: 'center'}}>
+          <Button
+            // disabled={isDisabled}
+            style={{
+              backgroundColor: 'transparent',
+            }}
+            contentStyle={{padding: '3%'}}
+            theme={{roundness: 10}}
+            mode="contained"
+            // onPress={verify}
+            >
+            {t('Convert')}
+          </Button>
+        </ButtonLinearGradient>
+
       </View>
 
       <Portal>
         <Modalize
           handlePosition="inside"
+          modalStyle={{
+            backgroundColor: theme.colors.background,
+            borderColor: theme.colors.onBackground,
+            borderWidth: 1,
+          }}
+          handleStyle={{backgroundColor: theme.colors.onBackground}}
           HeaderComponent={() => (
             <View style={{paddingHorizontal: '2%'}}>
               <IconButton
@@ -220,9 +269,14 @@ const ConvertIndex = () => {
           )}
           ref={modalizeRef}>
           <View style={{paddingHorizontal: '4%'}}>
-            {curr.map((item, index) => (
+            {curr?.map((item, index) => (
               <TouchableOpacity
-                onPress={() => setSelectedCurrency(index)}
+                onPress={() => {
+                  number == 2
+                    ? setSelectedConvertToCurrency(item)
+                    : setSelectedConvertFromCurrency(item);
+                  onClose();
+                }}
                 key={index}
                 style={{
                   flexDirection: 'row',
@@ -237,25 +291,31 @@ const ConvertIndex = () => {
                       : theme.colors.background,
                   borderRadius: 40,
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Avatar.Image
-                    size={35}
-                    source={require('../../../../assets/splash-screen/carib-coin-logo.png')}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      marginLeft: '5%',
-                    }}>
-                    {item.nickName}
-                  </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    paddingVertical: '1%',
+                    paddingHorizontal: '2%',
+                    alignItems: 'center',
+                  }}>
+                  <CountryFlag isoCode={item?.countryCode} size={22} />
+
                   <Text
                     style={{
                       fontSize: 16,
                       marginLeft: '5%',
                     }}>
-                    {item.sign}
-                    {item.balance}
+                    {item.name}{' '}
+                  </Text>
+                </View>
+
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      marginLeft: '3%',
+                    }}>
+                    D$ {item.balance}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -263,7 +323,7 @@ const ConvertIndex = () => {
           </View>
         </Modalize>
       </Portal>
-    </View>
+    </ScrollView>
   );
 };
 

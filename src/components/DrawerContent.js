@@ -13,11 +13,13 @@ import {useNavigation, DrawerActions} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 import {version} from '../../package.json';
+import { useTranslation } from 'react-i18next';
 
 export default function DrawerContent(props) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const theme = useTheme();
+  const {t} = useTranslation();
 
   const obscureEmail = email => {
     if (!email) return '*******';
@@ -79,7 +81,7 @@ export default function DrawerContent(props) {
             )}
           />
         <Drawer.Item
-          label="My profile"
+          label={t("My Profile")}
           onPress={() => {
             navigation.navigate('Drawer', {
               screen: 'Profile',
@@ -87,22 +89,31 @@ export default function DrawerContent(props) {
            }}
           icon="account"
         />
+          <Drawer.Item
+          label={t("Cards")}
+          onPress={() => {
+            navigation.navigate('Drawer', {
+              screen: 'Cards',
+            })
+           }}
+          icon="credit-card"
+        />
         <Drawer.Item
-          label="Need help"
+          label={t("Need Help")}
           onPress={() => {
             navigation.navigate('NeedHelp')
            }}
           icon="chat-alert-outline"
         />
            <Drawer.Item
-          label="Log out"
+          label={t("Log out")}
           // onPress={() => {
           //   navigation.navigate('MakeFriends', {screen: 'MakeFriendsMain'});
           // }}
           icon="logout"
         />
       </View>
-      <View style={{marginVertical: '5%'}}>
+      {/* <View style={{marginVertical: '5%'}}>
         <Divider />
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
           <TouchableOpacity
@@ -121,7 +132,7 @@ export default function DrawerContent(props) {
           </Text>
           <Text style={{alignSelf: 'center', margin: '5%'}}>V {version}</Text>
         </View>
-      </View>
+      </View> */}
     </DrawerContentScrollView>
   );
 }

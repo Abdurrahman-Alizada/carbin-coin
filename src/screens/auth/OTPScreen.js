@@ -13,7 +13,16 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import {Button, Portal,Text, Dialog, Paragraph, useTheme} from 'react-native-paper';
+import {
+  Button,
+  Portal,
+  Text,
+  Dialog,
+  Paragraph,
+  useTheme,
+} from 'react-native-paper';
+import ButtonLinearGradient from '../../components/ButtonLinearGradient';
+import {useTranslation} from 'react-i18next';
 
 export const CELL_SIZE = 50;
 export const CELL_BORDER_RADIUS = 8;
@@ -25,7 +34,8 @@ export const ACTIVE_CELL_BG_COLOR = '#d8dce3';
 const {Value, Text: AnimatedText} = Animated;
 
 const OTPScreen = ({navigation, route}) => {
-  const theme = useTheme()
+  const theme = useTheme();
+  const {t} = useTranslation();
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
 
@@ -34,17 +44,17 @@ const OTPScreen = ({navigation, route}) => {
   const [message, setMessage] = useState('Something went wrong');
 
   const verify = () => {
-    setDisibility(true)
-    navigation.navigate("ResetPasswordScreen")
+    setDisibility(true);
+    navigation.navigate('ResetPasswordScreen');
   };
 
-  useEffect(()=>{
-   if(value.length === 5) {
-    setDisibility(false)
-   }else{
-    setDisibility(true)
-   }
-  },[value])
+  useEffect(() => {
+    if (value.length === 5) {
+      setDisibility(false);
+    } else {
+      setDisibility(true);
+    }
+  }, [value]);
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -84,103 +94,84 @@ const OTPScreen = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView style={{paddingVertical: '5%', paddingHorizontal: '2%'}}>
-           <Portal>
-        <Dialog visible={visible} onDismiss={() => setVisible(false)}>
-          <Dialog.Title>OTP verification error</Dialog.Title>
-          <Dialog.Content>
-            <Paragraph> {message} </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              textColor={theme.colors.tertiary}
-              onPress={() => setVisible(false)}>
-              close
-            </Button>
-            <Button onPress={() => {
-              setVisible(false)
-              setDisibility(false)
-              navigation.navigate("ForgotPassword")
-              }}>Try again</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-
-      <Image
-        style={{
-          width: 227 / 2.4,
-          height: 190 / 2,
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          marginTop: '5%',
-        }}
-        source={require('../../assets/splash-screen/carib-coin-logo.png')}
-      />
-      <Text style={styles.subTitle}>
-        Please enter the verification code{'\n'}
-        we send to  {route?.params?.phoneNumber}
-      </Text>
-
-      <CodeField
-        ref={ref}
-        {...props}
-        value={value}
-        onChangeText={setValue}
-        cellCount={CELL_COUNT}
-        rootStyle={{
-          height: CELL_SIZE,
-          marginTop: 30,
-          paddingHorizontal: 20,
-          justifyContent: 'center',
-        }}
-        keyboardType="number-pad"
-        textContentType="oneTimeCode"
-        renderCell={renderCell}
-      />
-
-      <Button
-        disabled={isDisabled}
-        style={{
-          margin: 30,
-          justifyContent: 'center',
-          // minWidth: 300,
-        }}
-        contentStyle={{padding: '2%'}}
-      //   buttonStyle={{padding: '1%'}}
-        theme={{roundness: 10}}
-        mode="contained"
-        onPress={verify}
-        >
-        Verify
-      </Button>
-
-      <View
-        style={{
-          // flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Text
+    <SafeAreaView style={{flex: 1, backgroundColor: theme.colors.background}}>
+      <View style={{padding: '4%'}}>
+        <Image
           style={{
-            fontSize: 15,
-            fontWeight: 'bold',
-          }}>
-          Didn't recieve code?
+            width: 227 / 2.4,
+            height: 190 / 2,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginTop: '5%',
+          }}
+          source={require('../../assets/splash-screen/carib-coin-logo.png')}
+        />
+        <Text style={styles.subTitle}>
+          {t('Please enter the verification code we send to')}{' '}
+          {route?.params?.phoneNumber}
         </Text>
-      </View>
-        <View style={{marginTop:"3%", flexDirection:"column", justifyContent:"space-around"}}>
-        <Button
-          mode="text"
-          onPress={() => navigation.goBack()}>
-          Change number
-        </Button>
-        <Text style={{textAlign:"center", marginVertical:"3%"}}>or</Text>
-        <Button
-          mode="text"
-          onPress={() => navigation.goBack()}>
-          Request again
-        </Button>
+
+        <CodeField
+          ref={ref}
+          {...props}
+          value={value}
+          onChangeText={setValue}
+          cellCount={CELL_COUNT}
+          rootStyle={{
+            height: CELL_SIZE,
+            marginTop: 30,
+            paddingHorizontal: 20,
+            justifyContent: 'center',
+          }}
+          keyboardType="number-pad"
+          textContentType="oneTimeCode"
+          renderCell={renderCell}
+        />
+
+        <ButtonLinearGradient
+          style={{marginVertical: '10%', width: '80%', alignSelf: 'center'}}>
+          <Button
+            disabled={isDisabled}
+            style={{
+              backgroundColor: 'transparent',
+            }}
+            contentStyle={{padding: '3%'}}
+            theme={{roundness: 10}}
+            mode="contained"
+            onPress={verify}>
+            {t('Verify')}
+          </Button>
+        </ButtonLinearGradient>
+
+        <View
+          style={{
+            // flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: 'bold',
+            }}>
+            {"Didn't receive code?"}
+          </Text>
         </View>
+        <View
+          style={{
+            marginTop: '3%',
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+          }}>
+          <Button mode="text" onPress={() => navigation.goBack()}>
+            {("Change number")}
+          </Button>
+          <Text style={{textAlign: 'center', marginVertical: '3%'}}>{t("or")}</Text>
+          <Button mode="text" onPress={() => navigation.goBack()}>
+            {t("Request again")}
+          </Button>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -233,7 +224,7 @@ const styles = StyleSheet.create({
 
   subTitle: {
     paddingTop: 30,
-    color: '#000',
+    // color: '#000',
     textAlign: 'center',
   },
 });

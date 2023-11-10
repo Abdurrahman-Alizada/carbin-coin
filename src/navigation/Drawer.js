@@ -12,6 +12,8 @@ import ChangePassword from '../screens/drawer/myProfile/SecuritySettings/ChangeP
 import TwoFactorAuthIndex from '../screens/drawer/myProfile/SecuritySettings/twoFactorAuth/TwoFactorAuthIndex';
 import Instruction from '../screens/drawer/myProfile/SecuritySettings/twoFactorAuth/Instruction';
 import TwoFAConfirm from '../screens/drawer/myProfile/SecuritySettings/twoFactorAuth/2FAConfirm';
+import CardIndex from '../screens/drawer/cards/CardIndex';
+import NewCard from '../screens/drawer/cards/NewCard';
 const AppStack = () => {
   return (
     <Stack.Navigator initialRouteName="Profile">
@@ -27,9 +29,17 @@ const AppStack = () => {
         name="NeedHelp"
         component={NeedHelp}
         options={{headerShown: false}}
-        // options={{
-        //   header: props => <GeneralAppbar title="Need Help" {...props} />,
-        // }}
+      />
+
+      <Stack.Screen
+        name="Cards"
+        component={CardIndex}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="NewCard"
+        component={NewCard}
+        options={{headerShown: false}}
       />
 
       <Stack.Screen

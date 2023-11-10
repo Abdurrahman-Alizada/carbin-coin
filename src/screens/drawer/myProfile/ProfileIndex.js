@@ -5,8 +5,11 @@ import UserInfo from './userInfo/userInfoIndex';
 import AdsCard from './AdsCard';
 import SecuritySettingIndex from './SecuritySettings/SecuritySettingIndex';
 import LinearGradient from 'react-native-linear-gradient';
+import ButtonLinearGradient from '../../../components/ButtonLinearGradient';
+import {useTranslation} from 'react-i18next';
 const Index = ({navigation}) => {
   const theme = useTheme();
+  const {t} = useTranslation();
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
       <Appbar.Header style={{backgroundColor: theme.colors.background}}>
@@ -15,31 +18,36 @@ const Index = ({navigation}) => {
       </Appbar.Header>
       <ScrollView contentContainerStyle={{paddingBottom: '5%'}}>
         <UserInfo />
-        <AdsCard />
+        {/* <AdsCard /> */}
         <SecuritySettingIndex />
 
         <View style={{marginTop: '10%', paddingHorizontal: '5%'}}>
-          <LinearGradient
+          {/* <LinearGradient
             start={{x: 1, y: 0}}
             end={{x: 0, y: 0}}
             colors={['#4c669f', '#3b5998', '#192f6a']}
-            style={{borderRadius: 40, height: 'auto'}}>
+            style={{borderRadius: 40, height: 'auto'}}> */}
+          <ButtonLinearGradient>
             <Button
               icon="message-processing"
               mode="contained"
               style={{
                 backgroundColor: 'transparent',
-                padding: '3%',
                 height: 'auto',
+              }}
+              contentStyle={{
+                padding: '3%',
               }}
               theme={{roundness: 10}}
               labelStyle={{color: theme.colors.surface}}
               onPress={() => {
-                navigation.navigate('NeedHelp');
+                // navigation.navigate('NeedHelp');
               }}>
-              Need help
+              {t('Need help')}
             </Button>
-          </LinearGradient>
+          </ButtonLinearGradient>
+
+          {/* </LinearGradient> */}
 
           <Button
             icon="logout"
@@ -47,7 +55,7 @@ const Index = ({navigation}) => {
             style={{padding: '3%', marginTop: '3%'}}
             theme={{roundness: 10}}
             onPress={() => console.log('Pressed')}>
-            Log out
+            {t("Log out")}
           </Button>
 
           <Button
@@ -57,7 +65,7 @@ const Index = ({navigation}) => {
             style={{padding: '1.5%', marginTop: '3%'}}
             theme={{roundness: 10}}
             onPress={() => console.log('Pressed')}>
-            Delete account
+            {t("Delete account")}
           </Button>
         </View>
       </ScrollView>

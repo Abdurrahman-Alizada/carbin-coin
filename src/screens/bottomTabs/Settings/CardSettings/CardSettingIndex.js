@@ -10,14 +10,17 @@ const CardSettingIndex = () => {
   const navigation = useNavigation();
 
   const [isLimit, setIsLimit] = useState(false);
+  const [isOnlinePayment, setIsOnlinePayment] = useState(false);
+  const [isCardFreeze, setIsCardFreeze] = useState(false);
+  const [isIntrPayment, setIsIntrPayment] = useState(false);
   return (
     <View style={{marginTop: '5%', padding: '2%'}}>
       <List.Section>
         <List.Subheader style={{}}>{t('Card settings')}</List.Subheader>
 
         <List.Item
-          title={'Set limit'}
-          description={t('set a limit for spending')}
+          title={t('Set limit')}
+          description={t('Set a limit for spending')}
           onPress={() => {
             setIsLimit(!isLimit);
           }}
@@ -35,54 +38,55 @@ const CardSettingIndex = () => {
         />
 
         <List.Item
-          title={'Online payment'}
+          title={t('Online payment')}
           description={t('Enable online transaction')}
           onPress={() => {
-            setIsLimit(!isLimit);
+            setIsOnlinePayment(!isOnlinePayment);
           }}
           descriptionStyle={{color: theme.colors.grayLight}}
           left={props => <List.Icon {...props} size={40} icon="wifi" />}
           right={props => (
             <Switch
               {...props}
-              value={isLimit}
-              onValueChange={() => setIsLimit(!isLimit)}
+              value={isOnlinePayment}
+              onValueChange={() => setIsOnlinePayment(!isOnlinePayment)}
             />
           )}
         />
 
         <List.Item
-          title={'Freeze Card'}
-          description={t('Temporay diable card usage')}
+          title={t('Freeze Card')}
+          description={t('Temporarily disable card usage')}
           onPress={() => {
-            setIsLimit(!isLimit);
+            setIsCardFreeze(!isCardFreeze);
           }}
           descriptionStyle={{color: theme.colors.grayLight}}
           left={props => <List.Icon {...props} size={40} icon="lock" />}
           right={props => (
             <Switch
               {...props}
-              value={isLimit}
-              onValueChange={() => setIsLimit(!isLimit)}
+              value={isCardFreeze}
+              onValueChange={() => setIsCardFreeze(!isCardFreeze)}
             />
           )}
         />
 
         <List.Item
-          title={'International payment'}
+          title={t('International payment')}
           description={t(
             "We'll access your location to prevent fraud operations",
           )}
           onPress={() => {
-            setIsLimit(!isLimit);
+            setIsIntrPayment(!isIntrPayment);
           }}
+          descriptionNumberOfLines={3}
           descriptionStyle={{color: theme.colors.grayLight}}
           left={props => <List.Icon {...props} size={40} icon="earth" />}
           right={props => (
             <Switch
               {...props}
-              value={isLimit}
-              onValueChange={() => setIsLimit(!isLimit)}
+              value={isIntrPayment}
+              onValueChange={() => setIsIntrPayment(!isIntrPayment)}
             />
           )}
         />

@@ -11,6 +11,8 @@ import {
   useTheme,
 } from 'react-native-paper';
 import {Modalize} from 'react-native-modalize';
+import {useTranslation} from 'react-i18next';
+import ButtonLinearGradient from '../../../../../components/ButtonLinearGradient';
 
 const SendUsingLink = ({navigation}) => {
   const theme = useTheme();
@@ -66,12 +68,17 @@ const SendUsingLink = ({navigation}) => {
 
   const [visible, setVisible] = useState(false);
   const hideDialog = () => setVisible(false);
-
+  const {t} = useTranslation();
   return (
-    <View style={{padding: '5%'}}>
+    <View
+      style={{
+        padding: '5%',
+        flex: 1,
+        backgroundColor: theme.colors.background,
+      }}>
       <ScrollView>
         <View style={{}}>
-          <Text style={{marginBottom: '3%'}}>Select coin</Text>
+          <Text style={{marginBottom: '3%'}}>{t('Select coin')}</Text>
 
           <TouchableOpacity
             onPress={() => onOpen()}
@@ -124,7 +131,7 @@ const SendUsingLink = ({navigation}) => {
 
         <View style={{marginTop: '10%'}}>
           <View>
-            <Text>To account</Text>
+            <Text>{t('To account')}</Text>
             <TextInput
               value={receiver}
               onChangeText={e => setReceiver(e)}
@@ -135,7 +142,7 @@ const SendUsingLink = ({navigation}) => {
               placeholder="caribbean-coin user"
             />
             <Text style={{marginTop: '2%', color: theme.colors.greyLight}}>
-              Enter nick name, email or phone #
+              {t('Enter nick name, email or phone #')}
             </Text>
           </View>
           <Text
@@ -145,10 +152,10 @@ const SendUsingLink = ({navigation}) => {
               fontSize: 20,
               fontWeight: '700',
             }}>
-            How much do you want to send?
+            {t('How much do you want to send?')}
           </Text>
           <View>
-            <Text>Amount</Text>
+            <Text>{t('Amount')}</Text>
             <TextInput
               style={{
                 backgroundColor: theme.colors.background,
@@ -185,7 +192,7 @@ const SendUsingLink = ({navigation}) => {
               }
             />
             <Text style={{marginTop: '2%', color: theme.colors.greyLight}}>
-              Transaction fee D$ 0.0
+              {t('Transaction fee')} D$ 0.0
             </Text>
           </View>
 
@@ -194,25 +201,33 @@ const SendUsingLink = ({navigation}) => {
               marginTop: '15%',
               backgroundColor: theme.colors.background,
             }}
-            placeholder="Add a note"
+            placeholder={t('Add a note')}
           />
 
-          <Button
-            mode="contained"
-            style={{width: '100%', marginVertical: '10%'}}
-            theme={{roundness: 15}}
-            contentStyle={{padding: '2%'}}
-            onPress={() => {
-              setVisible(true);
-            }}>
-            Generate link
-          </Button>
+          <ButtonLinearGradient style={{marginVertical: '10%'}}>
+            <Button
+              mode="contained"
+              style={{width: '100%', backgroundColor: 'transparent'}}
+              theme={{roundness: 15}}
+              contentStyle={{padding: '2%'}}
+              onPress={() => {
+                setVisible(true);
+              }}>
+              {t('Generate link')}
+            </Button>
+          </ButtonLinearGradient>
         </View>
       </ScrollView>
 
       <Portal>
         <Modalize
           handlePosition="inside"
+          modalStyle={{
+            backgroundColor: theme.colors.background,
+            borderColor: theme.colors.onBackground,
+            borderWidth: 1,
+          }}
+          handleStyle={{backgroundColor: theme.colors.onBackground}}
           HeaderComponent={() => (
             <View style={{paddingHorizontal: '2%'}}>
               <IconButton
@@ -287,7 +302,7 @@ const SendUsingLink = ({navigation}) => {
             <Button
               onPress={() => {
                 setVisible(false);
-                navigation.navigate("SendMoney");
+                navigation.navigate('SendMoney');
               }}>
               Done
             </Button>

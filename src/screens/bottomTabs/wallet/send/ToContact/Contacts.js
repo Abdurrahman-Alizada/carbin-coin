@@ -5,10 +5,10 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
-import {Button, Dialog, Portal, PaperProvider, Text} from 'react-native-paper';
+import {Button, Dialog, Portal, PaperProvider, Text, useTheme} from 'react-native-paper';
 const Contact = ({contact}) => {
   const [visible, setVisible] = React.useState(false);
-
+const theme = useTheme()
   const showDialog = () => setVisible(true);
 
   const hideDialog = () => setVisible(false);
@@ -20,7 +20,16 @@ const Contact = ({contact}) => {
         onPress={showDialog}
         >
         <View style={styles.imgCon}>
-          <View style={styles.placeholder}>
+          <View style={{
+              width: 55,
+              height: 55,
+              borderRadius: 30,
+              overflow: 'hidden',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginHorizontal:"2%",
+              backgroundColor:theme.colors.surface    
+          }}>
             <Text style={styles.txt}>{contact?.givenName?.charAt(0)}</Text>
           </View>
         </View>
@@ -69,7 +78,6 @@ const styles = StyleSheet.create({
     height: 55,
     borderRadius: 30,
     overflow: 'hidden',
-    backgroundColor: '#d9d9d9',
     alignItems: 'center',
     justifyContent: 'center',
   },

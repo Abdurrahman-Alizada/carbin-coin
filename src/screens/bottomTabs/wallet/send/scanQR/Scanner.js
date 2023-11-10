@@ -10,6 +10,7 @@ import {
 import React, {useState} from 'react';
 import {Text, IconButton, Button} from 'react-native-paper';
 import {CameraScreen} from 'react-native-camera-kit';
+import ButtonLinearGradient from '../../../../../components/ButtonLinearGradient';
 
 const Scanner = ({setScanOpen}) => {
   const [qrvalue, setQrvalue] = useState('');
@@ -85,11 +86,13 @@ const Scanner = ({setScanOpen}) => {
           {qrvalue.includes('https://') ||
           qrvalue.includes('http://') ||
           qrvalue.includes('geo:') ? (
-            <Button onPress={onOpenlink} mode="outlined" style={{marginHorizontal:"5%"}}>
-                {qrvalue.includes('geo:') ? 'Open in Map' : 'Next functionality'}
+            <Button
+              onPress={onOpenlink}
+              mode="outlined"
+              style={{marginHorizontal: '5%'}}>
+              {qrvalue.includes('geo:') ? 'Open in Map' : 'Next functionality'}
             </Button>
           ) : null}
-
 
           <Text style={styles.textStyle}>
             {qrvalue
@@ -98,14 +101,16 @@ const Scanner = ({setScanOpen}) => {
           </Text>
 
           <Text style={{marginBottom: '4%', textAlign: 'center'}}>Or</Text>
-          <Button
-            mode="contained"
-            style={{marginHorizontal:"5%"}}
-            theme={{roundness: 5}}
-            contentStyle={{padding: '2%'}}
-            onPress={onOpneScanner}>
-            {qrvalue ? 'Sacan again' : 'Open QR Scanner'}
-          </Button>
+          <ButtonLinearGradient style={{marginHorizontal: '5%'}}>
+            <Button
+              mode="contained"
+              style={{backgroundColor: 'transparent'}}
+              theme={{roundness: 5}}
+              contentStyle={{padding: '2%'}}
+              onPress={onOpneScanner}>
+              {qrvalue ? 'Sacan again' : 'Open QR Scanner'}
+            </Button>
+          </ButtonLinearGradient>
         </View>
       )}
     </View>

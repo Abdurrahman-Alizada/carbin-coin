@@ -1,9 +1,10 @@
 import {Image, StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import {Card, Switch, Text, useTheme} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
 const TwoFactorAuthIndex = ({navigation}) => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
-
+  const {t} = useTranslation();
   const onToggleSwitch = () => {
     setIsSwitchOn(!isSwitchOn);
     navigation.navigate('TwoFactorAuthInstruction');
@@ -22,10 +23,9 @@ const TwoFactorAuthIndex = ({navigation}) => {
           padding: '3%',
         }}>
         <Text style={{fontSize: 16, textAlign: 'center'}}>
-          Protect your account from unauthorized activity by setting up a second
-          authentication method. This is in addition to your main Caribbean
-          password and only requested when performing sensitive actions from
-          within our app.
+          {t(
+            'Protect your account from unauthorized activity by setting up a second authentication method. This is in addition to your main Caribbean password and only requested when performing sensitive actions from within our app.',
+          )}
         </Text>
         <Card mode="elevated" style={{marginTop: '10%'}}>
           <Card.Content
@@ -43,7 +43,7 @@ const TwoFactorAuthIndex = ({navigation}) => {
                 source={require('../../../../../assets/splash-screen/carib-coin-logo.png')}
               />
               <Text variant="titleSmall" style={{marginLeft: '3%'}}>
-                Authenticator
+                {t("Authenticator")}
               </Text>
             </View>
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />

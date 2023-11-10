@@ -11,10 +11,11 @@ import {
   Text,
   useTheme,
 } from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
+import ButtonLinearGradient from '../../../../../components/ButtonLinearGradient';
 const Instruction = ({navigation}) => {
-
   const theme = useTheme();
-
+  const {t} = useTranslation();
   const [visible, setVisible] = useState(false);
   const onToggleSnackBar = () => setVisible(!visible);
   const onDismissSnackBar = () => setVisible(false);
@@ -46,7 +47,12 @@ const Instruction = ({navigation}) => {
   }, []);
 
   return (
-    <View style={{flex: 1, justifyContent: 'space-between', backgroundColor:theme.colors.background}}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'space-between',
+        backgroundColor: theme.colors.background,
+      }}>
       <View style={{}}>
         <View
           style={{
@@ -65,16 +71,7 @@ const Instruction = ({navigation}) => {
               }}
               source={require('../../../../../assets/splash-screen/carib-coin-logo.png')}
             />
-            <Text
-              style={{
-                fontSize: 22,
-                marginTop: '5%',
-                fontWeight: '700',
-                textAlign: 'center',
-                paddingHorizontal: '5%',
-              }}>
-              Instruction for setup 2FA
-            </Text>
+
           </View>
 
           <Menu
@@ -109,15 +106,25 @@ const Instruction = ({navigation}) => {
             />
           </Menu>
         </View>
+        <Text
+              style={{
+                fontSize: 22,
+                marginTop: '5%',
+                fontWeight: '700',
+                textAlign: 'center',
+                paddingHorizontal: '5%',
+              }}>
+              {t('Instruction for setup 2FA')}
+            </Text>
         <View style={{margin: '3%'}}>
           <List.Item
-            title="We recommend downloading Authy or Google Authenticator if you don't have one installed."
+            title={t("We recommend downloading Authy or Google Authenticator if you don't have one installed.")}
             titleNumberOfLines={3}
             left={props => <List.Icon {...props} icon="arrow-collapse-down" />}
           />
 
           <List.Item
-            title="Copy this key and paste it in your authentication app"
+            title={t("Copy this key and paste it in your authentication app")}
             titleNumberOfLines={3}
             left={props => <List.Icon {...props} icon="key" />}
           />
@@ -138,32 +145,31 @@ const Instruction = ({navigation}) => {
             mode="text"
             style={{width: '70%', alignSelf: 'center'}}
             onPress={onToggleSnackBar}>
-            Click here to copy
+            {t("Click here to copy")}
           </Button>
           <List.Item
-            title="Copy the key and after this is entered your authenticator app will generate a 6-digit code."
+            title={t("Copy the key and after this is entered your authenticator app will generate a 6-digit code.")}
             titleNumberOfLines={3}
             left={props => <List.Icon {...props} icon="content-copy" />}
           />
         </View>
       </View>
 
+<ButtonLinearGradient style={{margin: '10%'}}>
+
       <Button
-        style={{margin: '10%'}}
+        style={{backgroundColor:"transparent"}}
         theme={{roundness: 10}}
-        contentStyle={{padding: '2%'}}
+        contentStyle={{padding: '3%'}}
         // icon="camera"
         mode="contained"
-        onPress={() => navigation.navigate("TwoFactorAuthConfirm")}>
-        Next
+        onPress={() => navigation.navigate('TwoFactorAuthConfirm')}>
+        {t("Next")}
       </Button>
+</ButtonLinearGradient>
 
-      <Snackbar
-        visible={visible}
-        onDismiss={onDismissSnackBar}
-        duration={1000}
-        >
-        Key copied successfully!
+      <Snackbar visible={visible} onDismiss={onDismissSnackBar} duration={1000}>
+        {t("Key copied successfully!")}
       </Snackbar>
     </View>
   );

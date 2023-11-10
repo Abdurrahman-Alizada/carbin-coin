@@ -16,8 +16,6 @@ const Stack = createStackNavigator();
 const AuthStack = () => {
   return (
     <Stack.Navigator initialRouteName="Login">
-      
-
       <Stack.Screen
         name="Login"
         component={LoginScreen}
@@ -38,20 +36,20 @@ const AuthStack = () => {
       />
       <Stack.Screen
         name="ForgotPassword"
-        
         options={{
           title: 'Forgot password',
           presentation: 'modal',
-          // headerShown: false,
+          headerShown: false,
         }}
         component={ForgotPasswordScreen}
       />
-      {/* <Stack.Screen name="CheckEmail" component={CheckEmail} /> */}
+
       <Stack.Screen
         name="OTPScreen1"
         component={OTPScreen}
         options={{
           title: 'OTP',
+          headerShown:false
         }}
       />
       <Stack.Screen
@@ -59,6 +57,7 @@ const AuthStack = () => {
         component={ResetPasswordScreen}
         options={{
           title: 'Reset password',
+          headerShown:false
         }}
       />
     </Stack.Navigator>

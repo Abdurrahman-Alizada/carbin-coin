@@ -6,9 +6,11 @@ import ContctListSkeleton from '../../../../../Skeletons/contactsList';
 import Contacts from 'react-native-contacts';
 import Contact from './Contacts';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
+import {useTranslation} from 'react-i18next';
 
 const ContactsList = ({navigation}) => {
   const theme = useTheme();
+  const {t} = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const CheckPermissions = () => {
     check(PERMISSIONS.ANDROID.READ_CONTACTS)
@@ -28,7 +30,7 @@ const ContactsList = ({navigation}) => {
                 console.log(result);
                 if (result === 'granted') {
                   getContacts();
-                } 
+                }
               })
               .catch(error => {
                 console.log(error.message);
@@ -95,7 +97,12 @@ const ContactsList = ({navigation}) => {
     return <Contact contact={item} />;
   };
   return (
-    <View style={{paddingHorizontal: '2%'}}>
+    <View
+      style={{
+        paddingHorizontal: '2%',
+        flex: 1,
+        backgroundColor: theme.colors.background,
+      }}>
       {isLoading ? (
         <ContctListSkeleton />
       ) : (
@@ -103,10 +110,10 @@ const ContactsList = ({navigation}) => {
           <View>
             <TextInput
               style={{
-                marginTop: '2%',
+                marginBottom: '4%',
                 backgroundColor: theme.colors.background,
               }}
-              label="Search in contact"
+              label={t("Search in contact")}
               // keyboardType="numeric"
               onChangeText={searchContact}
               // right={<TextInput.Icon icon="qrcode-scan" onPress={()=>console.log("pressed ")} />}
