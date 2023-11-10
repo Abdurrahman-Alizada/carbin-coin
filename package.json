@@ -32,6 +32,7 @@
     "react-native-camera-kit": "^13.0.0",
     "react-native-confirmation-code-field": "^7.3.2",
     "react-native-contacts": "^7.0.7",
+    "react-native-country-flag": "^2.0.2",
     "react-native-gesture-handler": "^2.13.4",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-modalize": "^2.1.1",

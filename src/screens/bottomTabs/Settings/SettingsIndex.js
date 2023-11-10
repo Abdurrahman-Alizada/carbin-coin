@@ -11,9 +11,9 @@ const SettingsIndex = () => {
   const theme = useTheme();
   const {t} = useTranslation()
   return (
-    <View style={{flex: 1, backgroundColor: theme.colors.background, paddingBottom:"5%"}}>
+    <View style={{flex: 1, backgroundColor: theme.colors.background}}>
       <HomeScreenAppbar title={t("Settings")} />
-      <ScrollView>
+      <ScrollView contentContainerStyle={{paddingBottom:"5%"}}>
       <TopCard name="Abdur Rahman" date="11/22" suffix="3904" />
 
         <CardSettingIndex />

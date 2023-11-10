@@ -21,6 +21,8 @@ import {
   Paragraph,
   useTheme,
 } from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
+import ButtonLinearGradient from '../../../../../components/ButtonLinearGradient';
 
 export const CELL_SIZE = 50;
 export const CELL_BORDER_RADIUS = 8;
@@ -33,6 +35,7 @@ const {Value, Text: AnimatedText} = Animated;
 
 const TwoFAConfirm = ({navigation, route}) => {
   const theme = useTheme();
+  const {t} = useTranslation();
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
 
@@ -42,7 +45,7 @@ const TwoFAConfirm = ({navigation, route}) => {
 
   const verify = () => {
     setDisibility(true);
-    navigation.navigate("Profile")
+    navigation.navigate('Profile');
   };
 
   useEffect(() => {
@@ -97,7 +100,7 @@ const TwoFAConfirm = ({navigation, route}) => {
         justifyContent: 'space-between',
         paddingVertical: '5%',
         paddingHorizontal: '2%',
-        backgroundColor:theme.colors.background
+        backgroundColor: theme.colors.background,
       }}>
       <Portal>
         <Dialog visible={visible} onDismiss={() => setVisible(false)}>
@@ -137,12 +140,14 @@ const TwoFAConfirm = ({navigation, route}) => {
         <Text style={{fontSize: 20, textAlign: 'center', marginTop: '5%'}}>
           2FA
         </Text>
-        <Text style={{
-              paddingTop: 30,
-              textAlign: 'center',
-        }}>
-          To confirm the operation enter the 6-digit code from
-          Authenticatoriljgs;
+        <Text
+          style={{
+            paddingTop: 30,
+            textAlign: 'center',
+          }}>
+          {t(
+            'To confirm the operation enter the 6-digit code from Authenticator',
+          )}
         </Text>
 
         <CodeField
@@ -162,20 +167,21 @@ const TwoFAConfirm = ({navigation, route}) => {
           renderCell={renderCell}
         />
       </View>
-      <Button
-        disabled={isDisabled}
-        style={{
-          margin: 30,
-          justifyContent: 'center',
-          // minWidth: 300,
-        }}
-        contentStyle={{padding: '2%'}}
-        //   buttonStyle={{padding: '1%'}}
-        theme={{roundness: 10}}
-        mode="contained"
-        onPress={verify}>
-        Confirm
-      </Button>
+      <ButtonLinearGradient style={{margin: 20}}>
+        <Button
+          disabled={isDisabled}
+          style={{
+            justifyContent: 'center',
+            backgroundColor:"transparent"
+          }}
+          contentStyle={{padding: '2%'}}
+          //   buttonStyle={{padding: '1%'}}
+          theme={{roundness: 10}}
+          mode="contained"
+          onPress={verify}>
+          {t('Confirm')}
+        </Button>
+      </ButtonLinearGradient>
     </SafeAreaView>
   );
 };
@@ -225,7 +231,6 @@ const styles = StyleSheet.create({
     // Android
     elevation: 3,
   },
-
 });
 
 export default TwoFAConfirm;

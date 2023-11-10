@@ -1,148 +1,53 @@
-import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
-import React from 'react';
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {Avatar, Divider, Text, useTheme} from 'react-native-paper';
 import HomeScreenAppbar from '../../../components/Appbars/HomeScreenAppbar';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import CountryFlag from 'react-native-country-flag';
+import WalletIndex from '../../../Skeletons/Wallet/WalletIndex';
 const Index = () => {
   const theme = useTheme();
+  const {t} = useTranslation();
+
+  const curr = useSelector(state => state.user.curr);
+
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    func();
+  }, []);
+
+  const func = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  };
+
   return (
     <View
       style={{
         flex: 1,
+
         backgroundColor: theme.colors.background,
       }}>
       <HomeScreenAppbar title={'Investments'} />
-      <View style={{marginHorizontal: '4%'}}>
-        <Text
-          style={{
-            fontSize: 18,
-            fontWeight: '700',
-            textAlign: 'center',
-            marginTop: '3%',
-          }}>
-          Total investment balance
-        </Text>
 
-        <TouchableWithoutFeedback onPress={() => console.log('pressed')}>
-          <View
-            style={{
-              marginTop: '5%',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: '5%',
-              backgroundColor: theme.colors.primary,
-              borderRadius: 10,
-              flexDirection: 'row',
-            }}>
-            <Text style={{fontSize: 20, color: theme.colors.onPrimary}}>$</Text>
-            <Text
-              style={{
-                fontSize: 22,
-                fontWeight: 'bold',
-                color: theme.colors.onPrimary,
-                marginLeft: '1%',
-              }}>
-              90.00
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
-
-        <View style={{marginTop: '1%'}}>
-          <Text
-            style={{
-              color: theme.colors.tertiary,
-              marginTop: '15%',
-              marginLeft: 8,
-              fontWeight: '700',
-            }}>
-            Your assets
-          </Text>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: '3%',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: '1%',
-              paddingVertical: '2%',
-              backgroundColor: theme.colors.tertiary,
-              borderRadius: 15,
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Avatar.Image
-                size={40}
-                source={require('../../../assets/splash-screen/carib-coin-logo.png')}
-              />
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: theme.colors.onPrimary,
-                  marginLeft: '2%',
-                }}>
-                DHKU
-              </Text>
-            </View>
-
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 16, color: theme.colors.onPrimary}}>
-                $
-              </Text>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: theme.colors.onPrimary,
-                  marginLeft: '3%',
-                }}>
-                90.00
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: '3%',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: '1%',
-              paddingVertical: '2%',
-              backgroundColor: theme.colors.tertiary,
-              borderRadius: 15,
-            }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Avatar.Image
-                size={40}
-                source={require('../../../assets/splash-screen/carib-coin-logo.png')}
-              />
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: theme.colors.onPrimary,
-                  marginLeft: '2%',
-                }}>
-                DHKU
-              </Text>
-            </View>
-
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 16, color: theme.colors.onPrimary}}>
-                $
-              </Text>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: theme.colors.onPrimary,
-                  marginLeft: '3%',
-                }}>
-                90.00
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <Divider style={{marginTop: '4%'}} />
-
-        <View style={{marginTop: '4%'}}>
+      {isLoading ? (
+        <WalletIndex />
+      ) : (
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={() => func()} />
+          }
+          style={{flex: 1, paddingHorizontal: '4%'}}>
           <Text
             style={{
               fontSize: 18,
@@ -150,26 +55,140 @@ const Index = () => {
               textAlign: 'center',
               marginTop: '3%',
             }}>
-            Transaction history
+            {t('Total investment balance')}
           </Text>
 
-          <View
-            style={{
-              textAlign: 'center',
-              marginTop: '10%',
-              alignItems:"center"
-            }}>
-            <Avatar.Icon size={70} style={{backgroundColor:theme.colors.background}} icon="airballoon-outline" />
+          <TouchableWithoutFeedback onPress={() => console.log('pressed')}>
+            <View
+              style={{
+                marginTop: '5%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingVertical: '5%',
+                backgroundColor: theme.colors.primary,
+                borderRadius: 10,
+                flexDirection: 'row',
+              }}>
+              <Text style={{fontSize: 20, color: theme.colors.onPrimary}}>
+                $
+              </Text>
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                  color: theme.colors.onPrimary,
+                  marginLeft: '1%',
+                }}>
+                90.00
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+
+          <View style={{marginTop: '1%'}}>
             <Text
               style={{
-                textAlign: 'center',
-                marginTop: '2%',
+                color: theme.colors.tertiary,
+                marginTop: '15%',
+                marginLeft: 8,
+                fontWeight: '700',
               }}>
-              No transaction history
+              {t('Your assets')}
             </Text>
+
+            <View style={{paddingHorizontal: '4%'}}>
+              {curr.slice(1, 3).map((item, index) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    // setSelectedCoin(item);
+                    // setSelectedCoinIndex(index);
+                    // onClose();
+                  }}
+                  key={index}
+                  style={{
+                    flexDirection: 'row',
+                    marginTop: '3%',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingHorizontal: '1%',
+                    paddingVertical: '2%',
+                    backgroundColor: theme.colors.secondary,
+                    borderRadius: 40,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      paddingVertical: '2%',
+                      paddingHorizontal: '4%',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                      alignItems: 'center',
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <CountryFlag isoCode={item?.countryCode} size={22} />
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          marginLeft: '10%',
+                          color: theme.colors.onSecondary,
+                        }}>
+                        {item.nickName}
+                      </Text>
+                    </View>
+
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        marginLeft: '5%',
+                        color: theme.colors.onSecondary,
+                      }}>
+                      {item.sign} {item.balance}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
-        </View>
-      </View>
+
+          <Divider style={{marginTop: '4%'}} />
+
+          <View style={{marginVertical: '4%'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: '700',
+                textAlign: 'center',
+                marginTop: '3%',
+              }}>
+              {t('Transaction history')}
+            </Text>
+
+            <View
+              style={{
+                textAlign: 'center',
+                marginTop: '10%',
+                alignItems: 'center',
+              }}>
+              <Avatar.Icon
+                size={70}
+                style={{backgroundColor: theme.colors.background}}
+                icon="airballoon-outline"
+              />
+              <Text
+                style={{
+                  textAlign: 'center',
+                  marginTop: '2%',
+                }}>
+                {t('No transaction history')}
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };

@@ -8,10 +8,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome6Icon from 'react-native-vector-icons/FontAwesome6';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {useTheme} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
 const Tab = createMaterialBottomTabNavigator();
 
 const HomeScreen = () => {
   const theme = useTheme();
+  const {t} = useTranslation();
   return (
     <Tab.Navigator
       barStyle={{
@@ -23,7 +25,7 @@ const HomeScreen = () => {
         name="Wallet"
         component={Wallet}
         options={{
-          tabBarLabel: 'Wallet',
+          tabBarLabel: t('Wallet'),
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="wallet" color={color} size={26} />
           ),
@@ -35,7 +37,7 @@ const HomeScreen = () => {
         name="Savings"
         component={Savings}
         options={{
-          tabBarLabel: 'Savings',
+          tabBarLabel: t('Savings'),
           tabBarIcon: ({color}) => (
             <FontAwesome6Icon name="money-bill-wave" color={color} size={26} />
           ),
@@ -45,7 +47,7 @@ const HomeScreen = () => {
         name="Invest"
         component={Invest}
         options={{
-          tabBarLabel: 'Invest',
+          tabBarLabel: t('Invest'),
           tabBarIcon: ({color}) => (
             <FontAwesome6Icon
               name="money-bill-trend-up"
@@ -60,7 +62,7 @@ const HomeScreen = () => {
         name="Settings"
         component={Settings}
         options={{
-          tabBarLabel: 'Settings',
+          tabBarLabel: t('Settings'),
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="cog" color={color} size={26} />
           ),

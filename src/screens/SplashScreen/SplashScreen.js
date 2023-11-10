@@ -37,8 +37,8 @@ const SplashScreen = ({navigation}) => {
         setTimeout(() => {
           isAppFirstLaunched?.current
             ? navigation.replace('Onboarding')
-            : // : navigation.replace(!value ? 'Auth' : 'Drawer');
-              navigation.replace('Main');
+             : navigation.replace(!value ? 'Auth' : 'Drawer');
+              // : navigation.replace('Main');
           // }, 2000);
         }, 0);
       })

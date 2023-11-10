@@ -1,5 +1,6 @@
 import {
   Image,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -7,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   Avatar,
   Text,
@@ -20,8 +21,10 @@ import {
 } from 'react-native-paper';
 import {Modalize} from 'react-native-modalize';
 import {useTranslation} from 'react-i18next';
-
 import HomeScreenAppbar from '../../../components/Appbars/HomeScreenAppbar';
+import {useSelector} from 'react-redux';
+import CountryFlag from 'react-native-country-flag';
+import WalletIndex from '../../../Skeletons/Wallet/WalletIndex';
 
 const Index = ({navigation}) => {
   const {t} = useTranslation();
@@ -29,32 +32,7 @@ const Index = ({navigation}) => {
   const theme = useTheme();
   const [showAllcoins, setShowAllCoins] = useState(true);
 
-  const [curr, setCurr] = useState([
-    {
-      id: 0,
-      name: 'Digital candian dollar',
-      nickName: 'DCNH',
-      image: '',
-      balance: 98.01,
-      sign: '$',
-    },
-    {
-      id: 1,
-      name: 'Digital candian dollar',
-      nickName: 'DCNH',
-      image: '',
-      balance: 80.01,
-      sign: '$',
-    },
-    {
-      id: 2,
-      name: 'Digital candian dollar',
-      nickName: 'DCNH',
-      image: '',
-      balance: 0,
-      sign: '$',
-    },
-  ]);
+  const curr = useSelector(state => state.user.curr);
   const [selectedCurrency, setSelectedCurrency] = useState(-1);
 
   const modalizeRef = useRef(null);
@@ -65,268 +43,296 @@ const Index = ({navigation}) => {
     modalizeRef.current?.close();
   };
 
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+   func()
+  },[]);
+
+const func = ()=>{
+  setIsLoading(true)
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 2000);
+}
+
   return (
-    <SafeAreaView style={{paddingBottom:70, backgroundColor:theme.colors.background}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: theme.colors.background}}>
       <HomeScreenAppbar title={'Wallet'} />
 
-      <ScrollView contentContainerStyle={{marginBottom: 0}}>
-        <Text
-          style={{
-            marginTop: '4%',
-            fontSize: 18,
-            textAlign: 'center',
-            fontWeight: '600',
-          }}>
-          Total balance of my account and cards
-        </Text>
-        <View style={{marginHorizontal: '4%'}}>
-          <TouchableWithoutFeedback onPress={() => onOpen()}>
-            <View
-              style={{
-                marginTop: '5%',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingVertical: '5%',
-                backgroundColor: theme.colors.primary,
-                borderRadius: 10,
-                flexDirection: 'row',
-              }}>
-              <Text style={{fontSize: 20, color: theme.colors.onPrimary}}>
-                $
-              </Text>
-              <Text
-                style={{
-                  fontSize: 22,
-                  fontWeight: 'bold',
-                  color: theme.colors.onPrimary,
-                  marginLeft: '1%',
-                }}>
-                90.00
-              </Text>
-            </View>
-          </TouchableWithoutFeedback>
-
-          <View
+      {isLoading ? (
+        <WalletIndex />
+      ) : (
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={()=>func()} />
+          }
+          contentContainerStyle={{marginBottom: 0}}>
+          <Text
             style={{
-              marginVertical: '4%',
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-            }}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('TopUp')}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '48%',
-                marginTop: '3%',
-                borderRadius: 10,
-                padding: '3%',
-                backgroundColor: theme.colors.primaryContainer,
-              }}>
-              <Avatar.Icon
-                size={34}
-                style={{backgroundColor: theme.colors.primaryContainer}}
-                icon={'plus'}
-              />
-              <Text>Top up</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate('SendMoney')}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '48%',
-                marginTop: '3%',
-                padding: '3%',
-                borderRadius: 10,
-                backgroundColor: theme.colors.primaryContainer,
-              }}>
-              <Avatar.Icon
-                size={34}
-                style={{backgroundColor: theme.colors.primaryContainer}}
-                icon={'arrow-top-right'}
-              />
-              <Text>Send</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ConvertMoney')}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '48%',
-                marginTop: '3%',
-                padding: '3%',
-                borderRadius: 10,
-                backgroundColor: theme.colors.primaryContainer,
-              }}>
-              <Avatar.Icon
-                size={34}
-                style={{backgroundColor: theme.colors.primaryContainer}}
-                icon={'refresh-auto'}
-              />
-              <Text>Convert</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              disabled
-              onPress={() => console.log('hello')}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '48%',
-                marginTop: '3%',
-                padding: '3%',
-                borderRadius: 10,
-                backgroundColor: theme.colors.primaryContainer,
-              }}>
-              <Avatar.Icon
-                size={34}
-                style={{backgroundColor: theme.colors.primaryContainer}}
-                icon={'angle-right'}
-              />
-              <Text>Invest</Text>
-            </TouchableOpacity>
-          </View>
-          <Divider style={{marginVertical: '3%'}} />
-
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
               marginTop: '4%',
+              fontSize: 18,
+              textAlign: 'center',
+              fontWeight: '600',
             }}>
-            <Text>Caribbean coin accounts</Text>
-            {showAllcoins ? (
-              <TouchableOpacity
-                onPress={() => setShowAllCoins(false)}
-                style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text>Show less</Text>
-                <Avatar.Icon
-                  style={{backgroundColor: theme.colors.background}}
-                  size={35}
-                  icon="chevron-up"
-                />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => setShowAllCoins(true)}
-                style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text>All</Text>
-                <Avatar.Icon
-                  style={{backgroundColor: theme.colors.background}}
-                  size={35}
-                  icon="chevron-down"
-                />
-              </TouchableOpacity>
-            )}
-          </View>
-
-          <View style={{marginTop: '4%'}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: '3%',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingHorizontal: '1%',
-                paddingVertical: '2%',
-                backgroundColor: theme.colors.primary,
-                borderRadius: 40,
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Avatar.Image
-                  size={35}
-                  source={require('../../../assets/splash-screen/carib-coin-logo.png')}
-                />
-                <Text
-                  style={{
-                    fontSize: 20,
-                    color: theme.colors.onPrimary,
-                    marginLeft: '2%',
-                  }}>
-                  DHKU
-                </Text>
-              </View>
-
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{fontSize: 16, color: theme.colors.onPrimary}}>
+            {t('Total balance of my account and cards')}
+          </Text>
+          <View style={{marginHorizontal: '4%'}}>
+            <TouchableWithoutFeedback onPress={() => onOpen()}>
+              <View
+                style={{
+                  marginTop: '5%',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  paddingVertical: '5%',
+                  backgroundColor: theme.colors.primary,
+                  borderRadius: 10,
+                  flexDirection: 'row',
+                }}>
+                <Text style={{fontSize: 20, color: theme.colors.onPrimary}}>
                   $
                 </Text>
                 <Text
                   style={{
-                    fontSize: 20,
+                    fontSize: 22,
+                    fontWeight: 'bold',
                     color: theme.colors.onPrimary,
-                    marginLeft: '3%',
+                    marginLeft: '1%',
                   }}>
                   90.00
                 </Text>
               </View>
+            </TouchableWithoutFeedback>
+
+            <View
+              style={{
+                marginVertical: '4%',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+              }}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('TopUp')}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '48%',
+                  marginTop: '3%',
+                  borderRadius: 10,
+                  padding: '3%',
+                  backgroundColor: theme.colors.primaryContainer,
+                }}>
+                <Avatar.Icon
+                  size={34}
+                  style={{backgroundColor: theme.colors.primaryContainer}}
+                  icon={'plus'}
+                />
+                <Text>{t('Top up')}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate('SendMoney')}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '48%',
+                  marginTop: '3%',
+                  padding: '3%',
+                  borderRadius: 10,
+                  backgroundColor: theme.colors.primaryContainer,
+                }}>
+                <Avatar.Icon
+                  size={34}
+                  style={{backgroundColor: theme.colors.primaryContainer}}
+                  icon={'arrow-top-right'}
+                />
+                <Text>{t('Send')}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ConvertMoney')}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '48%',
+                  marginTop: '3%',
+                  padding: '3%',
+                  borderRadius: 10,
+                  backgroundColor: theme.colors.primaryContainer,
+                }}>
+                <Avatar.Icon
+                  size={34}
+                  style={{backgroundColor: theme.colors.primaryContainer}}
+                  icon={'refresh-auto'}
+                />
+                <Text>{t('Convert')}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                disabled
+                onPress={() => console.log('hello')}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '48%',
+                  marginTop: '3%',
+                  padding: '3%',
+                  borderRadius: 10,
+                  backgroundColor: theme.colors.primaryContainer,
+                }}>
+                <Avatar.Icon
+                  size={34}
+                  style={{backgroundColor: theme.colors.primaryContainer}}
+                  icon={'angle-right'}
+                />
+                <Text>{t('Invest')}</Text>
+              </TouchableOpacity>
+            </View>
+            <Divider style={{marginVertical: '3%'}} />
+
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginTop: '4%',
+              }}>
+              <Text>{t('Caribbean coin accounts')}</Text>
+              {showAllcoins ? (
+                <TouchableOpacity
+                  onPress={() => setShowAllCoins(false)}
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text>{t('Show less')}</Text>
+                  <Avatar.Icon
+                    style={{backgroundColor: theme.colors.background}}
+                    size={35}
+                    icon="chevron-up"
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => setShowAllCoins(true)}
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text>{t('All')}</Text>
+                  <Avatar.Icon
+                    style={{backgroundColor: theme.colors.background}}
+                    size={35}
+                    icon="chevron-down"
+                  />
+                </TouchableOpacity>
+              )}
             </View>
 
-            {showAllcoins &&
-              [1, 2, 3].map((n, index) => (
+            <View style={{marginTop: '4%'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: '3%',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  paddingHorizontal: '1%',
+                  paddingVertical: '2%',
+                  backgroundColor: theme.colors.primary,
+                  borderRadius: 40,
+                }}>
                 <View
-                  key={index}
                   style={{
                     flexDirection: 'row',
-                    marginTop: '3%',
-                    justifyContent: 'space-between',
                     alignItems: 'center',
-                    paddingHorizontal: '1%',
-                    paddingVertical: '2%',
-                    backgroundColor: theme.colors.primary,
-                    borderRadius: 40,
+                    paddingVertical: '1%',
+                    paddingHorizontal: '2%',
                   }}>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Avatar.Image
-                      size={35}
-                      source={require('../../../assets/splash-screen/carib-coin-logo.png')}
-                    />
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        color: theme.colors.onPrimary,
-                        marginLeft: '2%',
-                      }}>
-                      DHKU
-                    </Text>
-                  </View>
+                  <CountryFlag isoCode={curr[0].countryCode} size={22} />
 
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={{fontSize: 16, color: theme.colors.onPrimary}}>
-                      $
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        color: theme.colors.onPrimary,
-                        marginLeft: '3%',
-                      }}>
-                      90.00
-                    </Text>
-                  </View>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      color: theme.colors.onPrimary,
+                      marginLeft: '10%',
+                    }}>
+                    {curr[0].nickName}
+                  </Text>
                 </View>
-              ))}
 
-            <Button
-              icon="plus"
-              mode="text"
-              style={{marginTop: '4%'}}
-              onPress={() => navigation.navigate('AddNewCurrency')}>
-              Add new currency
-            </Button>
-          </View>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{fontSize: 16, color: theme.colors.onPrimary}}>
+                    $
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      color: theme.colors.onPrimary,
+                      marginLeft: '3%',
+                    }}>
+                    90.00
+                  </Text>
+                </View>
+              </View>
 
-          <View
+              {showAllcoins &&
+                curr?.slice(1)?.map((item, index) => (
+                  <View
+                    key={index}
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: '3%',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      paddingHorizontal: '1%',
+                      paddingVertical: '2%',
+                      backgroundColor: theme.colors.primary,
+                      borderRadius: 40,
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingVertical: '1%',
+                        paddingHorizontal: '2%',
+                      }}>
+                      <CountryFlag isoCode={item?.countryCode} size={22} />
+
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          color: theme.colors.onPrimary,
+                          marginLeft: '10%',
+                        }}>
+                        {item?.nickName}
+                      </Text>
+                    </View>
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text
+                        style={{fontSize: 16, color: theme.colors.onPrimary}}>
+                        $
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          color: theme.colors.onPrimary,
+                          marginLeft: '3%',
+                        }}>
+                        90.00
+                      </Text>
+                    </View>
+                  </View>
+                ))}
+
+              <Button
+                icon="plus"
+                mode="text"
+                style={{marginVertical: '8%'}}
+                onPress={() => navigation.navigate('AddNewCurrency')}>
+                {t('Add new currency')}
+              </Button>
+            </View>
+
+            {/* <View
             style={{
               marginVertical: '8%',
               borderRadius: 10,
@@ -350,13 +356,19 @@ const Index = ({navigation}) => {
               }}
               source={require('../../../assets/splash-screen/carib-coin-logo.png')}
             />
+          </View> */}
           </View>
-        </View>
-      </ScrollView>
-
+        </ScrollView>
+      )}
       <Portal>
         <Modalize
           handlePosition="inside"
+          modalStyle={{
+            backgroundColor: theme.colors.background,
+            borderColor: theme.colors.onBackground,
+            borderWidth: 1,
+          }}
+          handleStyle={{backgroundColor: theme.colors.onBackground}}
           HeaderComponent={() => (
             <View style={{paddingHorizontal: '2%'}}>
               <IconButton
@@ -369,10 +381,13 @@ const Index = ({navigation}) => {
             </View>
           )}
           ref={modalizeRef}>
-          <View style={{paddingHorizontal: '4%'}}>
-            {curr.map((item, index) => (
+          <View style={{paddingHorizontal: '2%'}}>
+            {curr?.map((item, index) => (
               <TouchableOpacity
-                onPress={() => setSelectedCurrency(index)}
+                onPress={() => {
+                  setSelectedCurrency(index);
+                  onClose();
+                }}
                 key={index}
                 style={{
                   flexDirection: 'row',
@@ -387,25 +402,31 @@ const Index = ({navigation}) => {
                       : theme.colors.background,
                   borderRadius: 40,
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Avatar.Image
-                    size={35}
-                    source={require('../../../assets/splash-screen/carib-coin-logo.png')}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      marginLeft: '5%',
-                    }}>
-                    {item.nickName}
-                  </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    paddingVertical: '1%',
+                    paddingHorizontal: '2%',
+                    alignItems: 'center',
+                  }}>
+                  <CountryFlag isoCode={item?.countryCode} size={22} />
+
                   <Text
                     style={{
                       fontSize: 16,
                       marginLeft: '5%',
                     }}>
-                    {item.sign}
-                    {item.balance}
+                    {item.name}{' '}
+                  </Text>
+                </View>
+
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      marginLeft: '3%',
+                    }}>
+                    {item.nickName}
                   </Text>
                 </View>
               </TouchableOpacity>

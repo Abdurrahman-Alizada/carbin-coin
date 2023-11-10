@@ -1,42 +1,34 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {useTheme, Text, Avatar, Button} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import CountryFlag from 'react-native-country-flag';
+import ButtonLinearGradient from '../../../../components/ButtonLinearGradient';
 
 const Index = ({navigation}) => {
   const theme = useTheme();
-  const [curr, setCurr] = useState([
-    {
-      id: 0,
-      name: 'Digital candian dollar',
-      nickName: 'DCNH',
-      image: '',
-    },
-    {
-      id: 1,
-      name: 'Digital candian dollar 1',
-      nickName: 'DCNH',
-      image: '',
-    },
-    {
-      id: 2,
-      name: 'Digital candian dollar 2',
-      nickName: 'DCNH',
-      image: '',
-    },
-  ]);
+  const {t} = useTranslation();
+  const curr = useSelector(state => state.user.curr);
   const [selectedCurrency, setSelectedCurrency] = useState(-1);
   return (
-    <View style={{padding: '5%', flex:1, backgroundColor:theme.colors.background,}}>
+    <View
+      style={{
+        padding: '5%',
+        flex: 1,
+        backgroundColor: theme.colors.background,
+      }}>
       <Text style={{textAlign: 'center', fontSize: 16, lineHeight: 25}}>
-        You can add these currencies to your account and hold digital cash in
-        it.
+        {t(
+          'You can add these currencies to your account and hold digital cash in it.',
+        )}
       </Text>
       <Text style={{marginTop: '8%', lineHeight: 25}}>Select currency</Text>
 
       <View>
-        {curr.map((item, index) => (
+        {curr?.slice().map((item, index) => (
           <TouchableOpacity
-          onPress={()=>setSelectedCurrency(index)}
+            onPress={() => setSelectedCurrency(index)}
             key={index}
             style={{
               flexDirection: 'row',
@@ -51,17 +43,21 @@ const Index = ({navigation}) => {
                   : theme.colors.background,
               borderRadius: 40,
             }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Avatar.Image
-                size={35}
-                source={require('../../../../assets/splash-screen/carib-coin-logo.png')}
-              />
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingVertical: '1%',
+                paddingHorizontal: '2%',
+                alignItems: 'center',
+              }}>
+              <CountryFlag isoCode={item?.countryCode} size={22} />
+
               <Text
                 style={{
                   fontSize: 16,
                   marginLeft: '5%',
                 }}>
-                {item.name}
+                {item.name}{' '}
               </Text>
             </View>
 
@@ -77,16 +73,18 @@ const Index = ({navigation}) => {
           </TouchableOpacity>
         ))}
 
-        <Button
-        style={{marginTop:"5%",}}
-        contentStyle={{padding:"1%"}}
-          // icon="camera"
-          disabled={!(selectedCurrency > -1)}
-          mode="contained"
-          theme={{roundness:6}}
-          onPress={() => navigation.goBack()}>
-          Add currency
-        </Button>
+        <ButtonLinearGradient style={{marginTop: '8%'}}>
+          <Button
+            contentStyle={{padding: '1%'}}
+            // icon="camera"
+            style={{backgroundColor:"transparent"}}
+            disabled={!(selectedCurrency > -1)}
+            mode="contained"
+            theme={{roundness: 6}}
+            onPress={() => navigation.goBack()}>
+            Add currency
+          </Button>
+        </ButtonLinearGradient>
       </View>
     </View>
   );

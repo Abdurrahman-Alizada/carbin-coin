@@ -7087,6 +7087,11 @@
   "resolved" "https://registry.npmjs.org/react-native-contacts/-/react-native-contacts-7.0.7.tgz"
   "version" "7.0.7"
 
+"react-native-country-flag@^2.0.2":
+  "integrity" "sha512-5LMWxS79ZQ0Q9ntYgDYzWp794+HcQGXQmzzZNBR1AT7z5HcJHtX7rlk8RHi7RVzfp5gW6plWSZ4dKjRpu/OafQ=="
+  "resolved" "https://registry.npmjs.org/react-native-country-flag/-/react-native-country-flag-2.0.2.tgz"
+  "version" "2.0.2"
+
 "react-native-country-picker-modal@^2.0.0":
   "integrity" "sha512-p0wfkKx1mOCEkn3Qm2/FA8TrxSdUw/nqaCcT6KYvIGmPtPdia1Ce+iWh5G0j2hZcDs6yJSkYAx+7lrZ0HwixAw=="
   "resolved" "https://registry.npmjs.org/react-native-country-picker-modal/-/react-native-country-picker-modal-2.0.0.tgz"

@@ -5,6 +5,7 @@ import {useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
+import ButtonLinearGradient from '../../../components/ButtonLinearGradient';
 
 const circleSize = 250;
 export default function CreditCard({
@@ -16,6 +17,7 @@ export default function CreditCard({
 }) {
   const navigation = useNavigation();
   const theme = useTheme();
+  const {t} = useTranslation()
   const dotStyle = [s.dot, {backgroundColor: textColor}];
   return (
     <View>
@@ -63,30 +65,26 @@ export default function CreditCard({
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            justifyContent: "flex-end",
           }}>
-          <Text style={[s.text, {color: textColor}]}>Your name</Text>
+          {/* <Text style={[s.text, {color: textColor}]}>Your name</Text> */}
           <Text style={[s.text, {color: textColor}]}>11/30</Text>
         </View>
       </View>
 
       <View style={{padding: '6%', paddingTop: '10%'}}>
         <Text style={{fontSize: 18, textAlign: 'center', fontWeight: '800'}}>
-          You have no card yet
+          {t("You have no card yet")}
 
         </Text>
         <Text style={{fontSize: 16, textAlign: 'center', marginTop: '4%'}}>
-          Caribbean cards are designed for people who want their money to work
-          harder for them. Start spending your funds anywhere in the world.
+          {t("Caribbean cards are designed for people who want their money to work harder for them. Start spending your funds anywhere in the world.")}
         </Text>
       </View>
 
-      <View style={{padding: '5%'}}>
-        <LinearGradient
-          start={{x: 1, y: 0}}
-          end={{x: 0, y: 0}}
-          colors={['#4c669f', '#3b5998', '#192f6a']}
-          style={{borderRadius: 40, height: 'auto'}}>
+      <View style={{paddingHorizontal: '5%'}}>
+        <ButtonLinearGradient>
+
           <Button
             icon="credit-card"
             mode="contained"
@@ -98,9 +96,10 @@ export default function CreditCard({
             theme={{roundness: 10}}
             labelStyle={{color: theme.colors.surface}}
             onPress={() => navigation.navigate('NewCard')}>
-            Get card
+            {t("Get card")}
           </Button>
-        </LinearGradient>
+        </ButtonLinearGradient>
+
         <Button
           icon="arrow-top-right"
           mode="text"
@@ -111,7 +110,7 @@ export default function CreditCard({
           contentStyle={{padding:"2%"}}
           theme={{roundness: 10}}
           >
-          Learn more
+          {t("Learn more")}
         </Button>
       </View>
     </View>

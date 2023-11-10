@@ -2,9 +2,12 @@ import {View} from 'react-native';
 import React from 'react';
 import {Appbar, Avatar, Button, Text, useTheme} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
+import { useTranslation } from 'react-i18next';
+import ButtonLinearGradient from '../../../components/ButtonLinearGradient';
 
 const NewCard = ({navigation}) => {
   const theme = useTheme();
+  const {t} = useTranslation();
   return (
     <View style={{}}>
       <Appbar.Header style={{backgroundColor: theme.colors.background}}>
@@ -23,22 +26,13 @@ const NewCard = ({navigation}) => {
             marginTop: '2%',
             fontSize: 20,
             textAlign: 'center',
-            width: '80%',
+            width: '95%',
           }}>
-          At the moment you can not add any more cards.
+          {t("At the moment you can not add any more cards.")}
         </Text>
       </View>
-      <LinearGradient
-        start={{x: 1, y: 0}}
-        end={{x: 0, y: 0}}
-        colors={['#4c669f', '#3b5998', '#192f6a']}
-        style={{
-          borderRadius: 40,
-          height: 'auto',
-          width: '80%',
-          alignSelf: 'center',
-          marginTop: '5%',
-        }}>
+      <ButtonLinearGradient style={{width:"80%", alignSelf:"center", marginTop:"5%"}}>
+
         <Button
           icon="arrow-left"
           mode="contained"
@@ -50,9 +44,10 @@ const NewCard = ({navigation}) => {
           theme={{roundness: 10}}
           labelStyle={{color: theme.colors.surface}}
           onPress={() => navigation.goBack()}>
-          Go back
+          {t("Go back")}
         </Button>
-      </LinearGradient>
+      </ButtonLinearGradient>
+      
     </View>
   );
 };

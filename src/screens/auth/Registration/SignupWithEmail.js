@@ -28,6 +28,9 @@ import {
   useRegisterUserMutation,
   useResendEmailForUserRegistrationMutation,
 } from '../../../redux/reducers/user/userThunk';
+import AuthAppbar from '../../../components/Appbars/AuthAbbar';
+import ButtonLinearGradient from '../../../components/ButtonLinearGradient';
+import {useTranslation} from 'react-i18next';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -52,7 +55,7 @@ const validationSchema = Yup.object().shape({
 const SignupWithEmail = () => {
   const navigation = useNavigation();
   const theme = useTheme();
-
+  const {t} = useTranslation();
   const [invitationInputvisible, setInvitationInputVisible] = useState(false);
 
   const [visible, setVisible] = useState(false);
@@ -61,46 +64,8 @@ const SignupWithEmail = () => {
   const [showTryAgainButton, setShowTryAgainButton] = useState(false);
   const email = useRef('');
 
-  const [registerUser, {isLoading, isError, error}] = useRegisterUserMutation();
-
   const submitHandler = async values => {
     navigation.navigate('Main');
-
-    // email.current = values.email;
-    // registerUser({
-    //   name: values.name,
-    //   email: values.email,
-    //   password: values.password,
-    //   passwordConfirmation: values.passwordConfirmation,
-    // })
-    //   .then(res => {
-    //     if (res?.error?.status === 409) {
-    //       setMessage(res?.error?.data?.message);
-    //       setShowLoginButton(false);
-    //       if (!res?.error?.data?.verified) {
-    //         setShowTryAgainButton(true);
-    //       }
-    //       setVisible(true);
-    //     } else if (
-    //       res?.data?.message === 'An Email sent to your account please verify'
-    //     ) {
-    //       formikRef.current.resetForm();
-    //       setMessage(
-    //         `An Email sent to ${email.current}. Please verify and then login`,
-    //       );
-    //       setShowTryAgainButton(false);
-    //       setShowLoginButton(true);
-    //       setVisible(true);
-    //     } else {
-    //       setShowTryAgainButton(true);
-    //       setShowLoginButton(true);
-    //       setMessage('Something went wrong');
-    //       setVisible(true);
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
   };
 
   const [
@@ -155,81 +120,15 @@ const SignupWithEmail = () => {
   const formikRef = useRef();
 
   return (
-    <View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          paddingRight: '2%',
-          marginBottom: '5%',
-        }}>
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
-
-        <View style={{flexDirection: 'column', alignItems: 'center'}}>
-          <Image
-            style={{
-              width: 100,
-              height: 100,
-            }}
-            source={require('../../../assets/splash-screen/carib-coin-logo.png')}
-            // source={require('../../../assets')}
-          />
-          <Text
-            style={{
-              fontSize: 22,
-              marginTop: '5%',
-              // fontWeight: '700',
-              textAlign: 'center',
-              paddingHorizontal: '5%',
-            }}>
-            Sing up
-          </Text>
-        </View>
-
-        <Menu
-          visible={showMenu}
-          onDismiss={closeMenu}
-          contentStyle={{backgroundColor: theme.colors.background}}
-          anchor={
-            <Appbar.Action
-              icon={'dots-vertical'}
-              color={theme.colors.onBackground}
-              onPress={() => openMenu()}
-            />
-          }>
-          <Menu.Item
-            leadingIcon="help-circle-outline"
-            title="Help"
-            titleStyle={{color: theme.colors.onBackground}}
-            onPress={async () => {
-              closeMenu();
-              // navigation.navigate('AppSettingsMain');
-            }}
-          />
-
-          <Menu.Item
-            leadingIcon="message-outline"
-            title="Contact us"
-            titleStyle={{color: theme.colors.onBackground}}
-            onPress={async () => {
-              closeMenu();
-              // navigation.navigate('AppSettingsMain');
-            }}
-          />
-        </Menu>
-      </View>
+    <View style={{flex: 1, backgroundColor: theme.colors.background}}>
+      <AuthAppbar title={'Sign up'} />
 
       <ScrollView
         contentContainerStyle={{
           justifyContent: 'space-between',
+          paddingVertical: '2%',
         }}
         showsVerticalScrollIndicator={false}>
-        <StatusBar
-          barStyle="dark-content"
-          backgroundColor={theme.colors.background}
-        />
-
         <Formik
           innerRef={formikRef}
           initialValues={{
@@ -249,7 +148,7 @@ const SignupWithEmail = () => {
             errors,
             touched,
           }) => (
-            <View style={{paddingHorizontal: '5%'}}>
+            <View style={{paddingHorizontal: '5%', marginTop: '10%'}}>
               <Portal>
                 <Dialog visible={visible} onDismiss={() => setVisible(true)}>
                   <Dialog.Title>Sign up</Dialog.Title>
@@ -290,7 +189,7 @@ const SignupWithEmail = () => {
               </Portal>
 
               <TextInput
-                label="Email"
+                label={t('Email')}
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
                 mode="outlined"
@@ -305,7 +204,7 @@ const SignupWithEmail = () => {
 
               <TextInput
                 error={errors.password && touched.password ? true : false}
-                label="Password"
+                label={t('Password')}
                 mode="outlined"
                 right={
                   <TextInput.Icon
@@ -328,7 +227,7 @@ const SignupWithEmail = () => {
 
               <TextInput
                 error={errors.password && touched.password ? true : false}
-                label="Confirm password"
+                label={t('Confirm password')}
                 mode="outlined"
                 right={
                   <TextInput.Icon
@@ -375,7 +274,7 @@ const SignupWithEmail = () => {
                   }>
                   <Text
                     style={{fontWeight: 'bold', color: theme.colors.secondary}}>
-                    I have an invitaion
+                    {t('I have an invitation')}
                   </Text>
                 </TouchableOpacity>
               )}
@@ -394,7 +293,7 @@ const SignupWithEmail = () => {
                 />
                 <View style={{flexDirection: 'row'}}>
                   <Text style={{fontSize: 17, marginHorizontal: '1%'}}>
-                    I agree to
+                    {t('I agree to')}
                   </Text>
                   <TouchableOpacity style={{marginLeft: '1%'}}>
                     <Text
@@ -403,27 +302,28 @@ const SignupWithEmail = () => {
                         fontSize: 17,
                         textDecorationLine: 'underline',
                       }}>
-                      terms and conditions
+                      {t('terms and conditions')}
                     </Text>
                   </TouchableOpacity>
                 </View>
               </View>
 
-              <Button
-                // loading={isLoading || resendLoading}
-                // disabled={isLoading || resendLoading}
-                style={{
-                  marginTop: '2%',
-                }}
-                contentStyle={{
-                  padding: '3%',
-                }}
-                theme={{roundness: 1}}
-                mode="contained"
-                onPress={handleSubmit}
-                buttonColor={theme.colors.blueBG}>
-                Sign up
-              </Button>
+              <ButtonLinearGradient style={{marginTop: '4%'}}>
+                <Button
+                  // loading={isLoading || resendLoading}
+                  // disabled={isLoading || resendLoading}
+                  style={{
+                    backgroundColor: 'transparent',
+                  }}
+                  contentStyle={{
+                    padding: '3%',
+                  }}
+                  theme={{roundness: 1}}
+                  mode="contained"
+                  onPress={handleSubmit}>
+                  {t('Sign up')}
+                </Button>
+              </ButtonLinearGradient>
             </View>
           )}
         </Formik>

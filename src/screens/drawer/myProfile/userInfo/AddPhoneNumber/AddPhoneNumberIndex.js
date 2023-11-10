@@ -1,4 +1,5 @@
 import React, {useState, useRef, useContext} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,10 +9,12 @@ import {
 } from 'react-native';
 import {useTheme, Text, Button} from 'react-native-paper';
 import PhoneInput from 'react-native-phone-number-input';
+import ButtonLinearGradient from '../../../../../components/ButtonLinearGradient';
 import {ThemeContext} from '../../../../../themeContext';
 
 const AddPhoneNumberIndex = ({navigation}) => {
   const theme = useTheme();
+  const {t} = useTranslation();
   const {toggleTheme, isThemeDark} = useContext(ThemeContext);
 
   const [value, setValue] = useState('');
@@ -29,8 +32,9 @@ const AddPhoneNumberIndex = ({navigation}) => {
         backgroundColor: theme.colors.background,
       }}>
       <Text style={{textAlign: 'center', fontSize: 17, marginVertical: '3%'}}>
-        Add your phone number so other member can easily send ou mone with
-        Caribbean-coin
+        {t(
+          'Add your phone number so other member can easily send you money with Caribbean-coin',
+        )}
       </Text>
       <PhoneInput
         ref={phoneInput}
@@ -55,10 +59,13 @@ const AddPhoneNumberIndex = ({navigation}) => {
         }}
         layout="second"
       />
+      <ButtonLinearGradient style={{}}>
+
       <Button
         disabled={isAddClicked}
         loading={isAddClicked}
         mode="contained"
+        style={{backgroundColor:"transparent"}}
         contentStyle={{padding: '2%'}}
         onPress={() => {
           setIsAddClicked(true);
@@ -74,6 +81,7 @@ const AddPhoneNumberIndex = ({navigation}) => {
         theme={{roundness: 5}}>
         Add
       </Button>
+      </ButtonLinearGradient>
 
       {showMessage && (
         <View style={{marginTop: '4%'}}>
