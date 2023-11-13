@@ -1,4 +1,5 @@
-import React, {useState, useRef, useContext} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useState, useRef, useContext, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
   SafeAreaView,
@@ -10,9 +11,10 @@ import {
 import {useTheme, Text, Button} from 'react-native-paper';
 import PhoneInput from 'react-native-phone-number-input';
 import ButtonLinearGradient from '../../../../../components/ButtonLinearGradient';
+import {useUpdateUserMutation} from '../../../../../redux/reducers/user/userThunk';
 import {ThemeContext} from '../../../../../themeContext';
 
-const AddPhoneNumberIndex = ({navigation}) => {
+const AddPhoneNumberIndex = ({navigation, route}) => {
   const theme = useTheme();
   const {t} = useTranslation();
   const {toggleTheme, isThemeDark} = useContext(ThemeContext);
@@ -24,6 +26,38 @@ const AddPhoneNumberIndex = ({navigation}) => {
   const phoneInput = useRef(null);
 
   const [isAddClicked, setIsAddClicked] = useState(false);
+
+  const id = useRef(null);
+  const token = useRef(null);
+
+  const getUserInfo = async () => {
+    id.current = await AsyncStorage.getItem('userId');
+    token.current = await AsyncStorage.getItem('token');
+    // console.log("id=>",id.current,"token=>", token.current);
+  };
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  const {name, _id } = route.params?.params?.user;
+  const [updateUser, {isLoading, isError, error}] = useUpdateUserMutation();
+  const updateHandler = () => {
+    updateUser({
+      _id: _id,
+      token: token.current,
+      name: name,
+      phone: formattedValue,
+      fullName: name,
+    })
+      .then(res => {
+        console.log('response', res);
+        navigation.goBack()
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -60,34 +94,35 @@ const AddPhoneNumberIndex = ({navigation}) => {
         layout="second"
       />
       <ButtonLinearGradient style={{}}>
-
-      <Button
-        disabled={isAddClicked}
-        loading={isAddClicked}
-        mode="contained"
-        style={{backgroundColor:"transparent"}}
-        contentStyle={{padding: '2%'}}
-        onPress={() => {
-          setIsAddClicked(true);
-          const checkValid = phoneInput.current?.isValidNumber(value);
-          setShowMessage(true);
-          setValid(checkValid ? checkValid : false);
-          setTimeout(() => {
+        <Button
+          disabled={isAddClicked || isLoading}
+          loading={isAddClicked || isLoading}
+          mode="contained"
+          style={{backgroundColor: 'transparent'}}
+          contentStyle={{padding: '2%'}}
+          onPress={() => {
+            setIsAddClicked(true);
+            const checkValid = phoneInput.current?.isValidNumber(value);
+            setShowMessage(true);
+            setValid(checkValid ? checkValid : false);
             setIsAddClicked(false);
-            checkValid &&
-              navigation.navigate('OTPScreen', {phoneNumber: formattedValue});
-          }, 3000);
-        }}
-        theme={{roundness: 5}}>
-        Add
-      </Button>
+            checkValid && updateHandler();
+            //   navigation.navigate('OTPScreen', {phoneNumber: formattedValue});
+          }}
+          theme={{roundness: 5}}>
+          Add
+        </Button>
       </ButtonLinearGradient>
 
       {showMessage && (
-        <View style={{marginTop: '4%'}}>
-          <Text>Value : {value}</Text>
-          <Text>Formatted Value : {formattedValue}</Text>
-          <Text>Valid : {valid ? 'true' : 'false'}</Text>
+        <View style={{marginTop: '10%'}}>
+          <Text style={{marginTop: '2%'}}>Phone number : {value}</Text>
+          <Text style={{marginTop: '2%'}}>
+            Formatted phone number : {formattedValue}
+          </Text>
+          <Text style={{marginTop: '2%'}}>
+            Valid : {valid ? 'Valid' : 'Phone number is not valid'}
+          </Text>
         </View>
       )}
     </SafeAreaView>

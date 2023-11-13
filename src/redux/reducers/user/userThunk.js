@@ -15,12 +15,12 @@ export const userApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['User', 'Groups', 'CurrentLoginUser'],
+  tagTypes: ['User', 'CurrentLoginUser'],
   reducerPath: 'userApi',
   endpoints: build => ({
     registerUser: build.mutation({
       query: user => ({
-        url: `/api/account/user/register`,
+        url: `/api/signup`,
         method: 'POST',
         body: {
           name: user.name,
@@ -34,20 +34,33 @@ export const userApi = createApi({
 
     loginUser: build.mutation({
       query: user => ({
-        url: `/api/account/user/login`,
+        url: `/api/login`,
         method: 'POST',
         body: {
           email: user.email,
           password: user.password,
         },
       }),
-      invalidatesTags: ['User', 'Groups'],
+      invalidatesTags: ['User'],
     }),
     getCurrentLoginUser: build.query({
-      query: id => `/api/account/users/${id}`,
+      query: id => `/api/getuserdetails/${id}`,
       providesTags: ['User'],
     }),
     // update user information - start
+    updateUser: build.mutation({
+      query: user => ({
+        url: `/api/editUserDetails/${user.token}`,
+        method: 'PUT',
+        body: {
+          _id:user._id,
+          name: user.name,
+          phone : user.phone,
+          fullName : user.fullName
+        },
+      }),
+      invalidatesTags: ['User'],
+    }),
     updateName: build.mutation({
       query: user => ({
         url: `/api/account/users/${user.id}/updateName`,
@@ -151,6 +164,7 @@ export const userApi = createApi({
 export const {
   useLoginUserMutation,
   useRegisterUserMutation,
+  useUpdateUserMutation,
   useUpdateNameMutation,
   useGetCurrentLoginUserQuery,
   useUpdateEmailMutation,
