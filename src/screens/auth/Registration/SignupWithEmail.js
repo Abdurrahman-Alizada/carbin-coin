@@ -31,23 +31,27 @@ import {
 import AuthAppbar from '../../../components/Appbars/AuthAbbar';
 import ButtonLinearGradient from '../../../components/ButtonLinearGradient';
 import {useTranslation} from 'react-i18next';
+import {
+  WalletConnectModal,
+  useWalletConnectModal,
+} from '@walletconnect/modal-react-native';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
-    .required('*required')
+    // .required('*required')
     .trim('Full name can not include leading and trailing spaces')
     .label('Name')
     .min(2, ({min}) => `Name must be at least ${min} characters`),
   email: Yup.string()
     .email('Please enter valid email')
-    // .required('*required')
+    .required('*required')
     .label('Email'),
   password: Yup.string()
     .min(6, ({min}) => `Password must be at least ${min} characters`)
-    // .required('*required')
+    .required('*required')
     .label('Password'),
   passwordConfirmation: Yup.string()
-    // .required('*required')
+    .required('*required')
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
     .label('passwordConfirmation'),
 });
@@ -64,8 +68,44 @@ const SignupWithEmail = () => {
   const [showTryAgainButton, setShowTryAgainButton] = useState(false);
   const email = useRef('');
 
+  const [registerUser, {isLoading, isError, error}] = useRegisterUserMutation();
+
   const submitHandler = async values => {
-    navigation.navigate('Main');
+    email.current = values.email;
+    registerUser({
+      // name: values.name,
+      email: values.email,
+      password: values.password,
+      // passwordConfirmation: values.passwordConfirmation,
+    })
+      .then(res => {
+        if (res?.error?.status === 409) {
+          setMessage(res?.error?.data?.message);
+          setShowLoginButton(false);
+          if (!res?.error?.data?.verified) {
+            setShowTryAgainButton(true);
+          }
+          setVisible(true);
+        } else if (
+          res?.data?.message === 'An Email sent to your account please verify'
+        ) {
+          formikRef.current.resetForm();
+          setMessage(
+            `An Email sent to ${email.current}. Please verify and then login`,
+          );
+          setShowTryAgainButton(false);
+          setShowLoginButton(true);
+          setVisible(true);
+        } else {
+          setShowTryAgainButton(true);
+          setShowLoginButton(true);
+          setMessage('Something went wrong');
+          setVisible(true);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   const [
@@ -111,13 +151,35 @@ const SignupWithEmail = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
-  const [showMenu, setShowMenu] = useState(false);
-  const openMenu = () => setShowMenu(true);
-  const closeMenu = () => setShowMenu(false);
 
   const [checked, setChecked] = useState(false);
 
   const formikRef = useRef();
+
+  const {isOpen, open, close, provider, isConnected, address} =
+    useWalletConnectModal();
+
+  const projectId = '4287ee7f1533e4a2b7f5d0937ba341cf';
+
+  const providerMetadata = {
+    name: 'caribbean-coin',
+    description: 'Caribbean coin project',
+    url: 'https://app.caribbean-coin.com/',
+    icons: ['https://app.caribbean-coin.com/carib-coin-logo.png'],
+    redirect: {
+      native: 'YOUR_APP_SCHEME://',
+      universal: 'YOUR_APP_UNIVERSAL_LINK.com',
+    },
+  };
+
+  // Function to handle the
+  // console.log('first', isOpen, isConnected, address);
+  const handleButtonPress = async () => {
+    if (isConnected) {
+      return provider?.disconnect();
+    }
+    return open();
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
@@ -310,8 +372,8 @@ const SignupWithEmail = () => {
 
               <ButtonLinearGradient style={{marginTop: '4%'}}>
                 <Button
-                  // loading={isLoading || resendLoading}
-                  // disabled={isLoading || resendLoading}
+                  loading={isLoading || resendLoading}
+                  disabled={isLoading || resendLoading}
                   style={{
                     backgroundColor: 'transparent',
                   }}
@@ -324,10 +386,36 @@ const SignupWithEmail = () => {
                   {t('Sign up')}
                 </Button>
               </ButtonLinearGradient>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 18,
+                  marginVertical: '5%',
+                }}>
+                or
+              </Text>
+
+              <Button
+                // loading={isLoading || resendLoading}
+                // disabled={isLoading || resendLoading}
+                contentStyle={{
+                  padding: '3%',
+                }}
+                icon={isConnected ? "close-circle" : "wallet"}
+                theme={{roundness: 15}}
+                mode={isConnected ? "contained-tonal" : "elevated"}
+                onPress={handleButtonPress}>
+                {isConnected ? t('Disconnect wallet') :  t('Connect wallet')}
+              </Button>
+              <Text style={{marginTop: '5%'}}>{isConnected ? "Wallet address:": ""} {address}</Text>
             </View>
           )}
         </Formik>
       </ScrollView>
+      <WalletConnectModal
+        projectId={projectId}
+        providerMetadata={providerMetadata}
+      />
     </View>
   );
 };

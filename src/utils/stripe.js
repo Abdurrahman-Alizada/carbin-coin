@@ -1,0 +1,2 @@
+export const publishKey = "pk_test_51OC1nzSJ573oolh4PszVHesIPg6r9ZjzKPEU5NwFZBtT7QdxkNjOU5s6F9BBKmtF6jGv2SpwExnVd3chwymw0nOr00JgET5fyi"
+export const secretKry = "sk_test_51OC1nzSJ573oolh4TQh4jqNTIP1PtuaCBTqaqh0A557TVX250EK7id20AdQuk9hNvHlAoDPBQVALnol2rfPCkFhQ00BpDRJSaW"

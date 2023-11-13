@@ -36,11 +36,11 @@ import {t} from 'i18next';
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email('Type your valid email address')
-    // .required('*required')
+    .required('*required')
     .label('Email'),
   password: Yup.string()
     .min(6, ({min}) => `Password must be at least ${min} characters`)
-    // .required('*required')
+    .required('*required')
     .label('Password'),
 });
 
@@ -65,7 +65,38 @@ const LoginScreen = ({navigation, route}) => {
 
   const [loginUser, {isLoading, isError, error}] = useLoginUserMutation();
   const submitHandler = async (values, actions) => {
-    navigation.navigate('Main');
+    const response = await loginUser({
+      email: values.email,
+      password: values.password,
+    });
+
+    if (response?.error) {
+      setErrorMessage(response?.error?.data?.message);
+      setVisible(true);
+    }
+    // if (response?.data?.message) {
+    //   console.log(response?.data?.message);
+    //   setErrorMessage(response?.data?.message);
+    //   setVisible(true);
+    // }
+    if (response?.data?.message == "Email Not Verified") {
+      setErrorMessage('An Email was sent to your account please verify then login');
+      setVisible(true);
+    
+      // setBannerMessage('Please verify the provided email first');
+      // setVerificationBannerVisible(true);
+    }
+    if (response?.data?.token) {
+      console.log("4", response.data)
+
+      dispatch(handleCurrentLoaginUser({email:values.email, role:response?.data?.role}));
+      await AsyncStorage.setItem('isLoggedIn', 'login');
+      await AsyncStorage.setItem('token', response?.data?.token);
+      await AsyncStorage.setItem('userId', response?.data?._id);
+      await AsyncStorage.setItem('email', values.email);
+      actions.resetForm();
+      navigation.navigate('Main');
+    }
   };
 
   const [showPassword, setShowPassword] = useState(false);
@@ -84,7 +115,7 @@ const LoginScreen = ({navigation, route}) => {
 
         <Portal>
           <Dialog visible={visible} onDismiss={() => setVisible(true)}>
-            <Dialog.Title>Sign in Error</Dialog.Title>
+            <Dialog.Title>Sign in</Dialog.Title>
             <Dialog.Content>
               <Paragraph>
                 {' '}
@@ -177,7 +208,7 @@ const LoginScreen = ({navigation, route}) => {
                   </Text>
                 ) : null}
 
-                <ButtonLinearGradient style={{marginVertical:"5%", paddingVertical:"2%"}}>
+                <ButtonLinearGradient style={{marginVertical:"5%"}}>
                   <Button
                     loading={isLoading}
                     // disabled={!(dirty && isValid) || isLoading}
@@ -186,7 +217,7 @@ const LoginScreen = ({navigation, route}) => {
                       backgroundColor: 'transparent',
                       // marginVertical: '5%',
                     }}
-                    // contentStyle={{padding: '3%'}}
+                    contentStyle={{padding: '3%'}}
                     // buttonStyle={{padding: '1%'}}
                     theme={{roundness: 1}}
                     mode="contained"

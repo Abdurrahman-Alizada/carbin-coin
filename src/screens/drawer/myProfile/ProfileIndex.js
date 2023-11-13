@@ -7,9 +7,21 @@ import SecuritySettingIndex from './SecuritySettings/SecuritySettingIndex';
 import LinearGradient from 'react-native-linear-gradient';
 import ButtonLinearGradient from '../../../components/ButtonLinearGradient';
 import {useTranslation} from 'react-i18next';
-const Index = ({navigation}) => {
+import {useGetCurrentLoginUserQuery} from '../../../redux/reducers/user/userThunk';
+import ProfileLoading from '../../../Skeletons/profileLoading';
+import WalletIndex from '../../../Skeletons/Wallet/WalletIndex';
+const Index = ({navigation, route}) => {
+  const {token} = route.params;
   const theme = useTheme();
   const {t} = useTranslation();
+  const {
+    data: user,
+    isError,
+    error,
+    isLoading,
+    refetch,
+  } = useGetCurrentLoginUserQuery(token);
+
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
       <Appbar.Header style={{backgroundColor: theme.colors.background}}>
@@ -17,16 +29,23 @@ const Index = ({navigation}) => {
         <Appbar.Content title="Profile" />
       </Appbar.Header>
       <ScrollView contentContainerStyle={{paddingBottom: '5%'}}>
-        <UserInfo />
+        {isLoading ? (
+          <ProfileLoading />
+        ) : (
+          <UserInfo user={user} token={token} />
+        )}
+
         {/* <AdsCard /> */}
-        <SecuritySettingIndex />
+        <Text style={{marginTop: '10%', textAlign: 'center', fontSize: 20}}>
+          {t('Security settings')}
+        </Text>
+        {isLoading ? (
+          <WalletIndex />
+        ) : (
+          <SecuritySettingIndex user={user} token={token} />
+        )}
 
         <View style={{marginTop: '10%', paddingHorizontal: '5%'}}>
-          {/* <LinearGradient
-            start={{x: 1, y: 0}}
-            end={{x: 0, y: 0}}
-            colors={['#4c669f', '#3b5998', '#192f6a']}
-            style={{borderRadius: 40, height: 'auto'}}> */}
           <ButtonLinearGradient>
             <Button
               icon="message-processing"
@@ -47,15 +66,13 @@ const Index = ({navigation}) => {
             </Button>
           </ButtonLinearGradient>
 
-          {/* </LinearGradient> */}
-
           <Button
             icon="logout"
             mode="outlined"
             style={{padding: '3%', marginTop: '3%'}}
             theme={{roundness: 10}}
             onPress={() => console.log('Pressed')}>
-            {t("Log out")}
+            {t('Log out')}
           </Button>
 
           <Button
@@ -65,7 +82,7 @@ const Index = ({navigation}) => {
             style={{padding: '1.5%', marginTop: '3%'}}
             theme={{roundness: 10}}
             onPress={() => console.log('Pressed')}>
-            {t("Delete account")}
+            {t('Delete account')}
           </Button>
         </View>
       </ScrollView>

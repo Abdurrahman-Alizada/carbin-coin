@@ -23,10 +23,8 @@ const SecuritySettingIndex = () => {
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
   return (
-    <View style={{marginTop: '10%', paddingHorizontal: '0%'}}>
-      <Text style={{textAlign: 'center', fontSize: 20}}>
-        {t('Security settings')}
-      </Text>
+    <View style={{ paddingHorizontal: '0%'}}>
+     
 
       <View style={{marginTop: '5%'}}>
         <Drawer.Item
