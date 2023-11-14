@@ -2,13 +2,10 @@ import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {Text, Button, useTheme} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
+
 const TopUpIndex = ({navigation}) => {
   const theme = useTheme();
   const {t} = useTranslation();
-
-  const stripPaymentHangler = ()=>{
-    console.log("first")
-  }
 
   return (
     <View style={{padding: '5%', flex:1, backgroundColor:theme.colors.background}}>
@@ -41,6 +38,7 @@ const TopUpIndex = ({navigation}) => {
         {t("Card")}
       </Button>
 
+
       <Button
         style={{marginTop: '5%'}}
         contentStyle={{
@@ -52,12 +50,14 @@ const TopUpIndex = ({navigation}) => {
         mode="contained-tonal"
         theme={{roundness: 2}}
         labelStyle={{fontSize: 18}}
-        // onPress={() => navigation.navigate('BankTransferTopUp')}
-        onPress={() => stripPaymentHangler()}
+        onPress={() => navigation.navigate('StripeIndex')}
+        // onPress={() => stripPaymentHangler()}
         
         >
         {t("Stripe")}
       </Button>
+    
+    
     </View>
   );
 };
