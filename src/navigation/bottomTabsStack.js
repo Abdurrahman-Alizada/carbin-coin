@@ -17,6 +17,7 @@ import CaribbeanUserIndex from '../screens/bottomTabs/wallet/send/caribbeanUser/
 import UsingLinkInstruction from '../screens/bottomTabs/wallet/send/usingLink/UsingLinkInstruction';
 import SendUsingLink from '../screens/bottomTabs/wallet/send/usingLink/SendUsingLink';
 import LanguageIndex from '../screens/bottomTabs/Settings/preferences/language/LanguageIndex';
+import StripeIndex from '../screens/bottomTabs/wallet/topUp/stripe/StripeIndex';
 const AppStack = () => {
   const {t} = useTranslation();
 
@@ -102,6 +103,13 @@ const AppStack = () => {
           ),
         }}
       />
+      <Stack.Screen
+        name="StripeIndex"
+        component={StripeIndex}
+        options={{
+          header: props => <GeneralAppbar title="Stripe" {...props} />,
+        }}
+      />
       {/* send money end*/}
 
       <Stack.Screen
@@ -117,12 +125,12 @@ const AppStack = () => {
         name="ChooseLanguage"
         component={LanguageIndex}
         options={{
-          header: props => <GeneralAppbar title={t("Choose language")} {...props} />,
+          header: props => (
+            <GeneralAppbar title={t('Choose language')} {...props} />
+          ),
         }}
       />
       {/* Settings end */}
-
-
     </Stack.Navigator>
   );
 };

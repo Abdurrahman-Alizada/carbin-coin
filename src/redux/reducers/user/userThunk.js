@@ -2,6 +2,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {baseURL} from '../../axios';
+import { secretKry } from '../../../utils/stripe';
 // register new user
 
 export const userApi = createApi({
@@ -53,10 +54,10 @@ export const userApi = createApi({
         url: `/api/editUserDetails/${user.token}`,
         method: 'PUT',
         body: {
-          _id:user._id,
+          _id: user._id,
           name: user.name,
-          phone : user.phone,
-          fullName : user.fullName
+          phone: user.phone,
+          fullName: user.fullName,
         },
       }),
       invalidatesTags: ['User'],
@@ -71,6 +72,7 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['User', 'Groups'],
     }),
+
     updateEmail: build.mutation({
       query: user => ({
         url: `/api/account/users/${user.id}/updateEmail`,
@@ -174,5 +176,5 @@ export const {
   useForgotPasswordMutation,
   useVerifyOTPForPasswordRecoveryMutation,
   useResetPasswordMutation,
-  useResendEmailForUserRegistrationMutation
+  useResendEmailForUserRegistrationMutation,
 } = userApi;
