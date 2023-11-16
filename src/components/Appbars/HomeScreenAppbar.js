@@ -16,14 +16,14 @@ const HomeScreenAppbar = () => {
       color={theme.colors.onBackground}
       onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
     />
-    {/* <Appbar.Content
+    <Appbar.Content
         title="Event Planner"
         titleStyle={{
           color: theme.colors.onBackground,
         }}
-      /> */}
+      />
 
-    {/* <Menu
+    <Menu
         visible={visible}
         onDismiss={closeMenu}
         contentStyle={{backgroundColor: theme.colors.background}}
@@ -43,7 +43,7 @@ const HomeScreenAppbar = () => {
             navigation.navigate('AppSettingsMain');
           }}
         />
-      </Menu> */}
+      </Menu>
   </Appbar.Header>
 
   )
