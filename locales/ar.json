@@ -1,0 +1,40 @@
+{
+  "translation": {
+    "hello":"مرحبًا",
+    "Preferences" : "التفضيلات",
+    "Dark theme":"موضوع مظلم",
+    "Card settings":"إعدادات البطاقة",
+    "Your card number":"رقم بطاقتك",
+    "Show":"يعرض",
+    "Choose language": "اختر اللغة",
+
+    "Settings":"إعدادات",
+    "Show card number": "إظهار رقم البطاقة",
+    "Set limit":"ضع الحدود",
+    "Set a limit for spending":"وضع حد للإنفاق",
+    "Online payment" :"الدفع الالكتروني",
+    "Enable online transaction":"تمكين المعاملات عبر الإنترنت",
+    "Freeze card":"بطاقة تجميد",
+    "Temporarily disable card usage":"تعطيل استخدام البطاقة مؤقتًا",
+    "International payment":"الدفع الدولي",
+    "We'll access your location to prevent fraud operations":"سنصل إلى موقعك لمنع عمليات الاحتيال",
+
+    "My Profile":"ملفي",
+    "Cards":"بطاقات",
+    "Need Help":"تحتاج مساعدة",
+    "Log out":"تسجيل خروج",
+
+    "Sign in": "تسجيل الدخول",
+    "Email":"بريد إلكتروني",
+    "Password" : "كلمة المرور",
+    "Log in" : "تسجيل الدخول",
+    "New to Caribbean-coin":"جديد للعملة الكاريبية",
+    "Forgot password":"هل نسيت كلمة السر",
+    "Sign up" : "اشتراك",
+
+    "Confirm password" : "تأكيد كلمة المرور",
+    "I have an invitation" : "لدي دعوة",
+    "I agree to ":"أنا أوافق على",
+    "terms and conditions":"الأحكام والشروط"
+  }
+}

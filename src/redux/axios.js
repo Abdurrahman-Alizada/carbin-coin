@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 export const instance = axios.create({
-    baseURL: 'https://dawat-backend.onrender.com/',
+    baseURL: 'https://caribcoin-backend.vercel.app',
   });
   
-// export const baseURL = 'https://dawat-backend.onrender.com'
-export const baseURL = 'https://a3f5-192-140-149-98.ngrok-free.app'
+// export const baseURL = 'https://caribcoin-backend.vercel.app'
+
+// for developemtn ngrok is used because local server like localhost:3000 is not working in react native
+export const baseURL = 'https://7697-121-91-34-97.ngrok-free.app'

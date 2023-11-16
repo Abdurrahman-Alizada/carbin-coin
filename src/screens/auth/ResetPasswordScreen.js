@@ -1,10 +1,6 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 
-import {
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {
@@ -19,7 +15,9 @@ import {
 } from 'react-native-paper';
 import {useResetPasswordMutation} from '../../redux/reducers/user/userThunk';
 import {useDispatch} from 'react-redux';
-import { handlePasswordResetSuccessfully } from '../../redux/reducers/user/user';
+import AuthAppbar from '../../components/Appbars/AuthAbbar';
+import ButtonLinearGradient from '../../components/ButtonLinearGradient';
+import { useTranslation } from 'react-i18next';
 
 const validationSchema = Yup.object().shape({
   password: Yup.string()
@@ -34,37 +32,13 @@ const validationSchema = Yup.object().shape({
 
 const ResetPasswordScreen = ({navigation, route}) => {
   const theme = useTheme();
-  const dispatch = useDispatch();
-
-  const [visible, setVisible] = useState(false);
-  const [message, setMessage] = useState('Something went wrong');
+  const {t} = useTranslation();
 
   const [resetPassword, {isLoading, isError, error}] =
     useResetPasswordMutation();
 
-    const submitHandler = async values => {
-    resetPassword({
-      id: route?.params?.user?._id,
-      newPassword: values.password,
-    })
-      .then(res => {
-        if (res?.error?.data?.message) {
-          setMessage(res?.error?.data?.message);
-          setVisible(true);
-        } else if (res?.error?.error) {
-          setMessage(res?.error?.error);
-          setVisible(true);
-        } else if (res?.data?.message == `Password has been updated`) {
-          dispatch(handlePasswordResetSuccessfully(true));
-          navigation.navigate('Login');
-        } else {
-          setMessage('Unknown error');
-          setVisible(true);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  const submitHandler = async values => {
+    navigation.navigate('Main');
   };
 
   const [showPassword, setShowPassword] = useState(false);
@@ -72,20 +46,8 @@ const ResetPasswordScreen = ({navigation, route}) => {
     useState(false);
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-
-      <Portal>
-        <Dialog visible={visible} onDismiss={() => setVisible(true)}>
-          <Dialog.Title>Reset password error</Dialog.Title>
-          <Dialog.Content>
-            <Paragraph> {message} </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setVisible(false)}>Ok</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+    <View style={{flex: 1, backgroundColor: theme.colors.background}}>
+      <AuthAppbar title={'Reset password'} />
 
       <Formik
         initialValues={{
@@ -104,19 +66,20 @@ const ResetPasswordScreen = ({navigation, route}) => {
           values,
           errors,
           touched,
-          dirty, 
-          isValid 
+          dirty,
+          isValid,
         }) => (
           <View
             style={{
               flex: 1,
               justifyContent: 'space-between',
               marginVertical: '2%',
+              padding: '5%',
             }}>
             <View>
               <TextInput
                 error={errors.password && touched.password ? true : false}
-                label="New password"
+                label={t("New password")}
                 secureTextEntry={showPassword}
                 right={
                   <TextInput.Icon
@@ -139,7 +102,7 @@ const ResetPasswordScreen = ({navigation, route}) => {
 
               <TextInput
                 error={errors.password && touched.password ? true : false}
-                label="Confirm new password"
+                label={t("Confirm new password")}
                 mode="outlined"
                 secureTextEntry={showPasswordConfirmation}
                 right={
@@ -167,22 +130,23 @@ const ResetPasswordScreen = ({navigation, route}) => {
                   left={props => <List.Icon {...props} icon="information" />}
                 /> */}
 
-              <Button
-                loading={isLoading}
-                // disabled={isLoading}
-                disabled={!(dirty && isValid)}
-                icon="check-bold"
-                style={{
-                  marginVertical: '3%',
-                }}
-                contentStyle={{padding: '3%'}}
-                buttonStyle={{padding: '1%'}}
-                theme={{roundness: 1}}
-                mode="contained"
-                onPress={handleSubmit}
-                buttonColor={theme.colors.secondary}>
-                Reset
-              </Button>
+              <ButtonLinearGradient style={{marginVertical: '5%'}}>
+                <Button
+                  loading={isLoading}
+                  // disabled={isLoading}
+                  disabled={!(dirty && isValid)}
+                  icon="check-bold"
+                  style={{
+                    backgroundColor: 'transparent',
+                  }}
+                  contentStyle={{padding: '3%'}}
+                  theme={{roundness: 1}}
+                  mode="contained"
+                  onPress={handleSubmit}
+                  buttonColor={theme.colors.secondary}>
+                  {t("Reset")}
+                </Button>
+              </ButtonLinearGradient>
             </View>
           </View>
         )}

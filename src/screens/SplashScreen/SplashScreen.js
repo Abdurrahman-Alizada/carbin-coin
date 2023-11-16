@@ -1,12 +1,16 @@
 // Import React and Component
 import React, {useLayoutEffect, useEffect, useRef} from 'react';
 import {View, StatusBar, Image} from 'react-native';
-
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTheme, Text, Avatar} from 'react-native-paper';
 import {version} from '../../../package.json';
+import {useDispatch} from 'react-redux';
+import {handleCurrentLanguage} from '../../redux/reducers/settings/settings';
+import i18next from '../../../locales/i18next';
+
 const SplashScreen = ({navigation}) => {
+  const dispatch = useDispatch();
+
   const isAppFirstLaunched = useRef(true); //onboarding screen decision
 
   useEffect(() => {
@@ -15,7 +19,6 @@ const SplashScreen = ({navigation}) => {
         value => value,
       );
 
-      console.log(appData);
       if (appData) {
         isAppFirstLaunched.current = false;
       } else {
@@ -34,12 +37,27 @@ const SplashScreen = ({navigation}) => {
         setTimeout(() => {
           isAppFirstLaunched?.current
             ? navigation.replace('Onboarding')
-            : navigation.replace(!value ? 'Auth' : 'Drawer');
-        }, 2000);
+             : navigation.replace(!value ? 'Auth' : 'Main');
+              // : navigation.replace('Main');
+          }, 2000);
+        // }, 0);
       })
       .catch(err => {
         console.log(err);
       });
+  }, []);
+
+  const getCurrentLanguage = async () => {
+    const lng = await AsyncStorage.getItem('currentLanguage');
+    if (!lng) {
+      await AsyncStorage.setItem('currentLanguage', 'en');
+    } else {
+      dispatch(handleCurrentLanguage(lng));
+      i18next.changeLanguage(lng);
+    }
+  };
+  useEffect(() => {
+    getCurrentLanguage();
   }, []);
 
   const theme = useTheme();
@@ -49,27 +67,26 @@ const SplashScreen = ({navigation}) => {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: theme.colors.blueBG,
+        // backgroundColor: theme.colors.blueBG,
       }}>
       <View
         style={{
           flex: 0.95,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: theme.colors.blueBG,
+          // backgroundColor: theme.colors.blueBG,
         }}>
         <StatusBar
-          barStyle="light-content"
-          backgroundColor={theme.colors.blueBG}
+          // barStyle="light-content"
+          backgroundColor={theme.colors.background}
         />
-        <Text>hello</Text>
-        {/* <Image
+        <Image
           style={{
-            width: 100,
-            height: 100,
+            width: 150,
+            height: 150,
           }}
-          source={require('../../assets/logo/logo.png')}
-        /> */}
+          source={require('../../assets/splash-screen/carib-coin-logo.png')}
+        />
       </View>
       <Text style={{fontWeight: 'bold', color: theme.colors.onPrimary}}>
         V {version}

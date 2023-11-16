@@ -3,10 +3,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import {
   LoginScreen,
-  // ForgotPasswordScreen,
+  ForgotPasswordScreen,
   // OTPScreen,
   // ResetPasswordScreen,
   SignupWithEmail,
+  OTPScreen,
+  ResetPasswordScreen,
   // CheckEmail,
 } from '../screens/auth/Index';
 const Stack = createStackNavigator();
@@ -14,8 +16,6 @@ const Stack = createStackNavigator();
 const AuthStack = () => {
   return (
     <Stack.Navigator initialRouteName="Login">
-      
-
       <Stack.Screen
         name="Login"
         component={LoginScreen}
@@ -34,28 +34,32 @@ const AuthStack = () => {
         }}
         component={SignupWithEmail}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="ForgotPassword"
         options={{
           title: 'Forgot password',
+          presentation: 'modal',
+          headerShown: false,
         }}
         component={ForgotPasswordScreen}
-      /> */}
-      {/* <Stack.Screen name="CheckEmail" component={CheckEmail} /> */}
-      {/* <Stack.Screen
-        name="OTPScreen"
+      />
+
+      <Stack.Screen
+        name="OTPScreen1"
         component={OTPScreen}
         options={{
-          title: 'Verify email',
+          title: 'OTP',
+          headerShown:false
         }}
-      /> */}
-      {/* <Stack.Screen
+      />
+      <Stack.Screen
         name="ResetPasswordScreen"
         component={ResetPasswordScreen}
         options={{
           title: 'Reset password',
+          headerShown:false
         }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };

@@ -18,7 +18,6 @@ const DrawerStack = props => {
         name="Drawer"
         component={Drawer}
         options={{headerShown: false}}
-      
       />
     </Drawer1.Navigator>
   );

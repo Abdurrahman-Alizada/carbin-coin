@@ -5,6 +5,7 @@ import {
   StatusBar,
   StyleSheet,
   TouchableOpacity,
+  Image,
   View,
 } from 'react-native';
 import {Formik} from 'formik';
@@ -17,11 +18,9 @@ import {
   Avatar,
   Paragraph,
   Banner,
+  Checkbox,
   Portal,
   useTheme,
-  Appbar,
-  Menu,
-  Divider,
 } from 'react-native-paper';
 import {useLoginUserMutation} from '../../../redux/reducers/user/userThunk';
 import {
@@ -30,18 +29,18 @@ import {
 } from '../../../redux/reducers/user/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
-import {userApi} from '../../../redux/reducers/user/userThunk';
-import {groupApi} from '../../../redux/reducers/groups/groupThunk';
-import {friendshipApi} from '../../../redux/reducers/Friendship/friendshipThunk';
+import AuthAppbar from '../../../components/Appbars/AuthAbbar';
+import ButtonLinearGradient from '../../../components/ButtonLinearGradient';
+import {t} from 'i18next';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email('Type your valid email address')
-    // .required('*required')
+    .required('*required')
     .label('Email'),
   password: Yup.string()
     .min(6, ({min}) => `Password must be at least ${min} characters`)
-    // .required('*required')
+    .required('*required')
     .label('Password'),
 });
 
@@ -66,203 +65,204 @@ const LoginScreen = ({navigation, route}) => {
 
   const [loginUser, {isLoading, isError, error}] = useLoginUserMutation();
   const submitHandler = async (values, actions) => {
-    navigation.navigate('Main');
+    const response = await loginUser({
+      email: values.email,
+      password: values.password,
+    });
+
+    if (response?.error) {
+      setErrorMessage(response?.error?.data?.message);
+      setVisible(true);
+    }
+    // if (response?.data?.message) {
+    //   console.log(response?.data?.message);
+    //   setErrorMessage(response?.data?.message);
+    //   setVisible(true);
+    // }
+    if (response?.data?.message == "Email Not Verified") {
+      setErrorMessage('An Email was sent to your account please verify then login');
+      setVisible(true);
+    
+      // setBannerMessage('Please verify the provided email first');
+      // setVerificationBannerVisible(true);
+    }
+    if (response?.data?.token) {
+      console.log("4", response.data)
+
+      dispatch(handleCurrentLoaginUser({email:values.email, role:response?.data?.role}));
+      await AsyncStorage.setItem('isLoggedIn', 'login');
+      await AsyncStorage.setItem('token', response?.data?.token);
+      await AsyncStorage.setItem('userId', response?.data?._id);
+      await AsyncStorage.setItem('email', values.email);
+      actions.resetForm();
+      navigation.navigate('Main');
+    }
   };
 
-  const [showPassword, setShowPassword] = useState(true);
-  const [showMenu, setShowMenu] = useState(false);
-
-  const openMenu = () => setShowMenu(true);
-  const closeMenu = () => setShowMenu(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-        flex: 1,
-        paddingVertical: '2%',
-      }}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={theme.colors.background}
-      />
+    <View style={{flex: 1, backgroundColor: theme.colors.background}}>
+      <AuthAppbar title={'Sign in'} />
 
-      <Appbar.Header
-        style={{backgroundColor: theme.colors.background}}
-        // elevated={true}
-      >
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Content
-          title="Login"
-          titleStyle={{
-            color: theme.colors.onBackground,
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          flex: 1,
+          paddingVertical: '2%',
+        }}>
+
+
+        <Portal>
+          <Dialog visible={visible} onDismiss={() => setVisible(true)}>
+            <Dialog.Title>Sign in</Dialog.Title>
+            <Dialog.Content>
+              <Paragraph>
+                {' '}
+                {errorMessage} {isError && error?.error}
+              </Paragraph>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={() => setVisible(false)}>Ok</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+
+        <Banner
+          visible={passwordResetSuccessflly}
+          actions={[
+            {
+              label: 'Ok',
+              onPress: () => dispatch(handlePasswordResetSuccessfully(false)),
+            },
+          ]}
+          // style={{paddingHorizontal:"5%"}}
+          icon={({size}) => <Avatar.Icon size={size} icon="check-bold" />}>
+          Your password has been reset successfully. You can sign in now with
+          the updated password.
+        </Banner>
+
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
           }}
-        />
+          validationSchema={validationSchema}
+          onSubmit={(values, actions) => {
+            submitHandler(values, actions);
+          }}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            // dirty,
+            // isValid,
+          }) => (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'space-between',
+                marginTop: '10%',
+                paddingHorizontal: '5%',
+              }}>
+              <View>
+                <TextInput
+                  error={errors.email && touched.email ? true : false}
+                  label={t('Email')}
+                  // placeholder="Enter your email"
+                  mode="outlined"
+                  style={{marginTop: '2%'}}
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  activeOutlineColor={theme.colors.secondary}
+                />
+                {errors.email && touched.email ? (
+                  <Text style={{color: theme.colors.error}}>
+                    {errors.email}
+                  </Text>
+                ) : null}
+                <TextInput
+                  error={errors.password && touched.password ? true : false}
+                  label={t('Password')}
+                  secureTextEntry={!showPassword}
+                  right={
+                    <TextInput.Icon
+                      icon={showPassword ? 'eye' : 'eye-off'}
+                      onPress={() => setShowPassword(!showPassword)}
+                    />
+                  }
+                  mode="outlined"
+                  style={{marginTop: '2%'}}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                  activeOutlineColor={theme.colors.secondary}
+                />
+                {errors.password && touched.password ? (
+                  <Text style={{color: theme.colors.error}}>
+                    {errors.password}
+                  </Text>
+                ) : null}
 
-        <Menu
-          visible={showMenu}
-          onDismiss={closeMenu}
-          contentStyle={{backgroundColor: theme.colors.background}}
-          anchor={
-            <Appbar.Action
-              icon={'dots-vertical'}
-              color={theme.colors.onBackground}
-              onPress={() => openMenu()}
-            />
-          }>
-          <Menu.Item
-            leadingIcon="help-circle-outline"
-            title="Help"
-            titleStyle={{color: theme.colors.onBackground}}
-            onPress={async () => {
-              closeMenu();
-              navigation.navigate('AppSettingsMain');
-            }}
-          />
+                <ButtonLinearGradient style={{marginVertical:"5%"}}>
+                  <Button
+                    loading={isLoading}
+                    // disabled={!(dirty && isValid) || isLoading}
+                    disabled={isLoading}
+                    style={{
+                      backgroundColor: 'transparent',
+                      // marginVertical: '5%',
+                    }}
+                    contentStyle={{padding: '3%'}}
+                    // buttonStyle={{padding: '1%'}}
+                    theme={{roundness: 1}}
+                    mode="contained"
+                    onPress={handleSubmit}
+                    buttonColor={theme.colors.blueBG}>
+                    {t('Log in')}
+                  </Button>
+                </ButtonLinearGradient>
 
-          <Menu.Item
-            leadingIcon="message-outline"
-            title="Contact us"
-            titleStyle={{color: theme.colors.onBackground}}
-            onPress={async () => {
-              closeMenu();
-              navigation.navigate('AppSettingsMain');
-            }}
-          />
-        </Menu>
-      </Appbar.Header>
-
-      <Portal>
-        <Dialog visible={visible} onDismiss={() => setVisible(true)}>
-          <Dialog.Title>Sign in Error</Dialog.Title>
-          <Dialog.Content>
-            <Paragraph>
-              {' '}
-              {errorMessage} {isError && error?.error}
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setVisible(false)}>Ok</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-
-      <Banner
-        visible={passwordResetSuccessflly}
-        actions={[
-          {
-            label: 'Ok',
-            onPress: () => dispatch(handlePasswordResetSuccessfully(false)),
-          },
-        ]}
-        // style={{paddingHorizontal:"5%"}}
-        icon={({size}) => <Avatar.Icon size={size} icon="check-bold" />}>
-        Your password has been reset successfully. You can sign in now with the
-        updated password.
-      </Banner>
-
-      <Text
-        style={{
-          fontSize: 20,
-          marginTop: '3%',
-          fontWeight: '700',
-          paddingHorizontal: '5%',
-        }}>
-        Login your account.
-      </Text>
-
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        validationSchema={validationSchema}
-        onSubmit={(values, actions) => {
-          submitHandler(values, actions);
-        }}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-          // dirty,
-          // isValid,
-        }) => (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'space-between',
-              marginVertical: '2%',
-              paddingHorizontal: '5%',
-            }}>
-            <View>
-              <TextInput
-                error={errors.email && touched.email ? true : false}
-                label="Email"
-                // placeholder="Enter your email"
-                mode="outlined"
-                style={{marginTop: '2%'}}
-                value={values.email}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
-                activeOutlineColor={theme.colors.secondary}
-              />
-              {errors.email && touched.email ? (
-                <Text style={{color: theme.colors.error}}>{errors.email}</Text>
-              ) : null}
-              <TextInput
-                error={errors.password && touched.password ? true : false}
-                label="Password"
-                secureTextEntry={!showPassword}
-                right={
-                  <TextInput.Icon
-                    icon={showPassword ? 'eye' : 'eye-off'}
-                    onPress={() => setShowPassword(!showPassword)}
-                  />
-                }
-                mode="outlined"
-                style={{marginTop: '2%'}}
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                value={values.password}
-                activeOutlineColor={theme.colors.secondary}
-              />
-              {errors.password && touched.password ? (
-                <Text style={{color: theme.colors.error}}>
-                  {errors.password}
-                </Text>
-              ) : null}
-
-              <Button
-                loading={isLoading}
-                // disabled={!(dirty && isValid) || isLoading}
-                disabled={isLoading}
-                style={{
-                  marginVertical: '3%',
-                }}
-                contentStyle={{padding: '3%'}}
-                buttonStyle={{padding: '1%'}}
-                theme={{roundness: 1}}
-                mode="contained"
-                onPress={handleSubmit}
-                buttonColor={theme.colors.blueBG}>
-                Login
-              </Button>
-
-              <TouchableOpacity
-                style={{marginVertical: '3%', alignSelf: 'center'}}
-                onPress={() => navigation.navigate('ForgotPassword')}>
-                <Text style={{fontWeight: 'bold', color: theme.colors.textRed}}>
-                  Forgot password?
-                </Text>
-              </TouchableOpacity>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                  }}>
+                  <Text style={{fontWeight: 'bold'}}>
+                    {t("New to Caribbean-coin")}
+                  </Text>
+                  <TouchableOpacity
+                    style={{
+                      marginVertical: '5%',
+                      marginHorizontal: '3%',
+                      alignSelf: 'center',
+                    }}
+                    onPress={() => navigation.navigate('SignUpwithEmail')}>
+                    <Text
+                      style={{fontWeight: 'bold', color: theme.colors.textRed}}>
+                      {t("Sign up")}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                  style={{marginVertical: '5%', alignSelf: 'center'}}
+                  onPress={() => navigation.navigate('ForgotPassword')}>
+                  <Text
+                    style={{fontWeight: 'bold', color: theme.colors.textRed}}>
+                   {t("Forgot password")}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-      </Formik>
-    </ScrollView>
+          )}
+        </Formik>
+      </ScrollView>
+    </View>
   );
 };
 

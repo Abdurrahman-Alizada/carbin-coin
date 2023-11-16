@@ -29,14 +29,16 @@ export const lightPalette = {
   blueBG: '#265AE8',
   textGray: '#3E3F41',
   cardBG: '#fff',
+  greyLight: '#888C94',
   textRed : "#DD105E",
   yellow :"#FFAF4F",
+  lightYellow:"#F5E493",
   purpleLight:"#62468d",
-  grayBG : "#D9D9D9"
+  grayBG : "#D9D9D9",
 };
 
 export const darkPalette = {
-  background: '#212121',
+  // background: '#212121',
   blueBG: '#265AE8',
   textGray: '#3E3F41',
   cardBG: '#3E3F41',

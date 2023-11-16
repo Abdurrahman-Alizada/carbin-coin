@@ -1,17 +1,28 @@
 import {configureStore} from '@reduxjs/toolkit';
+
 import {userApi} from './reducers/user/userThunk';
 import userReducer from './reducers/user/user';
-// import {groupApi} from './reducers/groups/groupThunk';
-// import {TasksApi} from './reducers/groups/tasks/taskThunk';
+
+import {settingApi} from './reducers/settings/settingsThunk';
+import settingReducer from './reducers/settings/settings';
+
+import {ChatApi} from './reducers/chat/chatThunk';
+import chatReducer from './reducers/chat/chatSlice';
+
+import {transactionApi} from './reducers/transactions/transactionsThunk';
+import transactionReducer from './reducers/transactions/transactions';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    // groups: groupReducer,
-    // tasks: taskReducer,
-    // [userApi.reducerPath]: userApi.reducer,
-    // [groupApi.reducerPath]: groupApi.reducer,
-    // [TasksApi.reducerPath]: TasksApi.reducer,
+    settings: settingReducer,
+    chat: chatReducer,
+    transaction: transactionReducer,
+
+    [userApi.reducerPath]: userApi.reducer,
+    [settingApi.reducerPath]: settingApi.reducer,
+    [ChatApi.reducerPath]: ChatApi.reducer,
+    [transactionApi.reducerPath]: transactionApi.reducer,
   },
 
   middleware: getdefaultMiddleware =>
@@ -19,7 +30,7 @@ export const store = configureStore({
       serializableCheck: false,
     }).concat([
       userApi.middleware,
-    //   groupApi.middleware,
-    //   TasksApi.middleware,
+      settingApi.middleware,
+      transactionApi.middleware,
     ]),
 });
