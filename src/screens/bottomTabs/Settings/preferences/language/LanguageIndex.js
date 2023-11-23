@@ -43,7 +43,6 @@ const Index = () => {
   };
   const [value, setValue] = useState(currentLanguage);
   const theme = useTheme();
-
   return (
     <View
       style={{

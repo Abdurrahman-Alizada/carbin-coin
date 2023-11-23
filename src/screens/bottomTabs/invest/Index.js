@@ -11,7 +11,6 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import CountryFlag from 'react-native-country-flag';
 import WalletIndex from '../../../Skeletons/Wallet/WalletIndex';
-
 const Index = () => {
   const theme = useTheme();
   const {t} = useTranslation();
