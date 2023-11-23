@@ -1,0 +1,7 @@
+// export const publishKey = "pk_test_51OC1nzSJ573oolh4PszVHesIPg6r9ZjzKPEU5NwFZBtT7QdxkNjOU5s6F9BBKmtF6jGv2SpwExnVd3chwymw0nOr00JgET5fyi"
+// export const secretKry = "sk_test_51OC1nzSJ573oolh4TQh4jqNTIP1PtuaCBTqaqh0A557TVX250EK7id20AdQuk9hNvHlAoDPBQVALnol2rfPCkFhQ00BpDRJSaW"
+
+// client stripe
+
+export const publishKey = "pk_test_51OD6MEAQKi5SNRTbchxtvlMPgpBleOAekbn9cZRqm0LJUA5PQFCBbM2YMz6TS6ODxnrZD0bGxQPMUSEwcpdoYgVX000pVv8bVO"
+export const secretKry = "sk_test_51OD6MEAQKi5SNRTb6jClMc37pIPh7QF7UUuckRNZoAo0u7pHFPDqC4M7YzE3XcMbuME4Uv6WlykjSLk0BLwpLEsR00kNXaB0dY"
