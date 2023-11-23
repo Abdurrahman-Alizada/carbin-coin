@@ -78,6 +78,7 @@ const VerificationIndex = () => {
       asyncRequest: false,
       captureEnabled: false,
     };
+    
     const verificationObj = {
       reference: currentLoginUser?._id,
       country: '',
