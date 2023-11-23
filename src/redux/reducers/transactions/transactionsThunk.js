@@ -14,12 +14,16 @@ export const transactionApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Transactions'],
+  tagTypes: ['Transactions', 'Accounts', 'Currencies'],
   reducerPath: 'transactionApi',
   endpoints: build => ({
     getallTransactionsForUser: build.query({
       query: id => `/api/${id}/getallTransactionsForUser`,
       providesTags: ['Transactions'],
+    }),
+    getTraditionalCurrenciesList: build.query({
+      query: () => `/api/getTraditionalCurrenciesList`,
+      providesTags: ['Transactions','Currencies'],
     }),
 
     stripPayment: build.mutation({
@@ -51,9 +55,10 @@ export const transactionApi = createApi({
             value: data.amount.value,
             sign: data.amount.sign,
           },
+          currency: data.currency
         },
       }),
-      invalidatesTags: ['Transactions'],
+      invalidatesTags: ['Transactions', 'Accounts'],
     }),
   }),
 });
@@ -62,4 +67,5 @@ export const {
   useStripPaymentMutation,
   useGetallTransactionsForUserQuery,
   useSavePaymentOnSuccessMutation,
+  useGetTraditionalCurrenciesListQuery
 } = transactionApi;

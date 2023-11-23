@@ -23,7 +23,7 @@ const SendUsingLink = ({navigation}) => {
       name: 'Digital candian dollar',
       nickName: 'DCNH',
       image: '',
-      balance: 98.01,
+      balance: 0,
       sign: '€',
     },
     {
@@ -31,7 +31,7 @@ const SendUsingLink = ({navigation}) => {
       name: 'Digital candian dollar',
       nickName: 'IUH',
       image: '',
-      balance: 80.01,
+      balance: 0,
       sign: '$',
     },
     {
@@ -39,7 +39,7 @@ const SendUsingLink = ({navigation}) => {
       name: 'Digital candian dollar',
       nickName: 'DCNH',
       image: '',
-      balance: 30,
+      balance: 0,
       sign: '$',
     },
     {

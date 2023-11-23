@@ -82,7 +82,7 @@
     "To a Caribbean-coin user": "To a Caribbean-coin user",
     "Contact": "Contact",
     "Using a link": "Using a link",
-    "Scan QR code": "Scan QR code",
+    "Generate QR code": "Generate QR code",
 
     "Select coin": "Select coin",
     "To account": "To account",
@@ -158,6 +158,18 @@
     "Get card":"Get card",
     "Learn more":"Learn more",
     "At the moment you can not add any more cards.":"At the moment you can not add any more cards.",
-    "Go back":"Go back"
+    "Go back":"Go back",
+
+    "Freeze Card":"Freeze Card",
+    "Traditional account" : "Traditional account",
+    "Connect wallet" : "Connect wallet",
+    "Done":"Done",
+    "Update your nick name":"Update your nick name",
+    "Cancel":"Cancel",
+    "You pay":"You pay",
+    "You get":"You get",
+    "Balance":"Balance"
+  
+
   }
 }

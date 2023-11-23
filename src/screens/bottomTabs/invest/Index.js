@@ -1,33 +1,21 @@
 import {
-  FlatList,
-  RefreshControl,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {
-  Avatar,
-  Button,
-  Card,
-  Divider,
-  Text,
-  useTheme,
-} from 'react-native-paper';
+import {Avatar, Divider, Text, useTheme} from 'react-native-paper';
 import HomeScreenAppbar from '../../../components/Appbars/HomeScreenAppbar';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import CountryFlag from 'react-native-country-flag';
 import WalletIndex from '../../../Skeletons/Wallet/WalletIndex';
-import {useGetallTransactionsForUserQuery} from '../../../redux/reducers/transactions/transactionsThunk';
 const Index = () => {
   const theme = useTheme();
   const {t} = useTranslation();
 
   const curr = useSelector(state => state.user.curr);
-  const currentLoginUser = useSelector(state => state.user.currentLoginUser?.data);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     func();
@@ -40,37 +28,6 @@ const Index = () => {
     }, 2000);
   };
 
-  const {
-    data: transactions,
-    isError,
-    error,
-    isLoading: isTransLoading,
-    refetch,
-  } = useGetallTransactionsForUserQuery(currentLoginUser?._id);
-  const renderItem = ({item, index}) => {
-    return (
-        <Card style={{margin: '0.5%'}}>
-          <Card.Content>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}>
-              <Text variant="titleLarge" style={{}}>
-                {item?.amount?.value} <Text style={{textTransform:"uppercase", fontSize:14}}> {item?.amount?.sign}</Text>
-              </Text>
-              <Text variant="titleMedium">{item?.status}</Text>
-            </View>
-            <View style={{marginTop: '2%'}}>
-              <Text variant="bodyMedium" style={{}}>
-                Transaction type: {item?.cardInfo?.brand}
-              </Text>
-            </View>
-          </Card.Content>
-        </Card>
-    );
-  };
   return (
     <View
       style={{
@@ -80,7 +37,7 @@ const Index = () => {
       }}>
       <HomeScreenAppbar title={'Investments'} />
 
-      {isTransLoading ? (
+      {isLoading ? (
         <WalletIndex />
       ) : (
         <View style={{flex: 1, paddingHorizontal: '4%'}}>
@@ -116,7 +73,7 @@ const Index = () => {
                   color: theme.colors.onPrimary,
                   marginLeft: '1%',
                 }}>
-                90.00
+                0
               </Text>
             </View>
           </TouchableWithoutFeedback>
@@ -192,46 +149,37 @@ const Index = () => {
 
           <Divider style={{marginVertical: '4%'}} />
 
-          <FlatList
-            data={transactions?.data}
-            renderItem={renderItem}
-            ListEmptyComponent={() => (
-              <View style={{marginVertical: '4%'}}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: '700',
-                    textAlign: 'center',
-                    marginTop: '3%',
-                  }}>
-                  {t('Transaction history')}
-                </Text>
+          <View style={{marginVertical: '4%'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: '700',
+                textAlign: 'center',
+                marginTop: '3%',
+              }}>
+              {t('Transaction history')}
+            </Text>
 
-                <View
-                  style={{
-                    textAlign: 'center',
-                    marginTop: '10%',
-                    alignItems: 'center',
-                  }}>
-                  <Avatar.Icon
-                    size={70}
-                    style={{backgroundColor: theme.colors.background}}
-                    icon="airballoon-outline"
-                  />
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      marginTop: '2%',
-                    }}>
-                    {t('No transaction history')}
-                  </Text>
-                </View>
-              </View>
-            )}
-            refreshControl={
-              <RefreshControl refreshing={isLoading} onRefresh={refetch} />
-            }
-          />
+            <View
+              style={{
+                textAlign: 'center',
+                marginTop: '10%',
+                alignItems: 'center',
+              }}>
+              <Avatar.Icon
+                size={70}
+                style={{backgroundColor: theme.colors.background}}
+                icon="airballoon-outline"
+              />
+              <Text
+                style={{
+                  textAlign: 'center',
+                  marginTop: '2%',
+                }}>
+                {t('No transaction history')}
+              </Text>
+            </View>
+          </View>
         </View>
       )}
     </View>

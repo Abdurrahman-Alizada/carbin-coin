@@ -75,6 +75,7 @@ const AppStack = () => {
         name="QRScan"
         component={QRIndex}
         options={{
+          headerShown:false,
           header: props => <GeneralAppbar title="QR code scan" {...props} />,
         }}
       />

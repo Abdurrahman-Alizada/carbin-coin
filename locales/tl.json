@@ -71,7 +71,7 @@
     "To a Caribbean-coin user": "Sa isang Caribbean-coin user",
     "Contact": "Makipag-ugnayan",
     "Using a link": "Gamit ang isang link",
-    "Scan QR code": "I-scan ang QR code",
+    "Generate QR code": "I-scan ang QR code",
     "Select coin": "Pumili ng barya",
     "To account": "Sa account",
     "Enter nick name, email or phone #": "Maglagay ng palayaw, email o telepono",
@@ -141,6 +141,16 @@
     "Get card": "Kumuha ng card",
     "Learn more": "Matuto pa",
     "At the moment you can not add any more cards.": "Sa ngayon, hindi ka na makakapagdagdag ng higit pang mga card.",
-    "Go back": "Bumalik ka"
+    "Go back": "Bumalik ka",
+
+    "Freeze Card": "I-freeze ang Card",
+    "Traditional account": "Tradisyunal na account",
+    "Connect wallet": "Ikonekta ang wallet",
+    "Done": "Tapos na",
+    "Update your nick name": "I-update ang iyong palayaw",
+    "Cancel": "Kanselahin",
+    "You pay": "Magbabayad ka",
+    "You get": "Nakuha mo",
+    "Balance": "Balanse"
   }
 }

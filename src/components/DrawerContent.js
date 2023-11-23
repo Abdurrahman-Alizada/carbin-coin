@@ -1,6 +1,6 @@
-import React, {useEffect, useState, useContext, useRef} from 'react';
-import {View, Linking, Alert, TouchableOpacity} from 'react-native';
-import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import React, {useEffect, useRef, useState} from 'react';
+import {View, Linking, Alert} from 'react-native';
+import {DrawerContentScrollView} from '@react-navigation/drawer';
 import {
   Avatar,
   Drawer,
@@ -11,13 +11,18 @@ import {
   Chip,
 } from 'react-native-paper';
 import {useNavigation, DrawerActions} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {version} from '../../package.json';
 import {useTranslation} from 'react-i18next';
 import {useGetCurrentLoginUserQuery} from '../redux/reducers/user/userThunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {handleCurrentLoaginUser} from '../redux/reducers/user/user';
+
+import {
+  WalletConnectModal,
+  useWalletConnectModal,
+} from '@walletconnect/modal-react-native';
 
 export default function DrawerContent(props) {
   const navigation = useNavigation();
@@ -26,6 +31,10 @@ export default function DrawerContent(props) {
   const {t} = useTranslation();
   const id = useRef(null);
   const token = useRef(null);
+
+  const KYCStatusText = useSelector(state => state.user.KYCStatusText);
+  const KYCStatusIcon = useSelector(state => state.user.KYCStatusIcon);
+  const isKYCVerified = useSelector(state => state.user.isKYCVerified);
 
   const getUserInfo = async () => {
     id.current = await AsyncStorage.getItem('userId');
@@ -47,9 +56,7 @@ export default function DrawerContent(props) {
   const obscureEmail = email => {
     if (!email) return '*******';
     const [name, domain] = email?.split('@');
-    return `${name[0]}${name[1]}${new Array(name.length - 3).join(
-      '*',
-    )}@${domain}`;
+    return `${name[0]}${name[1]}${new Array(8).join('*')}@${domain}`;
   };
 
   // privacy policy
@@ -86,6 +93,34 @@ export default function DrawerContent(props) {
       dispatch(handleCurrentLoaginUser(user));
     }
   }, [user]);
+
+  // wallet
+  const {isOpen, open, close, provider, isConnected, address} =
+    useWalletConnectModal();
+
+  const projectId = '4287ee7f1533e4a2b7f5d0937ba341cf';
+
+  const providerMetadata = {
+    name: 'caribbean-coin',
+    description: 'Caribbean coin project',
+    url: 'https://app.caribbean-coin.com/',
+    icons: ['https://app.caribbean-coin.com/carib-coin-logo.png'],
+    redirect: {
+      native: 'YOUR_APP_SCHEME://',
+      universal: 'YOUR_APP_UNIVERSAL_LINK.com',
+    },
+  };
+
+  // Function to handle the
+  // console.log('first', isOpen, isConnected, address);
+  const handleButtonPress = async () => {
+    DrawerActions.closeDrawer();
+    if (isConnected) {
+      return provider?.disconnect();
+    }
+    return open();
+  };
+
   return (
     <DrawerContentScrollView
       {...props}
@@ -120,85 +155,70 @@ export default function DrawerContent(props) {
             )}
           />
         ) : (
-          <List.Item
-            title={user?.data?.name ? user?.data?.name : 'Nick name'}
-            onPress={async () => {
-              navigation.navigate('Drawer', {
-                screen: 'Profile',
-                params: {token: token.current},
-              });
-            }}
-            left={props =>
-              user?.data?.imageURL ? (
-                <Avatar.Image
-                  {...props}
-                  source={
-                    user?.imageURL
-                      ? {uri: user?.imageURL}
-                      : require('../assets/splash-screen/carib-coin-logo.png')
-                  }
-                  size={50}
-                />
-              ) : (
-                <Avatar.Icon
-                  {...props}
-                  icon="account"
-                  size={50}
-                  // style={{backgroundColor: theme.colors.background}}
-                />
-              )
-            }
-            description={() => (
-              <View>
+          <View>
+            <List.Item
+              title={user?.data?.name ? user?.data?.name : 'Nick name'}
+              // onPress={async () => {
+              //   navigation.navigate('Drawer', {
+              //     screen: 'Profile',
+              //     params: {token: token.current},
+              //   });
+              // }}
+              // left={props =>
+              //   user?.data?.imageURL ? (
+              //     <Avatar.Image
+              //       {...props}
+              //       source={
+              //         user?.imageURL
+              //           ? {uri: user?.imageURL}
+              //           : require('../assets/splash-screen/carib-coin-logo.png')
+              //       }
+              //       size={50}
+              //     />
+              //   ) : (
+              //     <Avatar.Icon
+              //       {...props}
+              //       icon="account"
+              //       size={50}
+              //       // style={{backgroundColor: theme.colors.background}}
+              //     />
+              //   )
+              // }
+              description={() => (
                 <Text> {obscureEmail(user?.data?.email)}</Text>
-
-              </View>
-            )}
-          />
+              )}
+              style={{marginLeft: '8%'}}
+            />
+            <Chip
+              icon={KYCStatusIcon}
+              mode="outlined"
+              style={{
+                marginTop: '2%',
+                borderRadius: 12,
+                alignSelf: 'flex-start',
+                marginLeft: '12%',
+              }}
+              onPress={() => console.log('Pressed')}>
+              {t(KYCStatusText)}
+            </Chip>
+          </View>
         )}
-        {/* <Chip
-          icon="information-outline"
-          // mode="outlined"
-          style={{width: 'auto', marginTop:"5%", alignSelf: 'center'}}
-          onPress={() => console.log('Pressed')}>
-          {t('Not verified')}
-        </Chip> */}
 
-        {/* <List.Item
-            title={props => (
-              <SkeletonPlaceholder borderRadius={4} {...props}>
-                <SkeletonPlaceholder.Item width="60%" height={15} />
-                <SkeletonPlaceholder.Item
-                  marginTop={7}
-                  width="30%"
-                  height={12}
-                />
-              </SkeletonPlaceholder>
-            )}
-            left={props => (
-              <SkeletonPlaceholder borderRadius={4} {...props}>
-                <SkeletonPlaceholder.Item
-                  flexDirection="column"
-                  alignItems="flex-start">
-                  <SkeletonPlaceholder.Item
-                    width={50}
-                    marginLeft={20}
-                    height={50}
-                    borderRadius={50}
-                  />
-                </SkeletonPlaceholder.Item>
-              </SkeletonPlaceholder>
-            )}
-          /> */}
         <Divider style={{marginVertical: '5%'}} />
         <Drawer.Item
           label={t('My Profile')}
           onPress={() => {
             navigation.navigate('Drawer', {
               screen: 'Profile',
+              params: {token: token.current},
             });
           }}
           icon="account"
+        />
+        <Drawer.Item
+          label={t('Connect wallet')}
+          onPress={handleButtonPress}
+          icon="wallet"
         />
         <Drawer.Item
           label={t('Cards')}
@@ -224,6 +244,12 @@ export default function DrawerContent(props) {
           icon="logout"
         />
       </View>
+
+      <WalletConnectModal
+        projectId={projectId}
+        providerMetadata={providerMetadata}
+      />
+
       {/* <View style={{marginVertical: '5%'}}>
         <Divider />
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>

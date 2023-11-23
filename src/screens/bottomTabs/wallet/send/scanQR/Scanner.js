@@ -6,27 +6,37 @@ import {
   TouchableHighlight,
   PermissionsAndroid,
   Platform,
+  Text,
 } from 'react-native';
-import React, {useState} from 'react';
-import {Text, IconButton, Button} from 'react-native-paper';
+import React, {useEffect, useState} from 'react';
+import {IconButton, Button, Portal, Dialog, Divider} from 'react-native-paper';
 import {CameraScreen} from 'react-native-camera-kit';
 import ButtonLinearGradient from '../../../../../components/ButtonLinearGradient';
 
 const Scanner = ({setScanOpen}) => {
-  const [qrvalue, setQrvalue] = useState('');
+  const [qrvalue, setQrvalue] = useState({});
   const [opneScanner, setOpneScanner] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
 
-  const onOpenlink = () => {
-    // If scanned then function to open URL in Browser
-    Linking.openURL(qrvalue);
-  };
-
-  const onBarcodeScan = qrvalue => {
+  const onBarcodeScan = value => {
     // Called after te successful scanning of QRCode/Barcode
-    setQrvalue(qrvalue);
+    setQrvalue(handleSplit(value));
     setOpneScanner(false);
     setScanOpen(false);
+    setVisible(true);
   };
+
+  const handleSplit = text => {
+    if (!text) return false;
+    const [userName, balance] = text?.split('+');
+    return {userName: userName, balance: Number(balance)};
+  };
+
+  // useEffect(()=>{
+  //   const detail = handleSplit(qrvalue)
+  //   console.log(detail)
+  // },[])
 
   const onOpneScanner = () => {
     // To Start Scanning
@@ -79,73 +89,106 @@ const Scanner = ({setScanOpen}) => {
         </View>
       ) : (
         <View style={{}}>
-          <Text style={styles.textStyle}>
-            {qrvalue ? 'Scanned Result: ' + qrvalue : ''}
+          <Text
+            style={{marginVertical: '10%', fontSize: 20, textAlign: 'center'}}>
+            Or
           </Text>
-
-          {qrvalue.includes('https://') ||
-          qrvalue.includes('http://') ||
-          qrvalue.includes('geo:') ? (
-            <Button
-              onPress={onOpenlink}
-              mode="outlined"
-              style={{marginHorizontal: '5%'}}>
-              {qrvalue.includes('geo:') ? 'Open in Map' : 'Next functionality'}
-            </Button>
-          ) : null}
-
-          <Text style={styles.textStyle}>
-            {qrvalue
-              ? 'from here we will be able to do next functionality i.e transfer money, top up or other.'
-              : ''}
-          </Text>
-
-          <Text style={{marginBottom: '4%', textAlign: 'center'}}>Or</Text>
-          <ButtonLinearGradient style={{marginHorizontal: '5%'}}>
+          <ButtonLinearGradient style={{margin: '10%'}}>
             <Button
               mode="contained"
               style={{backgroundColor: 'transparent'}}
               theme={{roundness: 5}}
-              contentStyle={{padding: '2%'}}
+              icon="line-scan"
+              contentStyle={{padding: '4%'}}
               onPress={onOpneScanner}>
-              {qrvalue ? 'Sacan again' : 'Open QR Scanner'}
+              {'Scan'}
             </Button>
           </ButtonLinearGradient>
         </View>
       )}
+
+      <Portal>
+        <Dialog visible={visible} onDismiss={() => setVisible(false)}>
+          <View
+            style={{
+              marginTop: -2,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <View>
+              <Dialog.Title>Payment</Dialog.Title>
+            </View>
+            <IconButton icon={'close'} />
+          </View>
+          <Divider />
+          <Dialog.Content style={{paddingVertical: '5%'}}>
+            {isPaymentSuccessful ? (
+              <View style={{alignItems:"center"}}>
+                <IconButton icon={'check-decagram'} size={45} style={{alignSelf:"center"}} />
+               <Text style={{textAlign:"center"}}>You payment has been processed successfuly.</Text>
+              </View>
+            ) : (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={{fontWeight: 'bold'}}>Receiver name</Text>
+                  <Text style={{fontWeight: 'bold'}}> {qrvalue.userName}</Text>
+                </View>
+
+                <View
+                  style={{
+                    marginTop: '5%',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={{fontWeight: 'bold'}}>Amount</Text>
+                  <Text style={{fontWeight: 'bold', fontSize: 25}}>
+                    <Text style={{fontSize: 20, fontWeight: 'normal'}}>$</Text>
+                    {qrvalue.balance}
+                  </Text>
+                </View>
+              </View>
+            )}
+          </Dialog.Content>
+
+          <Dialog.Actions style={{marginTop: '5%'}}>
+            {isPaymentSuccessful ? (
+              <ButtonLinearGradient style={{width: '100%'}}>
+                <Button
+                  mode="contained"
+                  style={{backgroundColor: 'transparent'}}
+                  theme={{roundness: 5}}
+                  contentStyle={{padding: '2%'}}
+                  onPress={() => {
+                    setVisible(false);
+                  }}>
+                  Ok
+                </Button>
+              </ButtonLinearGradient>
+            ) : (
+              <ButtonLinearGradient style={{width: '100%'}}>
+                <Button
+                  mode="contained"
+                  style={{backgroundColor: 'transparent'}}
+                  theme={{roundness: 5}}
+                  contentStyle={{padding: '2%'}}
+                  onPress={() => {
+                    setIsPaymentSuccessful(true);
+                  }}>
+                  Pay now
+                </Button>
+              </ButtonLinearGradient>
+            )}
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </View>
   );
 };
 
 export default Scanner;
-
-const styles = StyleSheet.create({
-  titleText: {
-    fontSize: 22,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  textStyle: {
-    color: 'black',
-    fontSize: 16,
-    textAlign: 'center',
-    padding: 10,
-    marginTop: 16,
-  },
-  buttonStyle: {
-    fontSize: 16,
-    color: 'white',
-    backgroundColor: 'green',
-    padding: 5,
-    minWidth: 250,
-  },
-  buttonTextStyle: {
-    padding: 5,
-    color: 'white',
-    textAlign: 'center',
-  },
-  textLinkStyle: {
-    color: 'blue',
-    paddingVertical: 20,
-  },
-});

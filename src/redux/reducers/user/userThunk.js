@@ -2,7 +2,6 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {baseURL} from '../../axios';
-import { secretKry } from '../../../utils/stripe';
 // register new user
 
 export const userApi = createApi({
@@ -62,6 +61,20 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['User'],
     }),
+    editUserAfterKYC: build.mutation({
+      query: user => ({
+        url: `/api/${user.userId}/editUserAfterKYC`,
+        method: 'PATCH',
+        body: {
+          userId: user.userId,
+          isKYCVerified: user.isKYCVerified,
+          KYCVerificationData: user.KYCVerificationData,
+          country: user.country
+        },
+      }),
+      invalidatesTags: ['User'],
+    }),
+
     updateName: build.mutation({
       query: user => ({
         url: `/api/account/users/${user.id}/updateName`,
@@ -72,7 +85,6 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['User', 'Groups'],
     }),
-
     updateEmail: build.mutation({
       query: user => ({
         url: `/api/account/users/${user.id}/updateEmail`,
@@ -160,6 +172,10 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['User'],
     }),
+    getAllCountriesList: build.query({
+      query: () => `/api/getAllCountriesList`,
+      // providesTags: ['Transactions','Currencies'],
+    }),
   }),
 });
 
@@ -167,6 +183,8 @@ export const {
   useLoginUserMutation,
   useRegisterUserMutation,
   useUpdateUserMutation,
+  useEditUserAfterKYCMutation,
+
   useUpdateNameMutation,
   useGetCurrentLoginUserQuery,
   useUpdateEmailMutation,
@@ -177,4 +195,5 @@ export const {
   useVerifyOTPForPasswordRecoveryMutation,
   useResetPasswordMutation,
   useResendEmailForUserRegistrationMutation,
+  useGetAllCountriesListQuery,
 } = userApi;

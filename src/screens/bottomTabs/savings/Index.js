@@ -73,7 +73,7 @@ const func = ()=>{
                   color: theme.colors.onPrimary,
                   marginLeft: '1%',
                 }}>
-                90.00
+                0
               </Text>
             </View>
           </TouchableWithoutFeedback>
@@ -143,7 +143,7 @@ const func = ()=>{
                     color: theme.colors.onPrimary,
                     marginLeft: '3%',
                   }}>
-                  90.00
+                  0
                 </Text>
               </View>
             </View>
@@ -185,7 +185,7 @@ const func = ()=>{
                     color: theme.colors.onPrimary,
                     marginLeft: '3%',
                   }}>
-                  90.00
+                  0
                 </Text>
               </View>
             </View>
@@ -227,7 +227,7 @@ const func = ()=>{
                     color: theme.colors.onPrimary,
                     marginLeft: '3%',
                   }}>
-                  90.00
+                  0
                 </Text>
               </View>
             </View>

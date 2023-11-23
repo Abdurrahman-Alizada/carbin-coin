@@ -1,5 +1,5 @@
-import {StyleSheet, View, ScrollView} from 'react-native';
-import React from 'react';
+import {StyleSheet, View, ScrollView, RefreshControl} from 'react-native';
+import React, { useEffect } from 'react';
 import {Text, Appbar, useTheme, Button} from 'react-native-paper';
 import UserInfo from './userInfo/userInfoIndex';
 import AdsCard from './AdsCard';
@@ -10,10 +10,13 @@ import {useTranslation} from 'react-i18next';
 import {useGetCurrentLoginUserQuery} from '../../../redux/reducers/user/userThunk';
 import ProfileLoading from '../../../Skeletons/profileLoading';
 import WalletIndex from '../../../Skeletons/Wallet/WalletIndex';
+import { useDispatch } from 'react-redux';
+import { handleCurrentLoaginUser } from '../../../redux/reducers/user/user';
 const Index = ({navigation, route}) => {
-  const {token} = route.params;
+  const {token} = route?.params;
   const theme = useTheme();
   const {t} = useTranslation();
+  const dispatch = useDispatch()
   const {
     data: user,
     isError,
@@ -22,17 +25,27 @@ const Index = ({navigation, route}) => {
     refetch,
   } = useGetCurrentLoginUserQuery(token);
 
+  useEffect(() => {
+    if (user) {
+      dispatch(handleCurrentLoaginUser(user));
+    }
+  }, [user]);
+
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
       <Appbar.Header style={{backgroundColor: theme.colors.background}}>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content title="Profile" />
       </Appbar.Header>
-      <ScrollView contentContainerStyle={{paddingBottom: '5%'}}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+        }
+        contentContainerStyle={{paddingBottom: '5%'}}>
         {isLoading ? (
           <ProfileLoading />
         ) : (
-          <UserInfo user={user} token={token} />
+          <UserInfo user={user} token={token} refetch={refetch} />
         )}
 
         {/* <AdsCard /> */}

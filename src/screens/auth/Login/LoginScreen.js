@@ -69,7 +69,7 @@ const LoginScreen = ({navigation, route}) => {
       email: values.email,
       password: values.password,
     });
-
+    
     if (response?.error) {
       setErrorMessage(response?.error?.data?.message);
       setVisible(true);
@@ -87,7 +87,6 @@ const LoginScreen = ({navigation, route}) => {
       // setVerificationBannerVisible(true);
     }
     if (response?.data?.token) {
-      console.log("4", response.data)
 
       dispatch(handleCurrentLoaginUser({email:values.email, role:response?.data?.role}));
       await AsyncStorage.setItem('isLoggedIn', 'login');

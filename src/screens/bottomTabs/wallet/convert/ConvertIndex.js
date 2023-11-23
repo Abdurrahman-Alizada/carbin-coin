@@ -105,14 +105,14 @@ const ConvertIndex = () => {
             </TouchableOpacity>
 
             <View style={{alignItems: 'flex-end'}}>
-              <Text variant="bodyMedium">Balance:</Text>
+              <Text variant="bodyMedium">{t("Balance")}:</Text>
               <Text variant="bodyMedium">
                 D$ {selectedConvertFromCurrency?.balance ? selectedConvertFromCurrency?.balance : curr[0].balance}
               </Text>
             </View>
           </Card.Content>
           <Card.Content style={{marginTop: '4%'}}>
-            <Text variant="bodyMedium">You pay</Text>
+            <Text variant="bodyMedium">{t("You pay")}</Text>
 
             <TextInput
               style={{
@@ -206,14 +206,14 @@ const ConvertIndex = () => {
             </TouchableOpacity>
 
             <View style={{alignItems: 'flex-end'}}>
-              <Text variant="bodyMedium">Balance:</Text>
+              <Text variant="bodyMedium">{t("Balance")}:</Text>
               <Text variant="bodyMedium">
                 D$ {selectedConvertToCurrency?.balance}
               </Text>
             </View>
           </Card.Content>
           <Card.Content style={{marginTop: '4%'}}>
-            <Text variant="bodyMedium">You get</Text>
+            <Text variant="bodyMedium">{t("You get")}</Text>
 
             <TextInput
               style={{

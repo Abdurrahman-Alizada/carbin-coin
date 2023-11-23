@@ -83,7 +83,7 @@
     "To a Caribbean-coin user": "a un Caribbean-coin usuario",
     "Contact": "Contacto",
     "Using a link": "Usando un enlace",
-    "Scan QR code": "Escanear código QR",
+    "Generate QR code": "Escanear código QR",
 
     "Select coin": "Seleccionar moneda",
     "To account": "A la cuenta",
@@ -157,8 +157,17 @@
     "Get card": "obtener tarjeta",
     "Learn more": "Aprende más",
     "At the moment you can not add any more cards.": "Por el momento no puedes agregar más tarjetas.",
-    "Go back": "Regresa"
+    "Go back": "Regresa",
 
-
+    "Freeze Card": "Congelar tarjeta",
+    "Traditional account": "cuenta tradicional",
+    "Connect wallet": "Conectar billetera",
+    "Done": "Hecho",
+    "Update your nick name": "Actualiza tu apodo",
+    "Cancel": "Cancelar",
+    "You pay": "Tu pagas",
+    "You get": "Usted obtiene",
+    "Balance": "Balance"
+  
   }
 }

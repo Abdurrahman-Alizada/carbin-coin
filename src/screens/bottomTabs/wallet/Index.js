@@ -22,18 +22,38 @@ import {
 import {Modalize} from 'react-native-modalize';
 import {useTranslation} from 'react-i18next';
 import HomeScreenAppbar from '../../../components/Appbars/HomeScreenAppbar';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import CountryFlag from 'react-native-country-flag';
 import WalletIndex from '../../../Skeletons/Wallet/WalletIndex';
+import {useGetAccountsForUserQuery} from '../../../redux/reducers/accounts/accountsThunk';
+import {handleUserAccounts} from '../../../redux/reducers/accounts/accountSlice';
 
 const Index = ({navigation}) => {
   const {t} = useTranslation();
-
   const theme = useTheme();
+  const dispatch = useDispatch();
+
+  const currentLoginUser = useSelector(state => state.user.currentLoginUser);
   const [showAllcoins, setShowAllCoins] = useState(true);
+  const [showAllTraditionAccounts, setShowAllTraditionAccounts] =
+    useState(true);
 
   const curr = useSelector(state => state.user.curr);
   const [selectedCurrency, setSelectedCurrency] = useState(-1);
+  // const accccc = useSelector(state => state.accounts.userAccounts);
+
+  const {
+    data: accounts,
+    isError,
+    error,
+    isLoading: isAccountsLoading,
+    refetch,
+  } = useGetAccountsForUserQuery(currentLoginUser?.data?._id);
+  useEffect(() => {
+    if (accounts) {
+      dispatch(handleUserAccounts(accounts));
+    }
+  }, [accounts]);
 
   const modalizeRef = useRef(null);
   const onOpen = () => {
@@ -43,28 +63,19 @@ const Index = ({navigation}) => {
     modalizeRef.current?.close();
   };
 
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-   func()
-  },[]);
-
-const func = ()=>{
-  setIsLoading(true)
-  setTimeout(() => {
-    setIsLoading(false);
-  }, 2000);
-}
-
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme.colors.background}}>
       <HomeScreenAppbar title={'Wallet'} />
 
-      {isLoading ? (
+      {isAccountsLoading ? (
         <WalletIndex />
       ) : (
         <ScrollView
           refreshControl={
-            <RefreshControl refreshing={isLoading} onRefresh={()=>func()} />
+            <RefreshControl
+              refreshing={isAccountsLoading}
+              onRefresh={refetch}
+            />
           }
           contentContainerStyle={{marginBottom: 0}}>
           <Text
@@ -83,14 +94,20 @@ const func = ()=>{
                   marginTop: '5%',
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  alignItems: 'center',
+                  alignItems: 'baseline',
                   paddingVertical: '5%',
                   backgroundColor: theme.colors.primary,
                   borderRadius: 10,
                   flexDirection: 'row',
                 }}>
-                <Text style={{fontSize: 20, color: theme.colors.onPrimary}}>
-                  $
+                <Text
+                  style={{
+                    fontSize: 18,
+                    textTransform: 'uppercase',
+                    color: theme.colors.onPrimary,
+                  }}>
+                  {/* {accounts?.overAllAmount?.sign} */}
+                  {accounts?.caribbeanAccount?.totalAmount?.sign}
                 </Text>
                 <Text
                   style={{
@@ -99,7 +116,8 @@ const func = ()=>{
                     color: theme.colors.onPrimary,
                     marginLeft: '1%',
                   }}>
-                  90.00
+                  {/* {accounts?.overAllAmount?.value} */}
+                  {accounts?.caribbeanAccount?.totalAmount?.value}
                 </Text>
               </View>
             </TouchableWithoutFeedback>
@@ -235,8 +253,8 @@ const func = ()=>{
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   paddingHorizontal: '1%',
-                  paddingVertical: '2%',
-                  backgroundColor: theme.colors.primary,
+                  paddingVertical: '2.2%',
+                  backgroundColor: theme.colors.secondary,
                   borderRadius: 40,
                 }}>
                 <View
@@ -260,7 +278,9 @@ const func = ()=>{
 
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text style={{fontSize: 16, color: theme.colors.onPrimary}}>
-                    $
+                    {accounts?.caribbeanAccount?.accounts[0]?.sign
+                      ? accounts?.caribbeanAccount?.accounts[0]?.sign
+                      : '$'}
                   </Text>
                   <Text
                     style={{
@@ -268,60 +288,65 @@ const func = ()=>{
                       color: theme.colors.onPrimary,
                       marginLeft: '3%',
                     }}>
-                    90.00
+                    {accounts?.caribbeanAccount?.accounts[0]?.value
+                      ? accounts?.caribbeanAccount?.accounts[0]?.value
+                      : 0}
                   </Text>
                 </View>
               </View>
 
               {showAllcoins &&
-                curr?.slice(1)?.map((item, index) => (
-                  <View
-                    key={index}
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: '3%',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      paddingHorizontal: '1%',
-                      paddingVertical: '2%',
-                      backgroundColor: theme.colors.primary,
-                      borderRadius: 40,
-                    }}>
+                accounts?.caribbeanAccount?.accounts
+                  ?.slice(1)
+                  ?.map((item, index) => (
                     <View
+                      key={index}
                       style={{
                         flexDirection: 'row',
+                        marginTop: '3%',
+                        justifyContent: 'space-between',
                         alignItems: 'center',
-                        paddingVertical: '1%',
-                        paddingHorizontal: '2%',
+                        paddingHorizontal: '1%',
+                        paddingVertical: '2%',
+                        backgroundColor: theme.colors.secondary,
+                        borderRadius: 40,
                       }}>
-                      <CountryFlag isoCode={item?.countryCode} size={22} />
-
-                      <Text
+                      <View
                         style={{
-                          fontSize: 20,
-                          color: theme.colors.onPrimary,
-                          marginLeft: '10%',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          paddingVertical: '1%',
+                          paddingHorizontal: '2%',
                         }}>
-                        {item?.nickName}
-                      </Text>
-                    </View>
+                        <CountryFlag isoCode={item?.countryCode} size={22} />
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <Text
-                        style={{fontSize: 16, color: theme.colors.onPrimary}}>
-                        $
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          color: theme.colors.onPrimary,
-                          marginLeft: '3%',
-                        }}>
-                        90.00
-                      </Text>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            color: theme.colors.onPrimary,
+                            marginLeft: '10%',
+                          }}>
+                          {item?.nickName}
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text
+                          style={{fontSize: 16, color: theme.colors.onPrimary}}>
+                          {item.sign}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            color: theme.colors.onPrimary,
+                            marginLeft: '3%',
+                          }}>
+                          {item?.value}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                ))}
+                  ))}
 
               <Button
                 icon="plus"
@@ -357,6 +382,150 @@ const func = ()=>{
               source={require('../../../assets/splash-screen/carib-coin-logo.png')}
             />
           </View> */}
+
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginTop: '4%',
+              }}>
+              <Text>{t('Traditional accounts')}</Text>
+              {showAllTraditionAccounts ? (
+                <TouchableOpacity
+                  onPress={() => setShowAllTraditionAccounts(false)}
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text>{t('Show less')}</Text>
+                  <Avatar.Icon
+                    style={{backgroundColor: theme.colors.background}}
+                    size={35}
+                    icon="chevron-up"
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => setShowAllTraditionAccounts(true)}
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text>{t('All')}</Text>
+                  <Avatar.Icon
+                    style={{backgroundColor: theme.colors.background}}
+                    size={35}
+                    icon="chevron-down"
+                  />
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <View style={{marginTop: '4%', marginBottom: '8%'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: '3%',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  paddingHorizontal: '1%',
+                  paddingVertical: '2.2%',
+                  backgroundColor: theme.colors.secondary,
+                  borderRadius: 40,
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingVertical: '1%',
+                    paddingHorizontal: '2%',
+                  }}>
+                  <CountryFlag
+                    isoCode={
+                      accounts?.traditionalAccount?.accounts[0]?.countryCode ?
+                      accounts?.traditionalAccount?.accounts[0]?.countryCode :
+                      "ca"
+                    }
+                    size={22}
+                  />
+
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      color: theme.colors.onPrimary,
+                      marginLeft: '10%',
+                    }}>
+                    {accounts?.traditionalAccount?.accounts[0]?.nickName}
+                  </Text>
+                </View>
+
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{fontSize: 16, color: theme.colors.onPrimary}}>
+                    {accounts?.traditionalAccount?.accounts[0]?.sign
+                      ? accounts?.traditionalAccount?.accounts[0]?.sign
+                      : '$'}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      color: theme.colors.onPrimary,
+                      marginLeft: '3%',
+                    }}>
+                    {accounts?.traditionalAccount?.accounts[0]?.value
+                      ? accounts?.traditionalAccount?.accounts[0]?.value
+                      : 0}
+                  </Text>
+                </View>
+              </View>
+
+              {showAllTraditionAccounts &&
+                accounts?.traditionalAccount?.accounts
+                  ?.slice(1)
+                  ?.map((item, index) => (
+                    <View
+                      key={index}
+                      style={{
+                        flexDirection: 'row',
+                        marginTop: '3%',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingHorizontal: '1%',
+                        paddingVertical: '2%',
+                        backgroundColor: theme.colors.secondary,
+                        borderRadius: 40,
+                      }}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          paddingVertical: '1%',
+                          paddingHorizontal: '2%',
+                        }}>
+                        <CountryFlag isoCode={item?.countryCode} size={22} />
+
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            color: theme.colors.onPrimary,
+                            marginLeft: '10%',
+                          }}>
+                          {item?.nickName}
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text
+                          style={{fontSize: 16, color: theme.colors.onPrimary}}>
+                          {item.sign}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            color: theme.colors.onPrimary,
+                            marginLeft: '3%',
+                          }}>
+                          {item?.value}
+                        </Text>
+                      </View>
+                    </View>
+                  ))}
+            </View>
           </View>
         </ScrollView>
       )}

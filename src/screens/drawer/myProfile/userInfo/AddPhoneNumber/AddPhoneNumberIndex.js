@@ -8,7 +8,8 @@ import {
   StatusBar,
   TouchableOpacity,
 } from 'react-native';
-import {useTheme, Text, Button} from 'react-native-paper';
+import CountryFlag from 'react-native-country-flag';
+import {useTheme, Text, Button, TextInput} from 'react-native-paper';
 import PhoneInput from 'react-native-phone-number-input';
 import ButtonLinearGradient from '../../../../../components/ButtonLinearGradient';
 import {useUpdateUserMutation} from '../../../../../redux/reducers/user/userThunk';
@@ -20,7 +21,9 @@ const AddPhoneNumberIndex = ({navigation, route}) => {
   const {toggleTheme, isThemeDark} = useContext(ThemeContext);
 
   const [value, setValue] = useState('');
+  const [countryCode, setCountryCode] = useState('+1');
   const [formattedValue, setFormattedValue] = useState('');
+
   const [valid, setValid] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const phoneInput = useRef(null);
@@ -39,7 +42,7 @@ const AddPhoneNumberIndex = ({navigation, route}) => {
     getUserInfo();
   }, []);
 
-  const {name, _id } = route.params?.params?.user;
+  const {name, _id} = route.params?.params?.user;
   const [updateUser, {isLoading, isError, error}] = useUpdateUserMutation();
   const updateHandler = () => {
     updateUser({
@@ -51,7 +54,7 @@ const AddPhoneNumberIndex = ({navigation, route}) => {
     })
       .then(res => {
         console.log('response', res);
-        navigation.goBack()
+        navigation.goBack();
       })
       .catch(err => {
         console.log(err);
@@ -70,6 +73,46 @@ const AddPhoneNumberIndex = ({navigation, route}) => {
           'Add your phone number so other member can easily send you money with Caribbean-coin',
         )}
       </Text>
+
+      {/* <View
+        style={{
+          marginVertical: 20,
+          flexDirection: 'row',
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+        }}>
+        <TouchableOpacity
+          style={{
+            borderBottomWidth: 1.5,
+            padding: 10,
+            borderBottomColor: theme.colors.secondary,
+            borderBottomRightRadius: 0,
+            borderRadius: 5,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+          }}
+          onPress={() => navigation.navigate('CountriesList')}>
+          <CountryFlag isoCode="ca" size={15} />
+          <Text
+            style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: '2%'}}>
+            {countryCode}
+          </Text>
+        </TouchableOpacity>
+
+        <TextInput
+          autoFocus
+          label={t('Phone number')}
+          style={{
+            minWidth: '70%',
+            backgroundColor: theme.colors.background,
+          }}
+          value={value}
+          onChangeText={e => setValue(e)}
+          activeUnderlineColor={theme.colors.secondary}
+        />
+      </View> */}
+
       <PhoneInput
         ref={phoneInput}
         defaultValue={value}

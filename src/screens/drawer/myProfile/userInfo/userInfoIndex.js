@@ -40,7 +40,7 @@ return (
         <Dialog
           visible={isNickNameEdit}
           onDismiss={() => setIsNickNameEdit(false)}>
-          <Dialog.Title>Update your nick name</Dialog.Title>
+          <Dialog.Title> {t("Update your nick name")}</Dialog.Title>
           <Dialog.Content>
             <TextInput
               label={t('Nick name')}
@@ -59,7 +59,7 @@ return (
             <Button
               onPress={() => setIsNickNameEdit(false)}
               textColor={theme.colors.error}>
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button
               onPress={() => {
@@ -72,7 +72,7 @@ return (
               }}
               loading={isLoading}
               disabled={isLoading}>
-              Update
+              {t("Update")}
             </Button>
           </Dialog.Actions>
         </Dialog>

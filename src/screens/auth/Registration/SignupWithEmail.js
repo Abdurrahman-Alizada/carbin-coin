@@ -1,25 +1,16 @@
 import React, {useRef, useState} from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  StatusBar,
-  View,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {TouchableOpacity, View, ScrollView} from 'react-native';
 import {
   TextInput,
   Dialog,
   Text,
   Paragraph,
   Portal,
-  Appbar,
-  Avatar,
   Checkbox,
   useTheme,
-  Menu,
   Button,
 } from 'react-native-paper';
+import ConnectWallet from './ConnectWallet';
 
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -31,10 +22,6 @@ import {
 import AuthAppbar from '../../../components/Appbars/AuthAbbar';
 import ButtonLinearGradient from '../../../components/ButtonLinearGradient';
 import {useTranslation} from 'react-i18next';
-import {
-  WalletConnectModal,
-  useWalletConnectModal,
-} from '@walletconnect/modal-react-native';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -122,7 +109,6 @@ const SignupWithEmail = () => {
       email: email.current,
     })
       .then(res => {
-        console.log(res);
         if (res?.error?.status === 409) {
           setMessage(res?.error?.data?.message);
           setVisible(true);
@@ -155,31 +141,6 @@ const SignupWithEmail = () => {
   const [checked, setChecked] = useState(false);
 
   const formikRef = useRef();
-
-  const {isOpen, open, close, provider, isConnected, address} =
-    useWalletConnectModal();
-
-  const projectId = '4287ee7f1533e4a2b7f5d0937ba341cf';
-
-  const providerMetadata = {
-    name: 'caribbean-coin',
-    description: 'Caribbean coin project',
-    url: 'https://app.caribbean-coin.com/',
-    icons: ['https://app.caribbean-coin.com/carib-coin-logo.png'],
-    redirect: {
-      native: 'YOUR_APP_SCHEME://',
-      universal: 'YOUR_APP_UNIVERSAL_LINK.com',
-    },
-  };
-
-  // Function to handle the
-  // console.log('first', isOpen, isConnected, address);
-  const handleButtonPress = async () => {
-    if (isConnected) {
-      return provider?.disconnect();
-    }
-    return open();
-  };
 
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
@@ -395,27 +356,11 @@ const SignupWithEmail = () => {
                 or
               </Text>
 
-              <Button
-                // loading={isLoading || resendLoading}
-                // disabled={isLoading || resendLoading}
-                contentStyle={{
-                  padding: '3%',
-                }}
-                icon={isConnected ? "close-circle" : "wallet"}
-                theme={{roundness: 15}}
-                mode={isConnected ? "contained-tonal" : "elevated"}
-                onPress={handleButtonPress}>
-                {isConnected ? t('Disconnect wallet') :  t('Connect wallet')}
-              </Button>
-              <Text style={{marginTop: '5%'}}>{isConnected ? "Wallet address:": ""} {address}</Text>
+              <ConnectWallet />
             </View>
           )}
         </Formik>
       </ScrollView>
-      <WalletConnectModal
-        projectId={projectId}
-        providerMetadata={providerMetadata}
-      />
     </View>
   );
 };

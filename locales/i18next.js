@@ -10,9 +10,32 @@ import es from './es.json';
 export const languageResources = {
   en: en,
   fr: fr,
-  // ar: ar,
   tl: tl,
   es: es,
+  
+  // bg:es,
+  // cs: es,
+  // da:es,
+  // de:es,
+  // el:es,
+  // id:es,
+  // it:es,
+  // ja:es,
+  // kk:es,
+  // lv:es,
+  // pl:es,
+  // pt:es,
+  // ro:es,
+  // ru:es,
+  // sk:es,
+  // sl:es,
+  // sv:es,
+  // tr:es,
+  // uk:es,
+  // vi:es,
+
+  // right hand
+  // ar: ar,
 };
 
 i18next.use(initReactI18next).init({

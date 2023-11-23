@@ -14,6 +14,8 @@ import Instruction from '../screens/drawer/myProfile/SecuritySettings/twoFactorA
 import TwoFAConfirm from '../screens/drawer/myProfile/SecuritySettings/twoFactorAuth/2FAConfirm';
 import CardIndex from '../screens/drawer/cards/CardIndex';
 import NewCard from '../screens/drawer/cards/NewCard';
+import IDVerificationIndex from '../screens/drawer/myProfile/SecuritySettings/verficationLevel/IDVerification/IDVerificationIndex';
+import CountriesList from '../screens/drawer/myProfile/SecuritySettings/verficationLevel/IDVerification/CountriesList';
 const AppStack = () => {
   return (
     <Stack.Navigator initialRouteName="Profile">
@@ -59,6 +61,7 @@ const AppStack = () => {
         }}
       />
 
+      {/* user verification - start */}
       <Stack.Screen
         name="Verification"
         component={VerificationIndex}
@@ -66,6 +69,24 @@ const AppStack = () => {
           header: props => <GeneralAppbar title="Verification" {...props} />,
         }}
       />
+
+      <Stack.Screen
+        name="IDVerificationCountry"
+        component={IDVerificationIndex}
+        options={{
+          header: props => <GeneralAppbar title="ID verification" {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="CountriesList"
+        component={CountriesList}
+        options={{
+          headerShown: false,
+          presentation: 'modal',
+        }}
+      />
+      {/* user verification - end */}
+
       <Stack.Screen
         name="ChangePassword"
         component={ChangePassword}

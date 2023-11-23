@@ -79,11 +79,11 @@ const SendIndex = ({navigation}) => {
               alignSelf: 'flex-start',
             }}
             labelStyle={{fontSize: 18, alignSelf: 'flex-start'}}
-            icon="link"
+            icon="line-scan"
             mode="contained-tonal"
             theme={{roundness: 2}}
             onPress={() => navigation.navigate('QRScan')}>
-            {t('Scan QR code')}
+            {t('QR code')}
           </Button>
         </View>
       )}

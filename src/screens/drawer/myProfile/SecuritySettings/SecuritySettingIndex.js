@@ -13,7 +13,8 @@ import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector } from 'react-redux';
 
 const SecuritySettingIndex = () => {
   const theme = useTheme();
@@ -22,10 +23,13 @@ const SecuritySettingIndex = () => {
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
-  return (
-    <View style={{ paddingHorizontal: '0%'}}>
-     
+  const KYCStatusText = useSelector(state => state.user.KYCStatusText);
+  const KYCStatusIcon = useSelector(state => state.user.KYCStatusIcon);
+  const isKYCVerified = useSelector(state => state.user.isKYCVerified);
 
+
+  return (
+    <View style={{paddingHorizontal: '0%'}}>
       <View style={{marginTop: '5%'}}>
         <Drawer.Item
           label={t('Verification level')}
@@ -47,10 +51,15 @@ const SecuritySettingIndex = () => {
           right={() => (
             <View style={{flexDirection: 'row'}}>
               <Chip
-                icon="information-outline"
+                icon={KYCStatusIcon}
                 mode="outlined"
+                style={{
+                  marginTop: '2%',
+                  borderRadius: 12,
+                  alignSelf: 'flex-start',
+                }}
                 onPress={() => console.log('Pressed')}>
-                {t('Not verified')}
+                {t(KYCStatusText)}
               </Chip>
               <List.Icon icon={'chevron-right'} style={{}} />
             </View>
@@ -139,12 +148,11 @@ const SecuritySettingIndex = () => {
                 backgroundColor: theme.colors.secondaryContainer,
                 borderRadius: 25,
               }}>
-                 <MaterialCommunityIcon
+              <MaterialCommunityIcon
                 name="two-factor-authentication"
                 size={25}
                 color={theme.colors.onBackground}
               />
-              
             </View>
           )}
           label={t('Two factor authentication')}
