@@ -9,22 +9,35 @@ import {
   Text,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {IconButton, Button, Portal, Dialog, Divider} from 'react-native-paper';
+import {
+  IconButton,
+  Button,
+  Portal,
+  Dialog,
+  Divider,
+  TextInput,
+  useTheme,
+} from 'react-native-paper';
 import {CameraScreen} from 'react-native-camera-kit';
 import ButtonLinearGradient from '../../../../../components/ButtonLinearGradient';
 
 const Scanner = ({setScanOpen}) => {
+  const theme = useTheme()
   const [qrvalue, setQrvalue] = useState({});
   const [opneScanner, setOpneScanner] = useState(false);
   const [visible, setVisible] = useState(false);
   const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
+  const [QRReceiverBalance, setQRReceiverBalance] = useState('');
 
   const onBarcodeScan = value => {
     // Called after te successful scanning of QRCode/Barcode
-    setQrvalue(handleSplit(value));
+    let result = handleSplit(value)
+    setQRReceiverBalance(result?.balance)
+    setQrvalue(result);
     setOpneScanner(false);
     setScanOpen(false);
     setVisible(true);
+
   };
 
   const handleSplit = text => {
@@ -119,14 +132,20 @@ const Scanner = ({setScanOpen}) => {
             <View>
               <Dialog.Title>Payment</Dialog.Title>
             </View>
-            <IconButton icon={'close'} />
+            <IconButton icon={'close'} onPress={()=>setVisible(false)} />
           </View>
           <Divider />
           <Dialog.Content style={{paddingVertical: '5%'}}>
             {isPaymentSuccessful ? (
-              <View style={{alignItems:"center"}}>
-                <IconButton icon={'check-decagram'} size={45} style={{alignSelf:"center"}} />
-               <Text style={{textAlign:"center"}}>You payment has been processed successfuly.</Text>
+              <View style={{alignItems: 'center'}}>
+                <IconButton
+                  icon={'check-decagram'}
+                  size={45}
+                  style={{alignSelf: 'center'}}
+                />
+                <Text style={{textAlign: 'center'}}>
+                  You payment has been processed successfuly.
+                </Text>
               </View>
             ) : (
               <View>
@@ -139,19 +158,36 @@ const Scanner = ({setScanOpen}) => {
                   <Text style={{fontWeight: 'bold'}}> {qrvalue.userName}</Text>
                 </View>
 
-                <View
-                  style={{
-                    marginTop: '5%',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Text style={{fontWeight: 'bold'}}>Amount</Text>
-                  <Text style={{fontWeight: 'bold', fontSize: 25}}>
-                    <Text style={{fontSize: 20, fontWeight: 'normal'}}>$</Text>
-                    {qrvalue.balance}
-                  </Text>
-                </View>
+                {qrvalue.balance > 0 ? (
+                  <View
+                    style={{
+                      marginTop: '5%',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Text style={{fontWeight: 'bold'}}>Amount</Text>
+                    <Text style={{fontWeight: 'bold', fontSize: 25}}>
+                      <Text style={{fontSize: 20, fontWeight: 'normal'}}>
+                        $
+                      </Text>
+                      {qrvalue.balance}
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={{marginTop:"5%"}}>
+                    <TextInput
+                      label={'Enter amount'}
+                      mode="outlined"
+                      autoFocus
+                      style={{marginTop: '4%'}}
+                      value={QRReceiverBalance}
+                      activeOutlineColor={theme.colors.secondary}
+                      onChangeText={e => setQRReceiverBalance(e)}
+                      keyboardType="numeric"
+                    />
+                  </View>
+                )}
               </View>
             )}
           </Dialog.Content>

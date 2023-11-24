@@ -20,7 +20,8 @@ function QRgenerator() {
     state => state.user.currentLoginUser.data,
   );
   const [isVisibleQR, setIsVisibleQR] = useState(false);
-  const [QRReceiverName, setQRReceiverName] = useState(currentLoginUser?.name);
+  // const [QRReceiverName, setQRReceiverName] = useState(currentLoginUser?.name);
+  const [QRReceiverName, setQRReceiverName] = useState("Jang");
   const [QRReceiverBalance, setQRReceiverBalance] = useState('');
 
   const [visible, setVisible] = useState(false);
@@ -46,7 +47,8 @@ function QRgenerator() {
           </View>
         ) : (
           <View style={{width: '80%'}}>
-            <ButtonLinearGradient style={{marginVertical: '10%', width: '100%'}}>
+            <ButtonLinearGradient
+              style={{marginVertical: '10%', width: '100%'}}>
               <Button
                 mode="contained"
                 style={{backgroundColor: 'transparent'}}
@@ -83,6 +85,18 @@ function QRgenerator() {
               onChangeText={e => setQRReceiverBalance(e)}
               keyboardType="numeric"
             />
+            <View style={{marginTop: '5%'}}>
+              <Text style={{fontWeight: '700'}}>*Instructions</Text>
+              <Text style={{marginLeft: '3%', marginVertical: '2%'}}>
+                1. If you know the amount you will get paid, enter the amount
+                and generate QR code.
+              </Text>
+              <Text style={{marginLeft: '3%'}}>
+                2. If you don't know how much you will get paid, you can just
+                enter name without amount. Then when sender scans QR code,
+                he/she will enter the amount.
+              </Text>
+            </View>
           </Dialog.Content>
           <Dialog.Actions>
             <ButtonLinearGradient style={{width: '100%'}}>
@@ -91,10 +105,10 @@ function QRgenerator() {
                 style={{backgroundColor: 'transparent'}}
                 theme={{roundness: 5}}
                 contentStyle={{padding: '2%'}}
-                disabled={!QRReceiverBalance}
+                // disabled={!QRReceiverBalance}
                 onPress={() => {
                   setVisible(false);
-                  setIsVisibleQR(true)
+                  setIsVisibleQR(true);
                 }}>
                 Generate
               </Button>
