@@ -89,7 +89,7 @@ export default function DrawerContent(props) {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user?.data) {
       dispatch(handleCurrentLoaginUser(user));
     }
   }, [user]);

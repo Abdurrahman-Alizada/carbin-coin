@@ -144,7 +144,7 @@ const Scanner = ({setScanOpen}) => {
                   style={{alignSelf: 'center'}}
                 />
                 <Text style={{textAlign: 'center'}}>
-                  You payment has been processed successfuly.
+                  Your payment has been processed successfuly.
                 </Text>
               </View>
             ) : (
@@ -202,6 +202,7 @@ const Scanner = ({setScanOpen}) => {
                   contentStyle={{padding: '2%'}}
                   onPress={() => {
                     setVisible(false);
+                    setIsPaymentSuccessful(false)
                   }}>
                   Ok
                 </Button>
