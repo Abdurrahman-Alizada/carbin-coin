@@ -23,10 +23,12 @@ export const userApi = createApi({
         url: `/api/signup`,
         method: 'POST',
         body: {
-          name: user.name,
+          // name: user.name,
           email: user.email,
           password: user.password,
-          passwordConfirmation: user.passwordConfirmation,
+          // passwordConfirmation: user.passwordConfirmation,
+          ethereum: user.ethereum,
+          isWallet: user.isWallet
         },
       }),
       invalidatesTags: ['User'],
@@ -70,6 +72,17 @@ export const userApi = createApi({
           isKYCVerified: user.isKYCVerified,
           KYCVerificationData: user.KYCVerificationData,
           country: user.country
+        },
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    updateWalletInfoOfUser: build.mutation({
+      query: data => ({
+        url: `/api/${data.userId}/updateWalletInfoOfUser`,
+        method: 'PATCH',
+        body: {
+          ethereum: data.ethereum
         },
       }),
       invalidatesTags: ['User'],
@@ -184,7 +197,8 @@ export const {
   useRegisterUserMutation,
   useUpdateUserMutation,
   useEditUserAfterKYCMutation,
-
+  useUpdateWalletInfoOfUserMutation,
+  
   useUpdateNameMutation,
   useGetCurrentLoginUserQuery,
   useUpdateEmailMutation,

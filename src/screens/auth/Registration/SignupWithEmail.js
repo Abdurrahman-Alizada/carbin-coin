@@ -48,6 +48,8 @@ const SignupWithEmail = () => {
   const theme = useTheme();
   const {t} = useTranslation();
   const [invitationInputvisible, setInvitationInputVisible] = useState(false);
+  const [walletInputvisible, setWalletInputVisible] = useState(false);
+  const [address, setAddress] = useState('');
 
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState('');
@@ -59,13 +61,19 @@ const SignupWithEmail = () => {
 
   const submitHandler = async values => {
     email.current = values.email;
+    const ethereum = {
+      walletAddress : address
+    }
     registerUser({
       // name: values.name,
       email: values.email,
       password: values.password,
+      ethereum: ethereum,
+      isWallet : walletInputvisible
       // passwordConfirmation: values.passwordConfirmation,
     })
       .then(res => {
+        console.log("first",res)
         if (res?.error?.status === 409) {
           setMessage(res?.error?.data?.message);
           setShowLoginButton(false);
@@ -273,6 +281,17 @@ const SignupWithEmail = () => {
                 </Text>
               ) : null}
 
+              {walletInputvisible && (
+                <TextInput
+                  editable={false}
+                  label="Wallet address"
+                  mode="outlined"
+                  style={{marginVertical: '2%'}}
+                  value={address}
+                  multiline
+                  activeOutlineColor={theme.colors.secondary}
+                />
+              )}
               {invitationInputvisible ? (
                 <TextInput
                   error={errors.password && touched.password ? true : false}
@@ -356,7 +375,7 @@ const SignupWithEmail = () => {
                 or
               </Text>
 
-              <ConnectWallet />
+              <ConnectWallet setWalletInputVisible={setWalletInputVisible} setAddress={setAddress} />
             </View>
           )}
         </Formik>

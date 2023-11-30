@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Button, useTheme} from 'react-native-paper';
 import {
   WalletConnectModal,
@@ -7,7 +7,7 @@ import {
 } from '@walletconnect/modal-react-native';
 import {useTranslation} from 'react-i18next';
 
-const ConnectWallet = () => {
+const ConnectWallet = ({setWalletInputVisible, setAddress}) => {
   const {t} = useTranslation();
   const theme = useTheme();
   const {isOpen, open, close, provider, isConnected, address} =
@@ -35,6 +35,16 @@ const ConnectWallet = () => {
     return open();
   };
 
+  useEffect(() => {
+    if(isConnected){
+     setAddress(address)
+     setWalletInputVisible(true)
+    }else{
+      setAddress('')
+      setWalletInputVisible(false)
+     }
+  }, [isConnected])
+  
   return (
     <View>
       <Button
@@ -49,9 +59,9 @@ const ConnectWallet = () => {
         onPress={handleButtonPress}>
         {isConnected ? t('Disconnect wallet') : t('Connect wallet')}
       </Button>
-      <Text style={{marginTop: '5%'}}>
+      {/* <Text style={{marginTop: '5%'}}>
         {isConnected ? 'Wallet address:' : ''} {address}
-      </Text>
+      </Text> */}
       <WalletConnectModal
         projectId={projectId}
         providerMetadata={providerMetadata}

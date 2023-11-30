@@ -14,7 +14,7 @@ import {useTranslation} from 'react-i18next';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IonicIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const SecuritySettingIndex = () => {
   const theme = useTheme();
@@ -26,7 +26,6 @@ const SecuritySettingIndex = () => {
   const KYCStatusText = useSelector(state => state.user.KYCStatusText);
   const KYCStatusIcon = useSelector(state => state.user.KYCStatusIcon);
   const isKYCVerified = useSelector(state => state.user.isKYCVerified);
-
 
   return (
     <View style={{paddingHorizontal: '0%'}}>
@@ -93,6 +92,26 @@ const SecuritySettingIndex = () => {
           right={() => (
             <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
           )}
+        />
+        <Drawer.Item
+          onPress={() => navigation.navigate('EthereumWallet')}
+          style={{marginTop: '2%'}}
+          icon={() => (
+            <View
+              style={{
+                padding: 4,
+                backgroundColor: theme.colors.secondaryContainer,
+                borderRadius: 25,
+              }}>
+              <IonicIcon
+                name="wallet"
+                size={25}
+                color={theme.colors.onBackground}
+              />
+            </View>
+          )}
+          label={t('Crypto wallet')}
+          right={() => <List.Icon icon={'chevron-right'} style={{}} />}
         />
 
         {/* <Drawer.Item
