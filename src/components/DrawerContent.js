@@ -15,7 +15,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {version} from '../../package.json';
 import {useTranslation} from 'react-i18next';
-import {useGetCurrentLoginUserQuery} from '../redux/reducers/user/userThunk';
+import {
+  useGetCurrentLoginUserQuery,
+  useUpdateWalletInfoOfUserMutation,
+} from '../redux/reducers/user/userThunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {handleCurrentLoaginUser} from '../redux/reducers/user/user';
 
@@ -89,7 +92,7 @@ export default function DrawerContent(props) {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user?.data) {
       dispatch(handleCurrentLoaginUser(user));
     }
   }, [user]);
@@ -97,7 +100,6 @@ export default function DrawerContent(props) {
   // wallet
   const {isOpen, open, close, provider, isConnected, address} =
     useWalletConnectModal();
-
   const projectId = '4287ee7f1533e4a2b7f5d0937ba341cf';
 
   const providerMetadata = {
@@ -121,6 +123,33 @@ export default function DrawerContent(props) {
     return open();
   };
 
+  const [
+    updateWalletInfoOfUser,
+    {isLoading: isWalletLoading, isError: isWalletError, error: walletError},
+  ] = useUpdateWalletInfoOfUserMutation();
+
+  const handleUpdateWalletInfoOfUser = async () => {
+    const ethereum = {
+      isWallet: true,
+      walletAddress: address,
+    };
+    updateWalletInfoOfUser({
+      userId: user?.data?._id,
+      ethereum: ethereum,
+    })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    if (address) {
+      handleUpdateWalletInfoOfUser();
+    }
+  }, [address]);
   return (
     <DrawerContentScrollView
       {...props}
@@ -215,11 +244,13 @@ export default function DrawerContent(props) {
           }}
           icon="account"
         />
-        <Drawer.Item
-          label={t('Connect wallet')}
-          onPress={handleButtonPress}
-          icon="wallet"
-        />
+        {!isConnected && (
+          <Drawer.Item
+            label={isConnected ? t('Disconnect wallet') : t('Connect wallet')}
+            onPress={handleButtonPress}
+            icon={isConnected ? 'window-close' : 'wallet'}
+          />
+        )}
         <Drawer.Item
           label={t('Cards')}
           onPress={() => {
@@ -228,6 +259,15 @@ export default function DrawerContent(props) {
             });
           }}
           icon="credit-card"
+        />
+        <Drawer.Item
+          label={t('Invitation code')}
+          onPress={() => {
+            navigation.navigate('Drawer', {
+              screen: 'ReferralSystem',
+            });
+          }}
+          icon="account-child-outline"
         />
         <Drawer.Item
           label={t('Need Help')}

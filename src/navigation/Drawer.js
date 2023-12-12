@@ -16,6 +16,9 @@ import CardIndex from '../screens/drawer/cards/CardIndex';
 import NewCard from '../screens/drawer/cards/NewCard';
 import IDVerificationIndex from '../screens/drawer/myProfile/SecuritySettings/verficationLevel/IDVerification/IDVerificationIndex';
 import CountriesList from '../screens/drawer/myProfile/SecuritySettings/verficationLevel/IDVerification/CountriesList';
+import Wallet from '../screens/drawer/myProfile/SecuritySettings/Wallet';
+import ReferralSystemIndex from '../screens/drawer/referralSystem/referralSystemIndex';
+
 const AppStack = () => {
   return (
     <Stack.Navigator initialRouteName="Profile">
@@ -61,6 +64,16 @@ const AppStack = () => {
         }}
       />
 
+      <Stack.Screen
+        name="ReferralSystem"
+        component={ReferralSystemIndex}
+        options={{
+          headerShown: false,
+          presentation: 'modal',
+          header: props => <GeneralAppbar title="Invitation code" {...props} />,
+        }}
+      />
+
       {/* user verification - start */}
       <Stack.Screen
         name="Verification"
@@ -86,6 +99,16 @@ const AppStack = () => {
         }}
       />
       {/* user verification - end */}
+
+      <Stack.Screen
+        name="EthereumWallet"
+        component={Wallet}
+        options={{
+          // headerShown: false,
+          presentation: 'modal',
+          header: props => <GeneralAppbar title="Crypto wallet" {...props} />,
+        }}
+      />
 
       <Stack.Screen
         name="ChangePassword"

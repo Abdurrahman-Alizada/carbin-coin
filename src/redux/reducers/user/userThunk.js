@@ -23,15 +23,28 @@ export const userApi = createApi({
         url: `/api/signup`,
         method: 'POST',
         body: {
-          name: user.name,
+          // name: user.name,
           email: user.email,
           password: user.password,
-          passwordConfirmation: user.passwordConfirmation,
+          // passwordConfirmation: user.passwordConfirmation,
+          ethereum: user.ethereum,
+          isWallet: user.isWallet,
+          referredBy : user.referredBy
+          // referralCode:user.referralCode
         },
       }),
       invalidatesTags: ['User'],
     }),
-
+    CheckInvitaionCode: build.mutation({
+      query: user => ({
+        url: `/api/signup/CheckInvitaionCode`,
+        method: 'POST',
+        body: {
+          referralCode:user.referralCode
+        },
+      }),
+      invalidatesTags: ['User'],
+    }),
     loginUser: build.mutation({
       query: user => ({
         url: `/api/login`,
@@ -70,6 +83,17 @@ export const userApi = createApi({
           isKYCVerified: user.isKYCVerified,
           KYCVerificationData: user.KYCVerificationData,
           country: user.country
+        },
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    updateWalletInfoOfUser: build.mutation({
+      query: data => ({
+        url: `/api/${data.userId}/updateWalletInfoOfUser`,
+        method: 'PATCH',
+        body: {
+          ethereum: data.ethereum
         },
       }),
       invalidatesTags: ['User'],
@@ -184,6 +208,8 @@ export const {
   useRegisterUserMutation,
   useUpdateUserMutation,
   useEditUserAfterKYCMutation,
+  useUpdateWalletInfoOfUserMutation,
+  useCheckInvitaionCodeMutation,
 
   useUpdateNameMutation,
   useGetCurrentLoginUserQuery,

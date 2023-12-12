@@ -52,7 +52,7 @@ const VerificationIndex = () => {
     const verification_result = parsedResponse?.verification_result;
     const info = parsedResponse?.info;
     const declined_reason = parsedResponse?.declined_reason;
-    const country = parsedResponse?.country
+    const country = parsedResponse?.country;
     editUserAfterKYC({
       userId: currentLoginUser?._id,
       isKYCVerified: isKYCVerified,
@@ -62,7 +62,7 @@ const VerificationIndex = () => {
         info: info,
         declined_reason: declined_reason,
       },
-      country: country
+      country: country,
     })
       .then(res => {
         console.log('response is=> ', res);
@@ -78,7 +78,7 @@ const VerificationIndex = () => {
       asyncRequest: false,
       captureEnabled: false,
     };
-    
+
     const verificationObj = {
       reference: currentLoginUser?._id,
       country: '',
@@ -120,11 +120,13 @@ const VerificationIndex = () => {
       JSON.stringify(auth),
       JSON.stringify(config),
       res => {
-        console.log('first', typeof res);
         const parsedResponse = JSON.parse(res); // Parse the JSON string into an object
-        setResponse(parsedResponse);
-        dispatch(handleResponse1(parsedResponse?.body));
-        updateUserAfterKYC(parsedResponse?.body);
+        console.log('first', typeof res, typeof parsedResponse);
+        if (parsedResponse.event !== 'verification.cancelled') {
+          setResponse(parsedResponse);
+          dispatch(handleResponse1(parsedResponse?.body));
+          updateUserAfterKYC(parsedResponse?.body);
+        }
       },
     );
     // navigation.navigate('IDVerificationCountry')
@@ -177,15 +179,32 @@ const VerificationIndex = () => {
       <Card mode="outlined" style={{marginTop: '7%'}}>
         <Card.Title title={t('Verification method')} />
         <Card.Content>
-          {isKYCVerified == 1 ? (
+          {isKYCVerified == 1 ||
+          isKYCVerified == 2 ||
+          isKYCVerified == 3 ||
+          isKYCVerified == 4 ? (
             <Button
               icon="plus"
               mode="outlined"
               contentStyle={{padding: '2%'}}
               theme={{roundness: 10}}
-              onPress={() =>{
-                setDialogText("Your status is pending.\n Please wait for admin approval.\n It'll take 2 to 4 working days.")
-                setVisible(true)
+              onPress={() => {
+                if (isKYCVerified == 1) {
+                  setDialogText(
+                    "Your status is pending.\n Please wait for admin approval.\n It'll take 2 to 4 working days.",
+                  );
+                } else if (isKYCVerified == 2) {
+                  setDialogText('Your KYC declined.\n Please contact support.');
+                } else if (isKYCVerified == 3) {
+                  setDialogText(
+                    'Your KYC declined by admin.\n Please contact support.',
+                  );
+                } else if (isKYCVerified == 4) {
+                  setDialogText(
+                    'Your are a verified user.\n You do not need KYC again.',
+                  );
+                }
+                setVisible(true);
               }}>
               {t('Photo ID, face scan')}
             </Button>
@@ -203,6 +222,7 @@ const VerificationIndex = () => {
 
           <Button
             icon="home-city"
+            disabled
             mode="contained-tonal"
             style={{padding: '2%', marginTop: '3%'}}
             theme={{roundness: 10}}

@@ -1,6 +1,6 @@
 import {StyleSheet, View, ScrollView, RefreshControl} from 'react-native';
-import React, { useEffect } from 'react';
-import {Text, Appbar, useTheme, Button} from 'react-native-paper';
+import React, {useEffect, useState} from 'react';
+import {Text, Appbar, useTheme, Button, Snackbar} from 'react-native-paper';
 import UserInfo from './userInfo/userInfoIndex';
 import AdsCard from './AdsCard';
 import SecuritySettingIndex from './SecuritySettings/SecuritySettingIndex';
@@ -10,13 +10,18 @@ import {useTranslation} from 'react-i18next';
 import {useGetCurrentLoginUserQuery} from '../../../redux/reducers/user/userThunk';
 import ProfileLoading from '../../../Skeletons/profileLoading';
 import WalletIndex from '../../../Skeletons/Wallet/WalletIndex';
-import { useDispatch } from 'react-redux';
-import { handleCurrentLoaginUser } from '../../../redux/reducers/user/user';
+import {useDispatch} from 'react-redux';
+import {handleCurrentLoaginUser} from '../../../redux/reducers/user/user';
+import Wallet from './SecuritySettings/Wallet';
 const Index = ({navigation, route}) => {
   const {token} = route?.params;
   const theme = useTheme();
   const {t} = useTranslation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const [visible, setVisible] = useState(false);
+
+
   const {
     data: user,
     isError,
@@ -48,6 +53,10 @@ const Index = ({navigation, route}) => {
           <UserInfo user={user} token={token} refetch={refetch} />
         )}
 
+        {/* <Text style={{marginTop: '10%', textAlign: 'center', fontSize: 20}}>
+          {t('Wallet information')}
+        </Text>
+        <Wallet setVisible={setVisible} ethereum={user?.data?.ethereum} /> */}
         {/* <AdsCard /> */}
         <Text style={{marginTop: '10%', textAlign: 'center', fontSize: 20}}>
           {t('Security settings')}
@@ -99,6 +108,14 @@ const Index = ({navigation, route}) => {
           </Button>
         </View>
       </ScrollView>
+
+      <Snackbar
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={1000}>
+        {/* {t('Key copied successfully!')} */}
+        Key copied successfully!
+      </Snackbar>
     </View>
   );
 };
