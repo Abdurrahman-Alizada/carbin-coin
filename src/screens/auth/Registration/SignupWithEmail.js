@@ -9,6 +9,7 @@ import {
   Checkbox,
   useTheme,
   Button,
+  IconButton,
 } from 'react-native-paper';
 import ConnectWallet from './ConnectWallet';
 
@@ -18,6 +19,7 @@ import {useNavigation} from '@react-navigation/native';
 import {
   useRegisterUserMutation,
   useResendEmailForUserRegistrationMutation,
+  useCheckInvitaionCodeMutation,
 } from '../../../redux/reducers/user/userThunk';
 import AuthAppbar from '../../../components/Appbars/AuthAbbar';
 import ButtonLinearGradient from '../../../components/ButtonLinearGradient';
@@ -58,22 +60,58 @@ const SignupWithEmail = () => {
   const email = useRef('');
 
   const [registerUser, {isLoading, isError, error}] = useRegisterUserMutation();
+  const [
+    CheckInvitaionCode,
+    {
+      isLoading: invitaionCodeLoading,
+      isError: invitaionCodeIsError,
+      error: invitaionCodeError,
+    },
+  ] = useCheckInvitaionCodeMutation();
+
+  const [referringUser, setReferringUser] = useState('');
+  const [referringUserMessage, setReferringUserMessage] = useState('');
+  const [referringUserMessageSuccess, setReferringUserMessageSuccess] =
+    useState('');
+  const CheckInvitaionCodeHandler = async rc => {
+    CheckInvitaionCode({
+      referralCode: rc,
+    })
+      .then(res => {
+        if (res?.error === 400) {
+          setReferringUserMessage('Something went wrong');
+          setReferringUserMessageSuccess('');
+        } else if (res?.data?.message === 'Invalid code') {
+          setReferringUserMessage('Invalid code');
+          setReferringUserMessageSuccess('');
+        } else if (res?.data?.referredBy) {
+          setReferringUserMessage('');
+          setReferringUser(res?.data?.referredBy)
+          setReferringUserMessageSuccess('Code validated');
+          setInvitationInputVisible(false)
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   const submitHandler = async values => {
     email.current = values.email;
     const ethereum = {
-      walletAddress : address
-    }
+      walletAddress: address,
+    };
     registerUser({
       // name: values.name,
       email: values.email,
       password: values.password,
       ethereum: ethereum,
-      isWallet : walletInputvisible
+      isWallet: walletInputvisible,
+      referredBy : referringUser
       // passwordConfirmation: values.passwordConfirmation,
     })
       .then(res => {
-        console.log("first",res)
+        console.log('first', res.error);
         if (res?.error?.status === 409) {
           setMessage(res?.error?.data?.message);
           setShowLoginButton(false);
@@ -167,7 +205,7 @@ const SignupWithEmail = () => {
             email: '',
             password: '',
             passwordConfirmation: '',
-            invitaionCode: '',
+            invitationCode: '',
           }}
           validationSchema={validationSchema}
           onSubmit={values => submitHandler(values)}>
@@ -181,7 +219,7 @@ const SignupWithEmail = () => {
           }) => (
             <View style={{paddingHorizontal: '5%', marginTop: '10%'}}>
               <Portal>
-                <Dialog visible={visible} onDismiss={() => setVisible(true)}>
+                <Dialog visible={visible} onDismiss={() => setVisible(false)}>
                   <Dialog.Title>Sign up</Dialog.Title>
                   <Dialog.Content>
                     <Paragraph> {message}</Paragraph>
@@ -214,6 +252,64 @@ const SignupWithEmail = () => {
                         email.current = '';
                       }}>
                       close
+                    </Button>
+                  </Dialog.Actions>
+                </Dialog>
+
+                <Dialog
+                  visible={invitationInputvisible}
+                  onDismiss={() => setInvitationInputVisible(false)}>
+                  <View
+                    style={{
+                      paddingRight: '2%',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginTop: -0.5,
+                    }}>
+                    <Dialog.Title>Sign up</Dialog.Title>
+                    <IconButton
+                      onPress={() => setInvitationInputVisible(false)}
+                      icon={'close'}
+                    />
+                  </View>
+
+                  <Dialog.Content>
+                    <TextInput
+                      // error={errors.password && touched.password ? true : false}
+                      label="Invitation code (optional)"
+                      // mode="outlined"
+                      style={{marginVertical: '2%'}}
+                      onChangeText={handleChange('invitationCode')}
+                      onBlur={handleBlur('invitationCode')}
+                      autoFocus
+                      value={values.invitationCode}
+                      activeOutlineColor={theme.colors.secondary}
+                    />
+                    {invitaionCodeIsError ? (
+                      <Text style={{color: theme.colors.error}}>
+                        {invitaionCodeError?.error}
+                      </Text>
+                    ) : null}
+                    {referringUserMessage ? (
+                      <Text style={{color: theme.colors.error}}>
+                        {referringUserMessage}
+                      </Text>
+                    ) : null}
+                    {referringUserMessageSuccess ? (
+                      <Text style={{color: '#15c186'}}>
+                        {referringUserMessageSuccess}
+                      </Text>
+                    ) : null}
+                  </Dialog.Content>
+                  <Dialog.Actions>
+                    <Button
+                      disabled={invitaionCodeLoading || !values.invitationCode}
+                      loading={invitaionCodeLoading}
+                      onPress={() => {
+                        CheckInvitaionCodeHandler(values.invitationCode);
+                      }}>
+                      Check
                     </Button>
                   </Dialog.Actions>
                 </Dialog>
@@ -292,23 +388,25 @@ const SignupWithEmail = () => {
                   activeOutlineColor={theme.colors.secondary}
                 />
               )}
-              {invitationInputvisible ? (
+              {invitationInputvisible || values.invitationCode ? (
                 <TextInput
                   error={errors.password && touched.password ? true : false}
                   label="Invitation code (optional)"
                   mode="outlined"
+                  editable={false}
                   style={{marginVertical: '2%'}}
                   onChangeText={handleChange('invitaionCode')}
                   onBlur={handleBlur('invitaionCode')}
-                  value={values.invitaionCode}
+                  value={values.invitationCode}
                   activeOutlineColor={theme.colors.secondary}
+                  right={
+                    <TextInput.Icon
+                      icon={'pencil'}
+                      onPress={() => setInvitationInputVisible(!showPassword)}
+                    />
+                  }
                 />
               ) : (
-                // {errors.passwordConfirmation && touched.passwordConfirmation ? (
-                //   <Text style={{color: theme.colors.error}}>
-                //     {errors.passwordConfirmation}
-                //   </Text>
-                // ) : null}
                 <TouchableOpacity
                   style={{marginVertical: '5%', alignSelf: 'center'}}
                   onPress={() =>
@@ -375,7 +473,10 @@ const SignupWithEmail = () => {
                 or
               </Text>
 
-              <ConnectWallet setWalletInputVisible={setWalletInputVisible} setAddress={setAddress} />
+              <ConnectWallet
+                setWalletInputVisible={setWalletInputVisible}
+                setAddress={setAddress}
+              />
             </View>
           )}
         </Formik>

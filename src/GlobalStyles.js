@@ -22,19 +22,22 @@ export const COLORS = {
   red: '#D70F64',
   orange: '#F77A55',
   blueLight: '#4838D1',
+  buttonBackground: "#1A2131"
 };
 
 export const lightPalette = {
-  // background: '#fff',
+  background: '#fff',
   blueBG: '#265AE8',
   textGray: '#3E3F41',
   cardBG: '#fff',
-  greyLight: '#888C94',
+  greyLight: '#ECE7FE',
   textRed : "#DD105E",
   yellow :"#FFAF4F",
   lightYellow:"#F5E493",
   purpleLight:"#62468d",
   grayBG : "#D9D9D9",
+  buttonBackground: "#F2F2F3",
+  iconButtonBackground:"#AB9DFF"
 };
 
 export const darkPalette = {
@@ -44,8 +47,9 @@ export const darkPalette = {
   cardBG: '#3E3F41',
   textRed : "#DD105E",
   yellow :"#FFAF4F",
-  purpleLight:"#AC8DAF"
-
+  purpleLight:"#AC8DAF",
+  buttonBackground: "#AB9DFF",
+  iconButtonBackground:"#F2F2F3"
   // accent :"#62468d",
 };
 

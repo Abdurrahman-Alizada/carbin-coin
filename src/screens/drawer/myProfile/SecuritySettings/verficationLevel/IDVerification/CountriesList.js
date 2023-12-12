@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useGetAllCountriesListQuery} from '../../../../../../redux/reducers/user/userThunk';
 import {useDispatch} from 'react-redux';
 import CountryFlag from 'react-native-country-flag';
-import {FlashList} from '@shopify/flash-list';
+// import {FlashList} from '@shopify/flash-list';
 import {
   ActivityIndicator,
   Avatar,
@@ -176,12 +176,12 @@ const CountriesList = () => {
             />
           </View>
 
-          <FlashList
+          {/* <FlashList
             data={filteredDataSource}
             renderItem={renderItem}
             estimatedItemSize={200}
             ListEmptyComponent={ListEmptyComponent}
-          />
+          /> */}
         </View>
       )}
     </View>

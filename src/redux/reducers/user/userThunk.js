@@ -28,12 +28,23 @@ export const userApi = createApi({
           password: user.password,
           // passwordConfirmation: user.passwordConfirmation,
           ethereum: user.ethereum,
-          isWallet: user.isWallet
+          isWallet: user.isWallet,
+          referredBy : user.referredBy
+          // referralCode:user.referralCode
         },
       }),
       invalidatesTags: ['User'],
     }),
-
+    CheckInvitaionCode: build.mutation({
+      query: user => ({
+        url: `/api/signup/CheckInvitaionCode`,
+        method: 'POST',
+        body: {
+          referralCode:user.referralCode
+        },
+      }),
+      invalidatesTags: ['User'],
+    }),
     loginUser: build.mutation({
       query: user => ({
         url: `/api/login`,
@@ -198,7 +209,8 @@ export const {
   useUpdateUserMutation,
   useEditUserAfterKYCMutation,
   useUpdateWalletInfoOfUserMutation,
-  
+  useCheckInvitaionCodeMutation,
+
   useUpdateNameMutation,
   useGetCurrentLoginUserQuery,
   useUpdateEmailMutation,

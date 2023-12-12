@@ -261,6 +261,15 @@ export default function DrawerContent(props) {
           icon="credit-card"
         />
         <Drawer.Item
+          label={t('Invitation code')}
+          onPress={() => {
+            navigation.navigate('Drawer', {
+              screen: 'ReferralSystem',
+            });
+          }}
+          icon="account-child-outline"
+        />
+        <Drawer.Item
           label={t('Need Help')}
           onPress={() => {
             navigation.navigate('NeedHelp');
