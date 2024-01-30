@@ -93,9 +93,6 @@ const Index = () => {
               {curr.slice(1, 2).map((item, index) => (
                 <TouchableOpacity
                   onPress={() => {
-                    // setSelectedCoin(item);
-                    // setSelectedCoinIndex(index);
-                    // onClose();
                   }}
                   key={index}
                   style={{

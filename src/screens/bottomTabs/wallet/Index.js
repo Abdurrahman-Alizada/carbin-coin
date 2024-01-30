@@ -24,9 +24,9 @@ import {useTranslation} from 'react-i18next';
 import HomeScreenAppbar from '../../../components/Appbars/HomeScreenAppbar';
 import {useDispatch, useSelector} from 'react-redux';
 import CountryFlag from 'react-native-country-flag';
-import WalletIndex from '../../../Skeletons/Wallet/WalletIndex';
 import {useGetAccountsForUserQuery} from '../../../redux/reducers/accounts/accountsThunk';
 import {handleUserAccounts} from '../../../redux/reducers/accounts/accountSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Index = ({navigation}) => {
   const {t} = useTranslation();
@@ -42,13 +42,28 @@ const Index = ({navigation}) => {
   const [selectedCurrency, setSelectedCurrency] = useState(-1);
   // const accccc = useSelector(state => state.accounts.userAccounts);
 
+  const id = useRef(null);
+  const token = useRef(null);
+
+  const getUserInfo = async () => {
+    id.current = await AsyncStorage.getItem('userId');
+    token.current = await AsyncStorage.getItem('token');
+    console.log("id=>",id.current,"token=>", token.current);
+  };
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
   const {
     data: accounts,
     isError,
     error,
     isLoading: isAccountsLoading,
     refetch,
-  } = useGetAccountsForUserQuery(currentLoginUser?.data?._id);
+    isFetching
+  // } = useGetAccountsForUserQuery(currentLoginUser?.data?._id);
+} = useGetAccountsForUserQuery(id?.current);
+
   useEffect(() => {
     if (accounts) {
       dispatch(handleUserAccounts(accounts));
@@ -72,7 +87,7 @@ const Index = ({navigation}) => {
       ) : ( */}
       <ScrollView
         refreshControl={
-          <RefreshControl refreshing={isAccountsLoading} onRefresh={refetch} />
+          <RefreshControl refreshing={isAccountsLoading || isFetching} onRefresh={refetch} />
         }
         contentContainerStyle={{marginBottom: 0}}>
         <Text
@@ -85,9 +100,6 @@ const Index = ({navigation}) => {
           {t('Total balance of my account and cards')}
         </Text>
         <View style={{marginHorizontal: '4%'}}>
-
-
-
           <TouchableWithoutFeedback onPress={() => onOpen()}>
             <View
               style={{
@@ -109,7 +121,7 @@ const Index = ({navigation}) => {
                 {/* {accounts?.overAllAmount?.sign} */}
                 {accounts?.caribbeanAccount?.totalAmount?.sign
                   ? accounts?.caribbeanAccount?.totalAmount?.sign
-                  : "$"}
+                  : '$'}
               </Text>
               <Text
                 style={{
@@ -218,8 +230,7 @@ const Index = ({navigation}) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              disabled
-              onPress={() => console.log('hello')}
+              onPress={() => navigation.navigate('RequestForAmountIndex')}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -242,7 +253,8 @@ const Index = ({navigation}) => {
                   fontSize: 17,
                   fontWeight: '700',
                 }}>
-                {t('Invest')}
+                {/* {t('Invest')} */}
+                {t('Request')}
               </Text>
             </TouchableOpacity>
           </View>

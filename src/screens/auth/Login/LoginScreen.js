@@ -69,22 +69,15 @@ const LoginScreen = ({navigation, route}) => {
       email: values.email,
       password: values.password,
     });
-    
+    console.log("first", response)
     if (response?.error) {
       setErrorMessage(response?.error?.data?.message);
       setVisible(true);
     }
-    // if (response?.data?.message) {
-    //   console.log(response?.data?.message);
-    //   setErrorMessage(response?.data?.message);
-    //   setVisible(true);
-    // }
+
     if (response?.data?.message == "Email Not Verified") {
       setErrorMessage('An Email was sent to your account please verify then login');
       setVisible(true);
-    
-      // setBannerMessage('Please verify the provided email first');
-      // setVerificationBannerVisible(true);
     }
     if (response?.data?.token) {
 

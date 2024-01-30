@@ -14,16 +14,49 @@ export const transactionApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Transactions', 'Accounts', 'Currencies'],
+  tagTypes: ['Transactions', 'Deposits', 'Accounts', 'Currencies'],
   reducerPath: 'transactionApi',
   endpoints: build => ({
     getallTransactionsForUser: build.query({
-      query: id => `/api/${id}/getallTransactionsForUser`,
-      providesTags: ['Transactions'],
+      query: userId => `/api/userTransactions/${userId}`,
+      providesTags: ['Deposits', 'Transactions'],
+    }),
+
+    requsestForAmount: build.mutation({
+      query: data => ({
+        url: `/api/${data.receiverId}/requsestForAmount`,
+        method: 'POST',
+        body: {
+          senderEmail: data.senderEmail,
+          amount: data.amount,
+          sign: data.sign,
+          currencyNickName: data.currencyNickName,
+          method:data.method,
+          senderName :data.senderName,
+          senderPhoneNumber :data.senderPhoneNumber
+        },
+      }),
+      invalidatesTags: ['Transactions'],
+    }),
+
+    respondToTransaction: build.mutation({
+      query: data => ({
+        url: `/api/respondToTransaction/${data.transactionId}`,
+        method: 'PATCH',
+        body: {
+          status: data.status,
+        },
+      }),
+      invalidatesTags: ['Transactions', 'Accounts', 'Currencies', 'Deposits'],
+    }),
+
+    getallDepositsForUser: build.query({
+      query: id => `/api/${id}/getallDepositsForUser`,
+      providesTags: ['Deposits', 'Transactions'],
     }),
     getTraditionalCurrenciesList: build.query({
       query: () => `/api/getTraditionalCurrenciesList`,
-      providesTags: ['Transactions','Currencies'],
+      providesTags: ['Transactions', 'Currencies', 'Deposits'],
     }),
 
     stripPayment: build.mutation({
@@ -55,17 +88,21 @@ export const transactionApi = createApi({
             value: data.amount.value,
             sign: data.amount.sign,
           },
-          currency: data.currency
+          currency: data.currency,
         },
       }),
-      invalidatesTags: ['Transactions', 'Accounts'],
+      invalidatesTags: ['Deposits', 'Accounts'],
     }),
   }),
 });
 
 export const {
-  useStripPaymentMutation,
   useGetallTransactionsForUserQuery,
+  useRequsestForAmountMutation,
+  useRespondToTransactionMutation,
+
+  useStripPaymentMutation,
+  useGetallDepositsForUserQuery,
   useSavePaymentOnSuccessMutation,
-  useGetTraditionalCurrenciesListQuery
+  useGetTraditionalCurrenciesListQuery,
 } = transactionApi;

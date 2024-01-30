@@ -21,6 +21,7 @@ import {
 } from '../redux/reducers/user/userThunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {handleCurrentLoaginUser} from '../redux/reducers/user/user';
+import RNRestart from 'react-native-restart'; // Import package from node modules
 
 import {
   WalletConnectModal,
@@ -83,12 +84,14 @@ export default function DrawerContent(props) {
     await AsyncStorage.setItem('userId', '');
     await AsyncStorage.setItem('name', '');
     await AsyncStorage.setItem('ImageURL', '');
-    dispatch(handleCurrentLoaginUser({}));
+    // dispatch(handleCurrentLoaginUser({}));
     // dispatch(userApi.util.resetApiState())
     // dispatch(groupApi.util.resetApiState());
     // dispatch(friendshipApi.util.resetApiState())
-    navigation.dispatch(DrawerActions.closeDrawer());
-    navigation.navigate('Auth');
+    RNRestart.restart();
+
+    // navigation.dispatch(DrawerActions.closeDrawer());
+    // navigation.navigate('Auth');
   };
 
   useEffect(() => {
@@ -285,10 +288,10 @@ export default function DrawerContent(props) {
         />
       </View>
 
-      <WalletConnectModal
+      {/* <WalletConnectModal
         projectId={projectId}
         providerMetadata={providerMetadata}
-      />
+      /> */}
 
       {/* <View style={{marginVertical: '5%'}}>
         <Divider />

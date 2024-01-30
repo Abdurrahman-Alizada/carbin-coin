@@ -9,7 +9,7 @@ import {
   Avatar,
 } from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
-import {useGetallTransactionsForUserQuery} from '../../../../redux/reducers/transactions/transactionsThunk';
+import {useGetallDepositsForUserQuery} from '../../../../redux/reducers/transactions/transactionsThunk';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
 
@@ -26,7 +26,7 @@ const TopUpIndex = ({navigation}) => {
     error,
     isLoading: isTransLoading,
     refetch,
-  } = useGetallTransactionsForUserQuery(currentLoginUser?._id);
+  } = useGetallDepositsForUserQuery(currentLoginUser?._id);
 
   const renderItem = ({item, index}) => {
     

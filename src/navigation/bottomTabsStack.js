@@ -18,6 +18,9 @@ import UsingLinkInstruction from '../screens/bottomTabs/wallet/send/usingLink/Us
 import SendUsingLink from '../screens/bottomTabs/wallet/send/usingLink/SendUsingLink';
 import LanguageIndex from '../screens/bottomTabs/Settings/preferences/language/LanguageIndex';
 import StripeIndex from '../screens/bottomTabs/wallet/topUp/stripe/StripeIndex';
+import RequestForAmountIndex from '../screens/bottomTabs/wallet/requestForAmount/requestForAmountIndex';
+import RequestPage from '../screens/bottomTabs/wallet/requestForAmount/requestPage';
+
 const AppStack = () => {
   const {t} = useTranslation();
 
@@ -132,6 +135,24 @@ const AppStack = () => {
         }}
       />
       {/* Settings end */}
+
+      {/* request for amount - start*/}
+      <Stack.Screen
+        name="RequestForAmountIndex"
+        component={RequestForAmountIndex}
+        options={{
+          header: props => <GeneralAppbar title="Request for amount" {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="RequestForAmount"
+        component={RequestPage}
+        options={{
+          headerShown:false,
+          presentation:"modal"
+        }}
+      />
+      {/* request for amount - end */}
     </Stack.Navigator>
   );
 };

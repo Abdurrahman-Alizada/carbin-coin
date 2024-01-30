@@ -7,38 +7,37 @@ import {version} from '../../../package.json';
 import {useDispatch} from 'react-redux';
 import {handleCurrentLanguage} from '../../redux/reducers/settings/settings';
 import i18next from '../../../locales/i18next';
-import { useGetCurrentLoginUserQuery } from '../../redux/reducers/user/userThunk';
-import { handleCurrentLoaginUser } from '../../redux/reducers/user/user';
+import {useGetCurrentLoginUserQuery} from '../../redux/reducers/user/userThunk';
+import {handleCurrentLoaginUser} from '../../redux/reducers/user/user';
 
 const SplashScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
-    // current login user
-    const id = useRef(null);
-    const token = useRef(null);
-  
-    const getUserInfo = async () => {
-      id.current = await AsyncStorage.getItem('userId');
-      token.current = await AsyncStorage.getItem('token');
-    };
-    useEffect(() => {
-      getUserInfo();
-    }, []);
-  
-    const {
-      data: user,
-      isError,
-      error,
-      isLoading,
-      refetch,
-    } = useGetCurrentLoginUserQuery(token.current);
-  
-    useEffect(() => {
-      if (user) {
-        dispatch(handleCurrentLoaginUser(user));
-      }
-    }, [user]);
-  
+  // current login user
+  const id = useRef(null);
+  const token = useRef(null);
+
+  const getUserInfo = async () => {
+    id.current = await AsyncStorage.getItem('userId');
+    token.current = await AsyncStorage.getItem('token');
+  };
+  useLayoutEffect(() => {
+    getUserInfo();
+  }, []);
+
+  const {
+    data: user,
+    isError,
+    error,
+    isLoading,
+    refetch,
+  } = useGetCurrentLoginUserQuery(token.current);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(handleCurrentLoaginUser(user));
+    }
+  }, [user]);
 
   const isAppFirstLaunched = useRef(true); //onboarding screen decision
   useEffect(() => {
@@ -59,29 +58,27 @@ const SplashScreen = ({navigation}) => {
 
   const [go, setGo] = useState(false);
 
-
   useEffect(() => {
     //Check if user_id is set or not If not then send for Authentication else send to Home Screen
-setTimeout(()=>{
-  setGo(true)
-},3000)
+    setTimeout(() => {
+      setGo(true);
+    }, 3000);
     AsyncStorage.getItem('isLoggedIn')
       .then(value => {
-        if(!isLoading || go){
+        if (!isLoading || go) {
           setTimeout(() => {
             isAppFirstLaunched?.current
               ? navigation.replace('Onboarding')
-               : navigation.replace(!value ? 'Auth' : 'Main');
-                // : navigation.replace('Main');
+              : navigation.replace(!value ? 'Auth' : 'Main');
+            // : navigation.replace('Main');
             // }, 2000);
-            }, 0);
+          }, 0);
         }
       })
       .catch(err => {
         console.log(err);
       });
   }, [isLoading, go]);
-
 
   const getCurrentLanguage = async () => {
     const lng = await AsyncStorage.getItem('currentLanguage');
@@ -95,8 +92,6 @@ setTimeout(()=>{
   useEffect(() => {
     getCurrentLanguage();
   }, []);
-
-
 
   const theme = useTheme();
   return (
@@ -125,7 +120,7 @@ setTimeout(()=>{
           }}
           source={require('../../assets/splash-screen/carib-coin-logo.png')}
         />
-        <ActivityIndicator  />
+        <ActivityIndicator />
       </View>
       <Text style={{fontWeight: 'bold', color: theme.colors.onPrimary}}>
         V {version}
