@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Caribbeancoin.app"
-               BlueprintName = "Caribbeancoin"
-               ReferencedContainer = "container:Caribbeancoin.xcodeproj">
+               BuildableName = "caribbeanCoin.app"
+               BlueprintName = "caribbeanCoin"
+               ReferencedContainer = "container:caribbeanCoin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,15 +33,15 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "CaribbeancoinTests.xctest"
-               BlueprintName = "CaribbeancoinTests"
-               ReferencedContainer = "container:Caribbeancoin.xcodeproj">
+               BuildableName = "caribbeanCoinTests.xctest"
+               BlueprintName = "caribbeanCoinTests"
+               ReferencedContainer = "container:caribbeanCoin.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -55,18 +55,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Caribbeancoin.app"
-            BlueprintName = "Caribbeancoin"
-            ReferencedContainer = "container:Caribbeancoin.xcodeproj">
+            BuildableName = "caribbeanCoin.app"
+            BlueprintName = "caribbeanCoin"
+            ReferencedContainer = "container:caribbeanCoin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = ""
-            value = ""
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -79,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Caribbeancoin.app"
-            BlueprintName = "Caribbeancoin"
-            ReferencedContainer = "container:Caribbeancoin.xcodeproj">
+            BuildableName = "caribbeanCoin.app"
+            BlueprintName = "caribbeanCoin"
+            ReferencedContainer = "container:caribbeanCoin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

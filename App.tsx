@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import './locales/i18next';
 
-import React, {useCallback, useMemo, useLayoutEffect, useState} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {ThemeContext} from './src/themeContext';
 
 import {StyleSheet, Text} from 'react-native';
